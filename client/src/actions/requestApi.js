@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { twitchAPI } from './keys';
+import twitchAPI from '../config/keys';
 import fetchRequest from './fetchRequest';
 import fetchSuccess from './fetchSuccess';
 import fetchFailure from './fetchFailure';
