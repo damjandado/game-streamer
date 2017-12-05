@@ -26,7 +26,7 @@ class Header extends Component {
     return (
       <nav className="navbar navbar-expand-sm  navbar-toggleable-md navbar-light bg-faded">
         <div className="container-fluid">
-          <div class="navbar-header">
+          <div className="navbar-header">
             <button
               className="navbar-toggler navbar-toggler-right"
               type="button"

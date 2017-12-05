@@ -14,7 +14,6 @@ class Streams extends Component {
   componentDidMount () {
     // this.props.store.subscribe(this.forceUpdate.bind(this));
     console.log('Streams.props:', this.props);
-    console.log('fetchUser PROP is:', this.props.fetchUser);
     // this.props.store.dispatch(this.props.requestApi());
     this.props.requestApi();
   }
@@ -61,7 +60,7 @@ function mapStateToProps({ twitch }) {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { requestApi: requestApi }
+  return { requestApi }
 }
 
 export default connect(mapStateToProps, actions)(Streams); 

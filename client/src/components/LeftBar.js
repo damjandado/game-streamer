@@ -9,6 +9,12 @@ class LeftBar extends Component {
     return (
         <div>
 {/*       
+          <div>
+            <ul>
+              <li><a></a></li>
+            </ul>
+          </div>
+
           <SideNav />
           <SideNav />
           <Route exact path="/" component={Landing} />
