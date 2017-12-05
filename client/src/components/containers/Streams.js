@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { getState } from 'redux';
 import { connect } from 'react-redux';
-import requestApi from '../../actions/requestApi';
-import fetchSuccess from '../../actions/fetchSuccess';
 import * as actions from '../../actions';
 
 import Loader from '../presentationals/Loader';
@@ -57,10 +55,6 @@ class Streams extends Component {
 
 function mapStateToProps({ twitch }) {
   return { twitch };
-}
-
-const mapDispatchToProps = dispatch => {
-  return { requestApi }
 }
 
 export default connect(mapStateToProps, actions)(Streams); 
