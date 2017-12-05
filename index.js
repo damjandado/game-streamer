@@ -12,7 +12,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
 
 const app = express();
-
+console.log('process.env HERE is', process.env);
 // app.use(bodyParser.json());
 app.use(
   cookieSession({
