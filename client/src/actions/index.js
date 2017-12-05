@@ -36,8 +36,8 @@ export function fetchFailure(error) {
 
 export const requestApi = () => dispatch => {
   console.log('process.env is HERE', process.env);
-  console.log('process.env.TWITCH_API on Heroku - ', process.env.TWITCH_API);
-  console.log('process.env.CUSTOM on Heroku - ', process.env.CUSTOM);
+  console.log('process.env.REACT_APP_TWITCH_API on Heroku - ', process.env.REACT_APP_TWITCH_API);
+  console.log('process.env.REACT_APP_CUSTOM on Heroku - ', process.env.REACT_APP_CUSTOM);
 
   //API request
   axios
