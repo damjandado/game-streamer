@@ -35,8 +35,6 @@ export function fetchFailure(error) {
 }
 
 export const requestApi = () => dispatch => {
-  console.log('process.env is HERE', process.env);
-
   //API request
   axios
     .get(
