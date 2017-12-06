@@ -7,19 +7,22 @@ import React, { Component } from 'react';
 class LeftBar extends Component {
   render() {
     return (
-        <div>
-{/*       
+        <div className="col-sm-2 sidenav gs-sidenav">
           <div>
+            <h6>Genres</h6>
             <ul>
-              <li><a></a></li>
+              <li><a>link g1</a></li>
+            </ul>
+          </div>
+          <div>
+            <h6>Categories</h6>
+            <ul>
+              <li><a>link c1</a></li>
             </ul>
           </div>
 
-          <SideNav />
-          <SideNav />
-          <Route exact path="/" component={Landing} />
-          <Route path="/surveys/new" component={Profile} />
-*/}
+
+          {/*<SideNav />*/}
         </div>
     );
   }

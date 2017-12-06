@@ -24,7 +24,7 @@ class Header extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-sm  navbar-toggleable-md navbar-light bg-faded">
+      <nav className="navbar navbar-expand-sm navbar-toggleable-md navbar-light bg-faded">
         <div className="container-fluid">
           <div className="navbar-header">
             <button

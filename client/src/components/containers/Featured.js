@@ -7,7 +7,7 @@ import Loader from '../presentationals/Loader';
 import StreamCard from  '../presentationals/StreamCard';
 import Alert from  '../presentationals/Alert';
 
-class Streams extends Component {
+class Featured extends Component {
 
   componentDidMount () {
     // this.props.store.subscribe(this.forceUpdate.bind(this));
@@ -25,11 +25,12 @@ class Streams extends Component {
         key = { stream._id }
         streamCover = { stream.preview.medium }
         streamLink = { stream.channel.url }
+        streamChannel = { stream.channel.name }
       />
     );
     const error = twitchProps.error;
     return (
-      <div className="container-fluid main">
+      <div className="main">
       {status === "loading" ? (
          <Loader />
        ) : (
@@ -57,4 +58,4 @@ function mapStateToProps({ twitch }) {
   return { twitch };
 }
 
-export default connect(mapStateToProps, actions)(Streams); 
+export default connect(mapStateToProps, actions)(Featured); 

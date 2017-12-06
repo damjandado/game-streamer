@@ -6,7 +6,7 @@ const initialState = {
 }
 
 //define a reducer with an intitalized state and logic to handle action
-function TwitchApp(state = initialState, action) {
+function twitchReducer(state = initialState, action) {
   switch(action.type) {
     case 'FETCH_REQUEST':
       const requested = Object.assign({}, state, {
@@ -30,4 +30,4 @@ function TwitchApp(state = initialState, action) {
   }
 }
 
-export default TwitchApp
+export default twitchReducer

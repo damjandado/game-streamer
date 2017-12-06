@@ -22,7 +22,9 @@
     "mongoose": "^4.13.5",
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
-    "passport-google-oauth20": "^1.0.0"
+    "passport-google-oauth20": "^1.0.0",
+    "passport-twitch": "^1.0.3",
+    "passport-twitchtv": "^0.1.4"
   },
   "devDependencies": {
     "concurrently": "^3.5.1"

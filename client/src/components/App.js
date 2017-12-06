@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import Header from './Header';
-// import Landing from './containers/Landing';
-import Streams from './containers/Streams';
+import LeftBar from './LeftBar';
+import Landing from './Landing';
 // import Profile from './containers/Profile';
 
 //top level of React component hierarchy
@@ -20,15 +20,21 @@ class App extends Component {
       <Router>
         <div className="app">
           <Header />
-          {/*         <LeftBar />
-          <Route exact path="/" component={Landing} />
-          <Route exact path={"/" + streamer} component={Stream} />
-          <Route path="/surveys/new" component={Profile} />*/}
-          <Streams />
+          <div className="container-fluid text-left">
+            <div className="row content">
+              <LeftBar />
+              <Route exact path="/" component={Landing} />
+              {/*<Route path="/profile" component={Profile} />*/}
+            </div>
+          </div>
         </div>
       </Router>
     );
   }
 }
 
-export default connect(null, actions)(App);
+function mapStateToProps({ embed }) {
+  return { embed };
+}
+
+export default connect(mapStateToProps, actions)(App);

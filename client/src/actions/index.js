@@ -2,6 +2,14 @@ import axios from 'axios';
 import twitchAPI from '../config/keys';
 import { FETCH_USER } from './types';
 
+export const embedStream = embeded => {
+  const EMBED_STREAM = 'EMBED_STREAM';
+  return {
+    type: EMBED_STREAM,
+    embeded
+  };
+};
+
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user');
 
@@ -34,24 +42,21 @@ export function fetchFailure(error) {
   };
 }
 
-export const requestApi = () => dispatch => {
+export const requestApi = () => async dispatch => {
   //API request
-  axios
-    .get(
-      `https://api.twitch.tv/kraken/streams/featured?&client_id=${twitchAPI}`
-    )
-    .then(response => {
-      const streams = response.data.featured.map(function(feat) {
-        return feat.stream;
-      });
-      //dispatch FetchSuccess, order 2
-      dispatch(fetchSuccess(streams));
-    })
-    .catch(e => {
-      //dispatch FetchFailure, order 3
-      dispatch(fetchFailure(e));
-    });
-
+  const res = await axios.get(
+    `https://api.twitch.tv/kraken/streams/featured?&client_id=${twitchAPI}`
+  );
   //dispatch FetchRequest, order 1
   dispatch(fetchRequest());
+  try {
+    const streams = res.data.featured.map(function(feat) {
+      return feat.stream;
+    });
+    //dispatch FetchSuccess, order 2
+    dispatch(fetchSuccess(streams));
+  } catch (e) {
+    //dispatch FetchSuccess, order 3
+    dispatch(fetchFailure(e));
+  }
 };

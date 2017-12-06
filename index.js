@@ -12,11 +12,10 @@ mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
 
 const app = express();
-console.log('process.env HERE is', process.env);
 // app.use(bodyParser.json());
 app.use(
   cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
+    maxAge: 0.000001 * 24 * 60 * 60 * 1000,
     keys: [keys.cookieKey]
   })
 );
