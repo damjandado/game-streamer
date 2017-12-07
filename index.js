@@ -7,7 +7,7 @@ const keys = require('./config/keys');
 require('./models/User');
 // require('./models/Survey');
 require('./services/passport');
-// require('./services/passport-twitch');
+require('./services/passport-twitch');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);

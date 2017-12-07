@@ -17,14 +17,14 @@ module.exports = app => {
   );
   // Twitch auth
   app.get(
-    '/auth/twitchtv',
-    passport.authenticate('twitchtv', {
+    '/auth/twitch',
+    passport.authenticate('twitch', {
       scope: ['user:edit', 'user:read:email']
     })
   );
   app.get(
-    '/auth/twitchtv/callback',
-    passport.authenticate('twitchtv'),
+    '/auth/twitch/callback',
+    passport.authenticate('twitch'),
     (req, res) => {
       res.redirect('/');
     }
