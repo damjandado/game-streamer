@@ -22,7 +22,8 @@ passport.use(
       clientID: keys.twitchClientID,
       clientSecret: keys.twitchClientSecret,
       callbackURL: '/auth/twitch/callback',
-      scope: 'user_read'
+      scope: 'user_read',
+      proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log('BBBBBBBBBBBBBBBBBBBBBBBBB');
