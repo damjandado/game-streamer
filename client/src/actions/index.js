@@ -2,6 +2,14 @@ import axios from 'axios';
 import twitchAPI from '../config/keys';
 import { FETCH_USER } from './types';
 
+export const toggleActive = isActive => {
+  const TOGGLE_ACTIVE = 'TOGGLE_ACTIVE';
+  return {
+    type: TOGGLE_ACTIVE,
+    isActive
+  };
+};
+
 export const embedStream = embeded => {
   const EMBED_STREAM = 'EMBED_STREAM';
   return {

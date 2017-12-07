@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import Featured from './containers/Featured';
 import Channel from './Channel';
@@ -19,24 +20,22 @@ class Landing extends Component {
     return (
       <div className="container-fluid col-sm-10">
         <ul className="nav nav-pills" role="tablist">
-          <li className="nav-item">
-            <Link className="nav-link active" data-toggle="pill" to="/">
+          <li className="nav-item" onClick={() => this.props.toggleActive(this.props.activeTab.featured)}>
+            <Link className={"nav-link" + (this.props.activeTab.featured ? " active" : "")} to="/">
               Featured
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" data-toggle="pill" to={"/" + this.props.embed}>
+          <li className="nav-item" onClick={() => this.props.toggleActive(this.props.activeTab.channel)}>
+            <Link className={"nav-link" + (this.props.activeTab.channel ? " active" : "")} to={"/" + this.props.embed}>
               Channel
             </Link>
           </li>
         </ul>
 
         <div className="tab-content">
-          <div id="home" className="container-fluid tab-pane active">
-          <Switch>
+          <div className="container-fluid tab-pane active">
             <Route exact path="/" component={Featured} />
             <Route path={"/" + this.props.embed} component={Channel} />
-          </Switch>
           </div>
         </div>
       </div>
@@ -44,8 +43,8 @@ class Landing extends Component {
   }
 }
 
-function mapStateToProps({ embed }) {
-  return { embed };
+function mapStateToProps({ embed, activeTab }) {
+  return { embed, activeTab };
 }
 
-export default connect(mapStateToProps)(Landing);
+export default connect(mapStateToProps, actions)(Landing);

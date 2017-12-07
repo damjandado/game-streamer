@@ -6,6 +6,7 @@ import * as actions from '../actions';
 import Header from './Header';
 import LeftBar from './LeftBar';
 import Landing from './Landing';
+import Channel from './Channel';
 // import Profile from './containers/Profile';
 
 //top level of React component hierarchy
@@ -23,8 +24,8 @@ class App extends Component {
           <div className="container-fluid text-left">
             <div className="row content">
               <LeftBar />
-              <Route exact path="/" component={Landing} />
-              {/*<Route path="/profile" component={Profile} />*/}
+              <Route path="/" component={Landing} />
+              <Route path="/profile" component={Channel} />
             </div>
           </div>
         </div>

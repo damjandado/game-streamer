@@ -12,7 +12,7 @@ class Channel extends Component {
     new window.Twitch.Embed('twitch-embed', {
       width: 854,
       height: 480,
-      channel: 'monstercat'
+      channel: this.props.embed
     });
     // }
   }
@@ -28,4 +28,8 @@ class Channel extends Component {
   }
 }
 
-export default Channel;
+function mapStateToProps({ embed }) {
+  return { embed };
+}
+
+export default connect(mapStateToProps)(Channel);
