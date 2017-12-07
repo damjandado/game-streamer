@@ -18,9 +18,7 @@ module.exports = app => {
   // Twitch auth
   app.get(
     '/auth/twitch',
-    passport.authenticate('twitch', {
-      scope: ['user:edit', 'user:read:email']
-    })
+    passport.authenticate('twitch')
   );
   app.get(
     '/auth/twitch/callback',

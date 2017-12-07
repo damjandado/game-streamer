@@ -26,7 +26,6 @@ passport.use(
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log('BBBBBBBBBBBBBBBBBBBBBBBBB');
       const existingUser = await User.findOne({ twitchId: profile.id });
       console.log('Existing Twitch user is', existingUser);
       if (existingUser) {
