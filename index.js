@@ -7,6 +7,7 @@ const keys = require('./config/keys');
 require('./models/User');
 // require('./models/Survey');
 require('./services/passport');
+// require('./services/passport-twitch');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
@@ -15,7 +16,7 @@ const app = express();
 // app.use(bodyParser.json());
 app.use(
   cookieSession({
-    maxAge: 0.000001 * 24 * 60 * 60 * 1000,
+    maxAge: 0.01 * 24 * 60 * 60 * 1000,
     keys: [keys.cookieKey]
   })
 );

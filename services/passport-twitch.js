@@ -1,5 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+// const TwitchStrategy = require('passport-twitch').Strategy;
+const TwitchStrategy = require('passport-twitchtv').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 
@@ -16,19 +18,21 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use(
-  new GoogleStrategy(
+  new TwitchStrategy(
     {
-      clientID: keys.googleClientID,
-      clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback',
-      proxy: true
+      clientID: keys.twitchClientID,
+      clientSecret: keys.twitchClientSecret,
+      callbackURL: '/auth/twitchtv/callback',
+      scope: 'user_read'
     },
     async (accessToken, refreshToken, profile, done) => {
-      const existingUser = await User.findOne({ googleId: profile.id });
+      console.log('BBBBBBBBBBBBBBBBBBBBBBBBB');
+      const existingUser = await User.findOne({ twitchId: profile.id });
+      console.log('Existing Twitch user is', existingUser);
       if (existingUser) {
         return done(null, existingUser);
       }
-      const user = await new User({ googleId: profile.id }).save();
+      const user = await new User({ twitchId: profile.id }).save();
       done(null, user);
       console.log(profile.id);
     }
