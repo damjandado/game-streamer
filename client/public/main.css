@@ -1,19 +1,31 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 
 h1,h2,h3,h4,h5,h6,p {
-  font-family: "Lato";
-  color: white;
 }
 
 body {
-  color: white !important;
   background: linear-gradient(
     rgba(58, 8, 57, 0.9),
     rgba(58, 8, 57, 0.9)
   ), url("background.svg");
 }
 
-#root nav.navbar * {
+
+/* Game Streamer styles */
+
+#navbarSupportedContent * {
+  color: white;
+}
+.gs-sidenav {
+  margin-top: 50px;
+}
+
+.gs-sidenav * {
+  color: white;
+}
+
+.navbar-header #game-streamer {
   color: white;
 }
 
@@ -143,8 +155,3 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   margin: 20px;
 }
 
-/* Game Streamer styles */
-
-.gs-sidenav {
-  margin-top: 50px;
-}
