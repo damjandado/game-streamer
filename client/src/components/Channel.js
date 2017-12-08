@@ -8,6 +8,7 @@ class Channel extends Component {
     return <div>Loading...</div>;
   }*/
   componentDidMount() {
+    console.log('CHANNEL mounted');
     // twitchEmbed() {
     new window.Twitch.Embed('twitch-embed', {
       width: 854,

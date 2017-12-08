@@ -1,12 +1,18 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
-import twitchReducer from './twitchReducer';
+import featuredReducer from './featuredReducer';
+import topGamesReducer from './topGamesReducer';
+import searchReducer from './searchReducer';
 import embedReducer from './embedReducer';
 import activeTabReducer from './activeTabReducer';
+import { reducer as reduxForm } from 'redux-form';
 
 export default combineReducers({
   auth: authReducer,
-  twitch: twitchReducer,
+  featured: featuredReducer,
+  topGames: topGamesReducer,
+  search: searchReducer,
   embed: embedReducer,
-  activeTab: activeTabReducer
+  activeTab: activeTabReducer,
+  form: reduxForm
 });

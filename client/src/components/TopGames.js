@@ -1,36 +1,35 @@
 import React, { Component } from 'react';
-import { getState } from 'redux';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import * as actions from '../actions';
 
-import Loader from '../presentationals/Loader';
-import StreamCard from  '../presentationals/StreamCard';
-import Alert from  '../presentationals/Alert';
+import Loader from './presentationals/Loader';
+import StreamCard from  './presentationals/StreamCard';
+import Alert from  './presentationals/Alert';
 
-class Featured extends Component {
+class TopGames extends Component {
 
   componentWillMount () {
     // this.props.store.subscribe(this.forceUpdate.bind(this));
-    this.props.featuredApi();
+    this.props.topGamesApi();
   }
   componentDidMount () {
     // this.props.store.subscribe(this.forceUpdate.bind(this));
-    this.props.featuredApi();
+    this.props.topGamesApi();
   }
 
   render() {
     // const stateProps = this.props.store.getState();
-    const featuredProps = this.props.featured;
-    const status = featuredProps.status;
-    const streamCardItems = featuredProps.streams.map((stream) =>
+    const topGamesProps = this.props.topGames;
+    const status = topGamesProps.status;
+    const streamCardItems = topGamesProps.games.map((game) =>
       <StreamCard
-        key = { stream._id }
-        streamCover = { stream.preview.medium }
-        streamLink = { stream.channel.url }
-        streamChannel = { stream.channel.name }
+        key = { game._id }
+        streamCover = { game.box.medium }
+        streamLink = { null }
+        streamChannel = { game.name }
       />
     );
-    const error = featuredProps.error;
+    const error = topGamesProps.error;
     return (
       <div className="main">
       {status === "loading" ? (
@@ -56,8 +55,8 @@ class Featured extends Component {
   }
 }
 
-function mapStateToProps({ featured }) {
-  return { featured };
+function mapStateToProps({ topGames }) {
+  return { topGames };
 }
 
-export default connect(mapStateToProps, actions)(Featured); 
+export default connect(mapStateToProps, actions)(TopGames); 
