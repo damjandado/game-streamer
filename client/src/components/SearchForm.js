@@ -14,7 +14,7 @@ class SearchForm extends Component {
         <Field
           className="form-control mr-sm-2"
           type="text"
-          name="searchGame"
+          name="search"
           placeholder="Search"
           component="input"
         />

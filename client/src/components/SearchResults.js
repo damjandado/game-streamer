@@ -1,47 +1,55 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 
-import Loader from './presentationals/Loader';
-import StreamCard from  './presentationals/StreamCard';
-import Alert from  './presentationals/Alert';
+import Loader from "./presentationals/Loader";
+import StreamCard from "./presentationals/StreamCard";
+import Alert from "./presentationals/Alert";
 
 class SearchResults extends Component {
   render() {
     // const stateProps = this.props.store.getState();
-    const searchGamesProps = this.props.search;
-    const status = searchGamesProps.status;
-    const streamCardItems = searchGamesProps.games.map((game) =>
+    const searchProps = this.props.search;
+    const status = searchProps.status;
+    const streamCardUsers = searchProps.users.map(user => (
       <StreamCard
-        key = { game._id }
-        streamCover = { game.preview.medium }
-        streamLink = { game.channel.url }
-        streamChannel = { game.channel.name }
+        key={user.id}
+        streamCover={user.profile_image_url}
+        streamLink={`https://www.twitch.tv/${user.login}`}
+        streamChannel={user.login}
       />
-    );
-    const error = searchGamesProps.error;
+    ));
+    const streamCardGames = searchProps.games.map(game => (
+      <StreamCard
+        key={game._id}
+        streamCover={game.preview.medium}
+        streamLink={game.channel.url}
+        streamChannel={game.channel.name}
+      />
+    ));
+    const error = searchProps.error;
     return (
       <div className="main">
-      {status === "loading" ? (
-         <Loader />
-       ) : (
-          status === "success" ? (
-            <div className="stream-cards">
-            {streamCardItems}
-            </div>
-          ) : (
-            status === "error" ? (
-              <div>
-                <Alert error = { error } />
-              </div>
-            ) : (
-              <div></div>
-            )
-          )
-        )
-      }
+        {status === "loading" ? (
+          <Loader />
+        ) : status === "success" ? (
+        <div>
+          <div className="stream-cards">
+            {streamCardUsers}
+          </div>
+          <div className="stream-cards">
+            {streamCardGames}
+          </div>
+        </div>
+        ) : status === "error" ? (
+          <div>
+            <Alert error={error} />
+          </div>
+        ) : (
+          <div />
+        )}
       </div>
-    )
+    );
   }
 }
 
@@ -49,4 +57,4 @@ function mapStateToProps({ search }) {
   return { search };
 }
 
-export default connect(mapStateToProps, actions)(SearchResults); 
+export default connect(mapStateToProps, actions)(SearchResults);

@@ -5,6 +5,7 @@ import * as actions from '../actions';
 
 import SearchForm from './SearchForm';
 import Login from './Login';
+import Navs from './Navs';
 
 class Header extends Component {
   renderContent() {
@@ -42,7 +43,7 @@ class Header extends Component {
             >
               <span className="navbar-toggler-icon" />
             </button>
-            <a id="game-streamer" className="navbar-brand" href="#">
+            <a id="game-streamer" className="navbar-brand" href="/">
               GameStreamer
             </a>
           </div>
@@ -50,7 +51,7 @@ class Header extends Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="/">
                   Home <span className="sr-only">(current)</span>
                 </a>
               </li>
@@ -59,14 +60,8 @@ class Header extends Component {
                   Link
                 </a>
               </li>
-              <li className="nav-item">
-                <button
-                  className="btn btn-outline-success my-2 my-sm-0"
-                  onClick={() => this.props.requestGames('fortnite')}
-                  type="button"
-                >
-                  search game
-                </button>
+              <li>
+                <Navs />
               </li>
             </ul>
             <SearchForm />

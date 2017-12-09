@@ -41,19 +41,30 @@ export const topGamesApi = () => async dispatch => {
   }
 };
 
-export const searchGamesApi = ({ searchGame }) => async dispatch => {
+export const searchGamesApi = ({ search }) => async dispatch => {
+  console.log('SEARCH term is', search);
   //API request
-  const res = await axios.get(
-    `https://api.twitch.tv/kraken/streams/?game=${searchGame}&client_id=${twitchAPI}`
+  const resGames = await axios.get(
+    `https://api.twitch.tv/kraken/streams/?game=${search}&client_id=${twitchAPI}`
   );
+  const resUsers = await axios({
+    method: "get",
+    url: `https://api.twitch.tv/helix/users?&login=${search}`,
+    headers: { "Client-ID": twitchAPI }
+  });
   //dispatch FetchRequest, order 1
   dispatch(actions.fetchSearchRequest());
   try {
-    const results = res.data.streams.map(function(feat) {
+    const games = resGames.data.streams.map(function(feat) {
+      return feat;
+    });
+    const users = resUsers.data.data.map(function(feat) {
+      console.log('SEARCH', search);
+      console.log('USER', feat);
       return feat;
     });
     //dispatch FetchSuccess, order 2
-    dispatch(actions.fetchSearchSuccess(results));
+    dispatch(actions.fetchSearchSuccess(users, games));
   } catch (e) {
     //dispatch FetchSuccess, order 3
     dispatch(actions.fetchSearchFailure(e));

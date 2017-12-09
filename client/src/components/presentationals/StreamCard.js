@@ -7,7 +7,6 @@ import * as actions from '../../actions/actions';
 class StreamCard extends Component {
   activeChannel() {
     this.props.embedStream(this.props.streamChannel);
-    this.props.toggleActive(false);
   }
 
   render() {

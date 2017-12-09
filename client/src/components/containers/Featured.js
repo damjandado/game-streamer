@@ -27,7 +27,7 @@ class Featured extends Component {
         key = { stream._id }
         streamCover = { stream.preview.medium }
         streamLink = { stream.channel.url }
-        streamChannel = { stream.channel.name }
+        streamChannel = { stream.channel }
       />
     );
     const error = featuredProps.error;

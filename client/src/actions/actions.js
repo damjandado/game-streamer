@@ -77,11 +77,12 @@ export function fetchSearchRequest() {
   };
 }
 
-export function fetchSearchSuccess(streams) {
+export function fetchSearchSuccess(users, games) {
   return {
     type: t.FETCH_SEARCH_SUCCESS,
     status: 'success',
-    streams
+    users,
+    games
   };
 }
 

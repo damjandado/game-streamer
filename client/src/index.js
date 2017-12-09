@@ -11,6 +11,8 @@ import logger from 'redux-logger';
 import reducers from './reducers';
 
 import App from './components/App';
+import axios from 'axios';
+window.axios = axios;
 
 /*Raven.config(
   'https://50ade61bac124605878ae86df7fb1cea@sentry.io/188244'

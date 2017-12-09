@@ -23,9 +23,8 @@ class App extends Component {
           <Header />
           <div className="container-fluid text-left">
             <div className="row content">
-              <LeftBar />
+              <LeftBar />              
               <Route path="/" component={Landing} />
-              <Route path="/profile" component={Channel} />
             </div>
           </div>
         </div>

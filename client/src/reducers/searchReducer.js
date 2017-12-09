@@ -1,5 +1,6 @@
 const initialState = {
   status: "",
+  users: [],
   games: [],
   error: ""
 }
@@ -15,7 +16,8 @@ function searchReducer(state = initialState, action) {
     case 'FETCH_SEARCH_SUCCESS':
       const successful = Object.assign({}, state, {
         status: action.status,
-        games: action.streams
+        users: action.users,
+        games: action.games
       })
       return successful
     case 'FETCH_SEARCH_FAILURE':
