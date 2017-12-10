@@ -41,7 +41,7 @@ class Navs extends Component {
               "btn btn-outline-success my-2 my-sm-0" +
               (this.props.activeTab.channel ? " active" : "")
             }
-            to={"/" + this.props.embed}
+            to={"/" + this.props.embed.name}
           >
             Channel
           </Link>

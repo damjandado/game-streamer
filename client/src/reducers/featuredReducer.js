@@ -1,6 +1,6 @@
 const initialState = {
   status: "",
-  streams: [],
+  featured: [],
   error: ""
 }
 
@@ -15,7 +15,7 @@ function twitchReducer(state = initialState, action) {
     case 'FETCH_FEATURED_SUCCESS':
       const successful = Object.assign({}, state, {
         status: action.status,
-        streams: action.streams
+        featured: action.featured
       })
       return successful
     case 'FETCH_FEATURED_FAILURE':

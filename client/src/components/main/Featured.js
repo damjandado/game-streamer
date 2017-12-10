@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { getState } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
@@ -8,29 +7,28 @@ import StreamCard from  '../presentationals/StreamCard';
 import Alert from  '../presentationals/Alert';
 
 class Featured extends Component {
-
-  componentWillMount () {
-    // this.props.store.subscribe(this.forceUpdate.bind(this));
-    this.props.featuredApi();
-  }
   componentDidMount () {
-    // this.props.store.subscribe(this.forceUpdate.bind(this));
     this.props.featuredApi();
+    console.log('FT', this.props);
   }
 
   render() {
-    // const stateProps = this.props.store.getState();
-    const featuredProps = this.props.featured;
-    const status = featuredProps.status;
-    const streamCardItems = featuredProps.streams.map((stream) =>
+    const ftProps = this.props.featured;
+    const status = ftProps.status;
+    const streamCardItems = ftProps.featured.map((ft) =>
       <StreamCard
-        key = { stream._id }
-        streamCover = { stream.preview.medium }
-        streamLink = { stream.channel.url }
-        streamChannel = { stream.channel }
+        key = { ft.stream._id }
+        title = { ft.title }
+        text = { ft.text }
+        logo = { ft.stream.channel.logo }
+        name = { ft.stream.channel.display_name }
+        game = { ft.stream.game }
+        streamCover = { ft.stream.preview.medium }
+        streamLink = { ft.stream.channel.url }
+        streamChannel = { ft.stream.channel }
       />
     );
-    const error = featuredProps.error;
+    const error = ftProps.error;
     return (
       <div className="main">
       {status === "loading" ? (

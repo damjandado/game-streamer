@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actions from "../actions";
+import * as actions from "../../actions";
 
-import Loader from "./presentationals/Loader";
-import StreamCard from "./presentationals/StreamCard";
-import Alert from "./presentationals/Alert";
+import Loader from "../presentationals/Loader";
+import StreamCard from "../presentationals/StreamCard";
+import Alert from "../presentationals/Alert";
 
 class SearchResults extends Component {
   render() {
-    // const stateProps = this.props.store.getState();
     const searchProps = this.props.search;
     const status = searchProps.status;
     const streamCardUsers = searchProps.users.map(user => (
@@ -16,7 +15,7 @@ class SearchResults extends Component {
         key={user.id}
         streamCover={user.profile_image_url}
         streamLink={`https://www.twitch.tv/${user.login}`}
-        streamChannel={user.login}
+        streamChannel={user}
       />
     ));
     const streamCardGames = searchProps.games.map(game => (
@@ -24,7 +23,7 @@ class SearchResults extends Component {
         key={game._id}
         streamCover={game.preview.medium}
         streamLink={game.channel.url}
-        streamChannel={game.channel.name}
+        streamChannel={game.channel}
       />
     ));
     const error = searchProps.error;

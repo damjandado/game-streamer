@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
 
-import Featured from './containers/Featured';
-import TopGames from './TopGames';
-import SearchResults from './SearchResults';
-import Channel from './Channel';
 import Navs from './Navs';
-// import _ from "lodash";
+import Featured from './main/Featured';
+import TopGames from './main/TopGames';
+import Channel from './main/Channel';
+import SearchResults from './main/SearchResults';
       
 class Landing extends Component {
-
   render() {
     return (
-      <div className="container-fluid col-sm-10">
+      <div className="col container-fluid gs-landing">
         <div className="tab-content">
-          <div className="container-fluid tab-pane active">
+          <div className="tab-pane active">
             <Route exact path="/" component={Featured} />
             <Route path="/topgames" component={TopGames} />
-            <Route path={"/" + this.props.embed} component={Channel} />
+            <Route path={"/" + this.props.embed.name} component={Channel} />
             <Route path="/search" component={SearchResults} />
           </div>
         </div>

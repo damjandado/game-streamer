@@ -29,11 +29,11 @@ export function fetchRequest() {
   };
 }
 
-export function fetchSuccess(streams) {
+export function fetchSuccess(featured) {
   return {
     type: t.FETCH_FEATURED_SUCCESS,
     status: 'success',
-    streams
+    featured
   };
 }
 

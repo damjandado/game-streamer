@@ -5,28 +5,35 @@ h1,h2,h3,h4,h5,h6,p {
 }
 
 body {
+}
+
+
+/* Game Streamer styles */
+#navbarSupportedContent * {
+  color: white;
+}
+
+#gs-header {
   background: linear-gradient(
     rgba(58, 8, 57, 0.9),
     rgba(58, 8, 57, 0.9)
   ), url("background.svg");
 }
 
-
-/* Game Streamer styles */
-
-#navbarSupportedContent * {
-  color: white;
-}
 .gs-sidenav {
-  margin-top: 50px;
+  background: linear-gradient(
+    rgba(58, 8, 57, 0.9),
+    rgba(58, 8, 57, 0.9)
+  ), url("background.svg");
+  padding-top: 3rem;
 }
 
 .gs-sidenav * {
   color: white;
 }
 
-#gs-embed {
-  color: white;
+.gs-landing {
+  padding-top: 2rem;
 }
 
 .navbar-header #game-streamer {
@@ -41,15 +48,74 @@ li {
   list-style-type: none;
 }
 
-.main {
+.gs-video-details {
   display: flex;
-  flex-direction: "row";
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-justify-content: center;
-  justify-content: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-top: .5rem;
+  color: #4A484F;
+  font-size: .9rem;
+}
+
+.gs-avatar {
+  width: 3rem;
+  height: 3rem;
+}
+
+.gs-avatar img {
   width: 100%;
 }
+
+.gs-name, .gs-game {
+  color: #6441A4;
+}
+
+.profile-image {
+  margin-right: .5rem;
+}
+
+/* embedTwitchCSS -- Copyright (c) 2016 Gregle */
+.twitchWrapper {
+  position: relative;
+}
+
+.twitchStream {
+  position: relative;
+  width: 75%;
+}
+
+.twitchStream:before{
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* 16:9 */
+}
+
+.twitchChat{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 25%;
+}
+
+.twitchStream iframe, .twitchChat iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .twitchStream{
+    width:100%;
+  }
+  .twitchChat{
+    display:none;
+  }
+}
+
+/* Main styles */
 
 .box {
   position: relative;
@@ -144,7 +210,6 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .stream-cards {
-  margin-top: 50px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -154,8 +219,13 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   justify-content: center;
 }
 
+.stream-card {
+  padding: 0 1rem 1.5rem;
+  width: 360px;
+}
+
 .stream-cover {
   position: relative;
-  margin: 20px;
+  margin: 0 10px 0 0;
 }
 

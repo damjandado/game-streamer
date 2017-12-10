@@ -12,7 +12,7 @@ export const featuredApi = () => async dispatch => {
   dispatch(actions.fetchRequest());
   try {
     const streams = res.data.featured.map(function(feat) {
-      return feat.stream;
+      return feat;
     });
     //dispatch FetchSuccess, order 2
     dispatch(actions.fetchSuccess(streams));

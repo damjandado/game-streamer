@@ -6,8 +6,6 @@ import * as actions from '../actions/actions';
 import Header from './Header';
 import LeftBar from './LeftBar';
 import Landing from './Landing';
-import Channel from './Channel';
-// import Profile from './containers/Profile';
 
 //top level of React component hierarchy
 class App extends Component {
@@ -33,8 +31,4 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ embed }) {
-  return { embed };
-}
-
-export default connect(mapStateToProps, actions)(App);
+export default connect(null, actions)(App);
