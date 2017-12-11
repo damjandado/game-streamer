@@ -4,9 +4,18 @@
 h1,h2,h3,h4,h5,h6,p {
 }
 
-body {
+body, html {
+  height: 100%;
+  margin: 0;
 }
 
+.bg {
+    /* The image used */
+  background: linear-gradient(
+    rgba(58, 8, 57, 0.9),
+    rgba(58, 8, 57, 0.9)
+  ), url("background.svg");
+}
 
 /* Game Streamer styles */
 #navbarSupportedContent * {
@@ -14,17 +23,9 @@ body {
 }
 
 #gs-header {
-  background: linear-gradient(
-    rgba(58, 8, 57, 0.9),
-    rgba(58, 8, 57, 0.9)
-  ), url("background.svg");
 }
 
 .gs-sidenav {
-  background: linear-gradient(
-    rgba(58, 8, 57, 0.9),
-    rgba(58, 8, 57, 0.9)
-  ), url("background.svg");
   padding-top: 3rem;
 }
 
@@ -34,6 +35,7 @@ body {
 
 .gs-landing {
   padding-top: 2rem;
+  min-height: 92.5vh;
 }
 
 .navbar-header #game-streamer {
@@ -46,6 +48,10 @@ body {
 
 li {
   list-style-type: none;
+}
+
+#gs-embed {
+  max-width: 1420px;
 }
 
 .gs-video-details {
@@ -72,6 +78,23 @@ li {
 
 .profile-image {
   margin-right: .5rem;
+}
+
+ #gs-channel-details {
+  position: absolute;
+  width: 100%;
+} 
+
+#gs-channel-details .gs-video-details {
+  font-size: 1rem;
+}
+
+.text-16 {
+  font-size: 1.1rem;
+}
+
+.gs-views {
+  color: #6E6779;
 }
 
 /* embedTwitchCSS -- Copyright (c) 2016 Gregle */

@@ -31,7 +31,7 @@ export const topGamesApi = () => async dispatch => {
   dispatch(actions.fetchTopRequest());
   try {
     const games = res.data.top.map(function(feat) {
-      return feat.game;
+      return feat;
     });
     //dispatch FetchSuccess, order 2
     dispatch(actions.fetchTopSuccess(games));

@@ -9,7 +9,6 @@ import Alert from  '../presentationals/Alert';
 class Featured extends Component {
   componentDidMount () {
     this.props.featuredApi();
-    console.log('FT', this.props);
   }
 
   render() {
@@ -18,14 +17,13 @@ class Featured extends Component {
     const streamCardItems = ftProps.featured.map((ft) =>
       <StreamCard
         key = { ft.stream._id }
+        ebdStream = { ft }
+        streamCover = { ft.stream.preview.medium }
         title = { ft.title }
         text = { ft.text }
         logo = { ft.stream.channel.logo }
         name = { ft.stream.channel.display_name }
         game = { ft.stream.game }
-        streamCover = { ft.stream.preview.medium }
-        streamLink = { ft.stream.channel.url }
-        streamChannel = { ft.stream.channel }
       />
     );
     const error = ftProps.error;

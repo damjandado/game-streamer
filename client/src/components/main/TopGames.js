@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
 import Loader from '../presentationals/Loader';
-import StreamCard from  '../presentationals/StreamCard';
+import GameCard from  '../presentationals/GameCard';
 import Alert from  '../presentationals/Alert';
 
 class TopGames extends Component {
@@ -14,12 +14,15 @@ class TopGames extends Component {
   render() {
     const topGamesProps = this.props.topGames;
     const status = topGamesProps.status;
-    const streamCardItems = topGamesProps.games.map((game) =>
-      <StreamCard
-        key = { game._id }
-        streamCover = { game.box.medium }
-        streamLink = { null }
-        streamChannel = { game }
+    const gameCardItems = topGamesProps.games.map((tg) =>
+      <GameCard
+        key = { tg.game._id }
+        game = { tg }
+        name = { tg.game.name }
+        box = { tg.game.box.medium }
+        logo = { tg.game.logo.medium }
+        viewers = { tg.viewers }
+        channels = { tg.channels }
       />
     );
     const error = topGamesProps.error;
@@ -30,7 +33,7 @@ class TopGames extends Component {
        ) : (
           status === "success" ? (
             <div className="stream-cards">
-            {streamCardItems}
+            {gameCardItems}
             </div>
           ) : (
             status === "error" ? (

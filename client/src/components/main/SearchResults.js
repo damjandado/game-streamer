@@ -13,17 +13,20 @@ class SearchResults extends Component {
     const streamCardUsers = searchProps.users.map(user => (
       <StreamCard
         key={user.id}
+        ebdStream = {user}
         streamCover={user.profile_image_url}
-        streamLink={`https://www.twitch.tv/${user.login}`}
-        streamChannel={user}
+        logo = {user.profile_image_url}
+        name = {user.login}
       />
     ));
     const streamCardGames = searchProps.games.map(game => (
       <StreamCard
         key={game._id}
+        ebdStream = {game}
         streamCover={game.preview.medium}
-        streamLink={game.channel.url}
-        streamChannel={game.channel}
+        logo = {game.channel.logo}
+        name = {game.channel.name}
+        game = {game.channel.game}
       />
     ));
     const error = searchProps.error;

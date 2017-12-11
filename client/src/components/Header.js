@@ -29,7 +29,7 @@ class Header extends Component {
 
   render() {
     return (
-      <nav id="gs-header" className="navbar navbar-expand-sm navbar-toggleable-md navbar-light bg-faded">
+      <nav id="gs-header" className="bg navbar navbar-expand-sm navbar-toggleable-md navbar-light bg-faded">
         <div className="container-fluid">
           <div className="navbar-header">
             <button

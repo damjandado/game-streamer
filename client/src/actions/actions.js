@@ -9,10 +9,10 @@ export const toggleActive = tab => {
   };
 };
 
-export const embedStream = embeded => {
+export const embedStream = ebd => {
   return {
     type: t.EMBED_STREAM,
-    embeded
+    ebd
   };
 };
 
