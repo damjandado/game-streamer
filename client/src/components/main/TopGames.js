@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import * as apiCalls from '../../actions/apiCalls';
 
 import Loader from '../presentationals/Loader';
 import GameCard from  '../presentationals/GameCard';
@@ -55,4 +55,4 @@ function mapStateToProps({ topGames }) {
   return { topGames };
 }
 
-export default connect(mapStateToProps, actions)(TopGames); 
+export default connect(mapStateToProps, apiCalls)(TopGames); 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../../actions/actions";
+import * as apiCalls from "../../actions/apiCalls";
 
 //Presentational React Component
 class StreamCard extends Component {
@@ -9,16 +10,21 @@ class StreamCard extends Component {
     this.props.embedStream(this.props.ebdStream);
   }
 
+  searchGame() {
+    this.props.searchGamesApi({ search: this.props.game });
+  }
+
   render() {
     const { streamCover, logo, title, name, game } = this.props;
+    console.log(this.props);
     return (
-      <div className="stream-card" onClick={this.activeChannel.bind(this)}>
+      <div className="stream-card">
         <div className="gs-video-thumbnail">
-          <Link to={`/${name}`}>
+          <Link to={`/${name}`} onClick={this.searchGame.bind(this)}>
             <img className="stream-cover" src={streamCover} />
           </Link>
         </div>
-        <div className="gs-video-details">
+        <div className="gs-stream-info">
           <div className="profile-image">
             <figure className="gs-avatar">
               <img src={logo} />
@@ -27,9 +33,12 @@ class StreamCard extends Component {
           <div className="stream-details">
             <span className="font-weight-bold">{title}</span>
             <br />
-            <span className="gs-name">{name}</span> plays{" "}
-            <Link to={`/${name}`}>
-              <span className="gs-game">{game}</span>
+            <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
+              {name}
+            </Link>{" "}
+            plays{" "}
+            <Link to={"/search"} onClick={this.searchGame.bind(this)}>
+              {game}
             </Link>
           </div>
         </div>
@@ -42,4 +51,7 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, actions)(StreamCard);
+export default connect(mapStateToProps, {
+  embedStream: actions.embedStream,
+  searchGamesApi: apiCalls.searchGamesApi
+})(StreamCard);

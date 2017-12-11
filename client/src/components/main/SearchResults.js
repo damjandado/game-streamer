@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import Loader from "../presentationals/Loader";
-import StreamCard from "../presentationals/StreamCard";
-import Alert from "../presentationals/Alert";
+import Loader from '../presentationals/Loader';
+import StreamCard from '../presentationals/StreamCard';
+import Alert from '../presentationals/Alert';
 
 class SearchResults extends Component {
   render() {
@@ -13,37 +12,33 @@ class SearchResults extends Component {
     const streamCardUsers = searchProps.users.map(user => (
       <StreamCard
         key={user.id}
-        ebdStream = {user}
+        ebdStream={user}
         streamCover={user.profile_image_url}
-        logo = {user.profile_image_url}
-        name = {user.login}
+        logo={user.profile_image_url}
+        name={user.login}
       />
     ));
     const streamCardGames = searchProps.games.map(game => (
       <StreamCard
         key={game._id}
-        ebdStream = {game}
+        ebdStream={game}
         streamCover={game.preview.medium}
-        logo = {game.channel.logo}
-        name = {game.channel.name}
-        game = {game.channel.game}
+        logo={game.channel.logo}
+        name={game.channel.name}
+        game={game.channel.game}
       />
     ));
     const error = searchProps.error;
     return (
       <div className="main">
-        {status === "loading" ? (
+        {status === 'loading' ? (
           <Loader />
-        ) : status === "success" ? (
-        <div>
-          <div className="stream-cards">
-            {streamCardUsers}
+        ) : status === 'success' ? (
+          <div>
+            <div className="stream-cards">{streamCardUsers}</div>
+            <div className="stream-cards">{streamCardGames}</div>
           </div>
-          <div className="stream-cards">
-            {streamCardGames}
-          </div>
-        </div>
-        ) : status === "error" ? (
+        ) : status === 'error' ? (
           <div>
             <Alert error={error} />
           </div>
@@ -59,4 +54,4 @@ function mapStateToProps({ search }) {
   return { search };
 }
 
-export default connect(mapStateToProps, actions)(SearchResults);
+export default connect(mapStateToProps)(SearchResults);

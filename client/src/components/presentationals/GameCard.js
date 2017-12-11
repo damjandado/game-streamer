@@ -1,34 +1,38 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import * as actions from "../../actions/actions";
+import * as apiCalls from "../../actions/apiCalls";
 
 //Presentational React Component
 class GameCard extends Component {
-  activeChannel() {
+  searchGame() {
     this.props.searchGamesApi({ search: this.props.name });
   }
 
   render() {
     const { box, logo, name, viewers, channels } = this.props;
+    console.log(this.props.name);
     return (
-      <div className="stream-card" onClick={this.activeChannel.bind(this)}>
+      <div className="stream-card">
         <div className="gs-video-thumbnail">
-          <Link to={`/${name}`}>
+          <Link to={"/search"} onClick={this.searchGame.bind(this)}>
             <img className="stream-cover" src={box} />
           </Link>
         </div>
-        <div className="gs-video-details">
+        <div className="gs-game-info">
           <div className="profile-image">
             <figure className="gs-avatar">
               <img src={logo} />
             </figure>
           </div>
-          <div className="stream-details">
-            <span className="font-weight-bold">{name}</span>
-            <br />
+          <div className="game-details">
+            <Link to={"/search"} onClick={this.searchGame.bind(this)}>
+              <span className="font-weight-bold">{name}</span>
+            </Link>
+            <div>
             <span className=".gs-views">viewers: {viewers}</span> |
             <span className=".gs-views"> channels: {channels}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -40,4 +44,4 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, actions)(GameCard);
+export default connect(mapStateToProps, apiCalls)(GameCard);

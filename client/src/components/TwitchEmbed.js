@@ -15,9 +15,9 @@ const TwitchEmbed = props => {
           scrolling="no"
         />
         <br />
-        <div id="gs-channel-details" className="row">
+        <div id="gs-channel-info" className="row">
           <div className="col-sm-7">
-            <div className="gs-video-details">
+            <div className="gs-stream-info">
               <div className="profile-image">
                 <figure className="gs-avatar">
                   <img src={logo} />

@@ -9,6 +9,10 @@ body, html {
   margin: 0;
 }
 
+a {
+  color: black;
+}
+
 .bg {
     /* The image used */
   background: linear-gradient(
@@ -54,13 +58,30 @@ li {
   max-width: 1420px;
 }
 
-.gs-video-details {
+.gs-stream-info {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   padding-top: .5rem;
   color: #4A484F;
   font-size: .9rem;
+}
+
+.gs-stream-info a {
+  color: #6441A4;
+}
+
+.gs-game-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-top: .5rem;
+  color: #4A484F;
+  font-size: .9rem;
+}
+
+.gs-game-info a {
+  color: #4A484F;
 }
 
 .gs-avatar {
@@ -77,15 +98,15 @@ li {
 }
 
 .profile-image {
-  margin-right: .5rem;
+  margin: .3rem .5rem 0 0;
 }
 
- #gs-channel-details {
+ #gs-channel-info {
   position: absolute;
   width: 100%;
 } 
 
-#gs-channel-details .gs-video-details {
+#gs-channel-info .gs-stream-info {
   font-size: 1rem;
 }
 

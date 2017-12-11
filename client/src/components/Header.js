@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as actions from '../actions';
+import * as apiCalls from '../actions/apiCalls';
 
 import SearchForm from './SearchForm';
 import Login from './Login';
@@ -70,4 +70,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, actions)(Header);
+export default connect(mapStateToProps, apiCalls)(Header);
