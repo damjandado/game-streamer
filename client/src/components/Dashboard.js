@@ -23,7 +23,7 @@ class Dashboard extends Component {
             streamCover={bc.thumbnail_url}
             title={bc.title}
             name={bc.display_name}
-            game={bc.game_id}
+            game={bc.game}
           />
         );
     });
