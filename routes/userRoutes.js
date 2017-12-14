@@ -2,7 +2,7 @@
 // const Path = require('path-parser');
 const { URL } = require('url');
 const mongoose = require('mongoose');
-const requireLogin = require('./middlewares/requireLogin');
+const requireLogin = require('../middlewares/requireLogin');
 
 const User = mongoose.model('users');
 
