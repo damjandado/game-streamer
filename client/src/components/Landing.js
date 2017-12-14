@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import * as actions from "../actions/actions";
 
 import Navs from "./Navs";
+import Dashboard from "./Dashboard";
 import Featured from "./main/Featured";
 import TopGames from "./main/TopGames";
 import Channel from "./main/Channel";
@@ -16,7 +17,8 @@ class Landing extends Component {
       <div className="col container-fluid gs-landing">
         <div className="tab-content">
           <div className="tab-pane active">
-            <Route exact path="/" component={Featured} />
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/featured" component={Featured} />
             <Route path="/topgames" component={TopGames} />
             <Route path={"/" + this.props.embed.name} component={Channel} />
             <Route path="/search" component={SearchResults} />

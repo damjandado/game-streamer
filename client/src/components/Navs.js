@@ -16,7 +16,7 @@ class Navs extends Component {
               "btn btn-outline-success my-2 my-sm-0" +
               (this.props.activeTab.featured ? " active" : "")
             }
-            to="/"
+            to="/featured"
           >
             Featured
           </Link>

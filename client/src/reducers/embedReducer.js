@@ -11,14 +11,14 @@ export default function(state = initialState, action) {
       const obj = action.ebd.stream || action.ebd;
       console.log('EMBED_STREAM');
       const temp_state = {
-        channel: obj.channel,
-        logo: obj.channel.logo,
-        game: obj.game,
-        name: obj.channel.name,
-        display_name: obj.channel.display_name,
-        status: obj.channel.status,
-        views: obj.channel.views,
-        followers: obj.channel.followers
+        channel: obj.channel || "null",
+        logo: obj.channel.logo || "https://static-cdn.jtvnw.net/ttv-static/404_preview-120x72.jpg",
+        game: obj.game || "null",
+        name: obj.channel.name || obj.name,
+        display_name: obj.channel.display_name || "null",
+        status: obj.channel.status || "null",
+        views: obj.channel.views || "null",
+        followers: obj.channel.followers || "null"
       };
       return Object.assign({}, state, temp_state);
     default:

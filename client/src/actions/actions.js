@@ -2,7 +2,13 @@
 import * as t from './types';
 import axios from 'axios';
 
-export const toggleActive = tab => { 
+export const saveActivity = entity => async dispatch => {
+  const res = await axios.post('/api/users', entity);
+
+  dispatch({ type: t.SAVE_ACTIVITY, payload: res.data });
+};
+
+export const toggleActive = tab => {
   return {
     type: t.TOGGLE_ACTIVE,
     tab
@@ -37,7 +43,6 @@ export function fetchSuccess(featured) {
   };
 }
 
-
 export function fetchFailure(error) {
   return {
     type: t.FETCH_FEATURED_FAILURE,
@@ -60,7 +65,6 @@ export function fetchTopSuccess(streams) {
     streams
   };
 }
-
 
 export function fetchTopFailure(error) {
   return {
@@ -85,7 +89,6 @@ export function fetchSearchSuccess(users, games) {
     games
   };
 }
-
 
 export function fetchSearchFailure(error) {
   return {

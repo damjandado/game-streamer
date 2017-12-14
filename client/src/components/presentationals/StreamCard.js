@@ -6,8 +6,9 @@ import * as apiCalls from "../../actions/apiCalls";
 
 //Presentational React Component
 class StreamCard extends Component {
-  activeChannel() {
+  activeChannel() { 
     this.props.embedStream(this.props.ebdStream);
+    this.props.saveActivity(this.props.ebdStream);
   }
 
   searchGame() {
@@ -15,12 +16,12 @@ class StreamCard extends Component {
   }
 
   render() {
+    console.log(this.props.ebdStream);
     const { streamCover, logo, title, name, game } = this.props;
-    console.log(this.props);
     return (
       <div className="stream-card">
         <div className="gs-video-thumbnail">
-          <Link to={`/${name}`} onClick={this.searchGame.bind(this)}>
+          <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
             <img className="stream-cover" src={streamCover} />
           </Link>
         </div>
@@ -53,5 +54,6 @@ function mapStateToProps({ embed }) {
 
 export default connect(mapStateToProps, {
   embedStream: actions.embedStream,
+  saveActivity: actions.saveActivity,
   searchGamesApi: apiCalls.searchGamesApi
 })(StreamCard);
