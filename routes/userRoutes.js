@@ -68,18 +68,17 @@ module.exports = app => {
   app.get('/api/dashboard', requireLogin, async (req, res) => {
     console.log('Backend responds');
     const user = await User.find({ _id: req.user.id });
-    const selectedB = user[0].visits.users;
-    const selectedG = user[0].visits.games;
-    const broadcasters = selectedB.slice(2, 9);
-    const games = selectedG.slice(0, 4);
+
+    const broadcasters = processQuery(user, 'users', 4);
     console.log('BROADCASTERS', broadcasters);
+    const games = processQuery(user, 'games', 2);
     let outputBroadcasters = await fetchBroadcasters(broadcasters);
     let outputGames = await fetchGameStreams(games);
     const obj = {
       broadcasters: outputBroadcasters,
       games: outputGames
     };
-    console.log(obj);
+    // console.log(obj);
     res.send(obj);
   });
 };
@@ -169,6 +168,20 @@ async function fetchGames(obj) {
   return outputGames;
 }
 
+let processQuery = (user, prop, count) => {
+  const select = user[0].visits[prop];
+
+  const countObj = count_items(select);
+  let mostVisited = sortProperties(countObj);
+  mostVisited = mostVisited.slice(0, count);
+
+  let recent = remove_duplicates_es6(select);
+  recent = recent.slice(recent.length - count + 1);
+
+  let joined = mostVisited.concat(recent);
+  return remove_duplicates_es6(joined);
+};
+
 function flatten(arr) {
   return [].concat(...arr);
 }
@@ -177,4 +190,25 @@ function remove_duplicates_es6(arr) {
   let s = new Set(arr);
   let it = s.values();
   return Array.from(it);
+}
+
+function count_items(arr) {
+  return arr.reduce(function(prev, cur) {
+    prev[cur] = (prev[cur] || 0) + 1;
+    return prev;
+  }, {});
+}
+
+function sortProperties(obj) {
+  // convert object into array
+  let sortable = [];
+  for (let key in obj)
+    if (obj.hasOwnProperty(key)) sortable.push([key, obj[key]]); // each item is an array in format [key, value]
+
+  // sort items by value
+  sortable.sort(function(a, b) {
+    return b[1] - a[1]; // compare numbers
+  });
+  sortable = sortable.map(item => item[0]);
+  return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
