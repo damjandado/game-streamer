@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as apiCalls from '../actions/apiCalls';
 
+import AnonDash from './AnonDash';
+
 import Loader from './presentationals/Loader';
 import StreamCard from './presentationals/StreamCard';
 import Alert from './presentationals/Alert';
@@ -11,7 +13,8 @@ class Dashboard extends Component {
   componentDidMount() {
     this.props.populateDashboard();
   }
-  render() {
+
+  renderDash() {
     const dsProps = this.props.dashboard;
     const status = dsProps.status;
     const streamCardBroadcasters = dsProps.broadcasters.map(bc => {
@@ -27,6 +30,7 @@ class Dashboard extends Component {
           />
         );
     });
+    console.log('streamCardBroadcasters', streamCardBroadcasters);
     const streamCardGames = dsProps.games.map(gm => {
       if (gm !== null)
         return (
@@ -72,10 +76,22 @@ class Dashboard extends Component {
       </div>
     );
   }
+
+  renderAnonDash() {
+    return <AnonDash />;
+  }
+
+  render() {
+    return (
+      <div>
+        {this.props.auth ? this.renderDash() : this.renderAnonDash()}
+      </div>
+    );
+  }
 }
 
-function mapStateToProps({ dashboard }) {
-  return { dashboard };
+function mapStateToProps({ auth, dashboard }) {
+  return { auth, dashboard };
 }
 
 export default connect(mapStateToProps, apiCalls)(Dashboard);

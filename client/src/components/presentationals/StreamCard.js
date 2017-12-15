@@ -16,7 +16,6 @@ class StreamCard extends Component {
   }
 
   render() {
-    console.log(this.props.ebdStream);
     const { streamCover, logo, title, name, game } = this.props;
     return (
       <div className="stream-card">

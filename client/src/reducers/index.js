@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import dashboardReducer from './dashboardReducer';
+import clipsReducer from './clipsReducer';
 import activityReducer from './activityReducer';
 import featuredReducer from './featuredReducer';
 import topGamesReducer from './topGamesReducer';
@@ -12,6 +13,7 @@ import { reducer as reduxForm } from 'redux-form';
 export default combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,
+  clips: clipsReducer,
   activity: activityReducer,
   featured: featuredReducer,
   topGames: topGamesReducer,

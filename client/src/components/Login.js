@@ -19,7 +19,7 @@ export default () => {
               <div className="container">
                 <div className="kpx_login">
                   <h3 className="kpx_authTitle">
-                    Login or <a href="#">Sign up</a>
+                    Login or <a href="/">Sign up</a>
                   </h3>
                   <div className="row kpx_row-sm-offset-3 kpx_socialButtons">
                     <div className="col-xs-2 col-sm-2">

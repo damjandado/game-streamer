@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import * as apiCalls from '../actions/apiCalls';
 
 import SearchForm from './SearchForm';
 import Login from './Login';
@@ -29,7 +28,10 @@ class Header extends Component {
 
   render() {
     return (
-      <nav id="gs-header" className="bg navbar navbar-expand-sm navbar-toggleable-md navbar-light bg-faded">
+      <nav
+        id="gs-header"
+        className="bg navbar navbar-expand-sm navbar-toggleable-md navbar-light bg-faded"
+      >
         <div className="container-fluid">
           <div className="navbar-header">
             <button
@@ -70,4 +72,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, apiCalls)(Header);
+export default connect(mapStateToProps)(Header);

@@ -1,7 +1,7 @@
 const initialState = {
   name: "monstercat",
   display_name: "Monstercat",
-  status: "Monstercat prides itself in supporting rising electronic artists from around the globe. We are proving that independent labels have the ability to reshape the music industry landscape.",
+  text: "Monstercat prides itself in supporting rising electronic artists from around the globe. We are proving that independent labels have the ability to reshape the music industry landscape.",
   logo: "https://static-cdn.jtvnw.net/jtv_user_pictures/monstercat-profile_image-3e109d75f8413319-300x300.jpeg"
 };
 
@@ -17,6 +17,7 @@ export default function(state = initialState, action) {
         name: obj.channel.name || obj.name,
         display_name: obj.channel.display_name || "null",
         status: obj.channel.status || "null",
+        text: action.ebd.text || "",
         views: obj.channel.views || "null",
         followers: obj.channel.followers || "null"
       };

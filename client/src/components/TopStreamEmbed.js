@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const TwitchEmbed = props => {
+const TopStreamEmbed = props => {
   const { logo, game, name, status, display_name, text, views } = props.embed;
   const renderText = () => {
     return { __html: text };
   };
   return (
     <div className="twitchWrapper">
-      <div className="twitchStream">
+      <div className="topStream">
         <iframe
           src={`https://player.twitch.tv/?channel=${name}`}
           width="100%"
@@ -42,15 +42,6 @@ const TwitchEmbed = props => {
           <div className="col-sm-12" dangerouslySetInnerHTML={renderText()} />
         </div>
       </div>
-      <div className="twitchChat">
-        <iframe
-          src={`https://www.twitch.tv/${name}/chat`}
-          width="300"
-          height="150"
-          frameBorder="0"
-          scrolling="no"
-        />
-      </div>
     </div>
   );
 };
@@ -59,4 +50,4 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps)(TwitchEmbed);
+export default connect(mapStateToProps)(TopStreamEmbed);

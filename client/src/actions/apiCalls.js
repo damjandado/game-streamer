@@ -3,16 +3,18 @@ import twitchAPI from '../config/keys';
 import * as actions from './actions';
 import {
   FETCH_USER,
+  FETCH_FEATURED_SUCCESS,
   FETCH_DASHBOARD,
   FETCH_BROADCASTERS,
   FETCH_GAMES,
-  FETCH_DASHBOARD_FAILURE
+  FETCH_DASHBOARD_FAILURE,
+  FETCH_CLIPS
 } from './types';
 
-export const featuredApi = () => async dispatch => {
+export const featuredApi = (limit = 20) => async dispatch => {
   //API request
   const res = await axios.get(
-    `https://api.twitch.tv/kraken/streams/featured?&client_id=${twitchAPI}`
+    `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchAPI}`
   );
   //dispatch FetchRequest, order 1
   dispatch(actions.fetchRequest());
@@ -89,4 +91,44 @@ export const populateDashboard = () => async dispatch => {
   } catch (e) {
     dispatch({ type: FETCH_DASHBOARD_FAILURE, status: 'error', error: e });
   }
+};
+
+export const fetchClips = (
+  channel = 'Twitch',
+  limit = 10
+) => async dispatch => {
+  const res = await axios({
+    method: 'get',
+    url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
+    headers: {
+      'Client-ID': twitchAPI,
+      Accept: 'application/vnd.twitchtv.v5+json'
+    }
+  });
+
+  dispatch({ type: FETCH_CLIPS, status: 'success', clips: res.data.clips });
+};
+
+export const fetchStreamAndClips = (
+  channel = 'Twitch',
+  limit = 5
+) => async dispatch => {
+  const stream = await axios.get(
+    `https://api.twitch.tv/kraken/streams/featured?&limit=1&client_id=${twitchAPI}`
+  );
+  const clips = await axios({
+    method: 'get',
+    url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
+    headers: {
+      'Client-ID': twitchAPI,
+      Accept: 'application/vnd.twitchtv.v5+json'
+    }
+  });
+
+  dispatch({
+    type: FETCH_FEATURED_SUCCESS,
+    status: 'success',
+    featured: stream.data.featured
+  });
+  dispatch({ type: FETCH_CLIPS, status: 'success', clips: clips.data.clips });
 };

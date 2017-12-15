@@ -27,6 +27,7 @@ class Featured extends Component {
       />
     ));
     const error = ftProps.error;
+    console.log('streamCardItems', streamCardItems);
     return (
       <div className="main">
         {status === 'loading' ? (

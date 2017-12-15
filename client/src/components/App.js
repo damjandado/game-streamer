@@ -9,7 +9,7 @@ import Landing from './Landing';
 
 //top level of React component hierarchy
 class App extends Component {
-  componentDidMount() {
+  componentWillMount() {
     console.log('App PROPS are...', this.props);
     this.props.fetchUser();
   }
