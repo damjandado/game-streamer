@@ -20,7 +20,14 @@ class Header extends Component {
       default:
         return (
           <li>
-            <a href="/api/logout">Logout</a>
+            <a href="/api/logout">
+              <button
+                type="button"
+                className="btn btn-primary"
+              >
+                Logout
+              </button>
+            </a>
           </li>
         );
     }
@@ -60,7 +67,7 @@ class Header extends Component {
           </div>
 
           <div className="collapse navbar-collapse">
-            <ul className="ml-auto">{this.renderContent()}</ul>
+            <ul className="navbar-nav ml-auto">{this.renderContent()}</ul>
           </div>
         </div>
       </nav>

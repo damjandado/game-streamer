@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
+import * as apiCalls from '../actions/apiCalls';
 
 import Header from './Header';
 import LeftBar from './LeftBar';
@@ -12,6 +13,7 @@ class App extends Component {
   componentWillMount() {
     console.log('App PROPS are...', this.props);
     this.props.fetchUser();
+    this.props.featuredApi(5);
   }
 
   render() {
@@ -21,7 +23,7 @@ class App extends Component {
           <Header />
           <div className="container-fluid text-left">
             <div className="row content">
-              <LeftBar />              
+              <LeftBar />
               <Route path="/" component={Landing} />
             </div>
           </div>
@@ -31,4 +33,7 @@ class App extends Component {
   }
 }
 
-export default connect(null, actions)(App);
+export default connect(null, {
+  fetchUser: actions.fetchUser,
+  featuredApi: apiCalls.featuredApi
+})(App);

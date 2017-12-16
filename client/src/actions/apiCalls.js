@@ -113,9 +113,9 @@ export const fetchStreamAndClips = (
   channel = 'Twitch',
   limit = 5
 ) => async dispatch => {
-  const stream = await axios.get(
-    `https://api.twitch.tv/kraken/streams/featured?&limit=1&client_id=${twitchAPI}`
-  );
+  // const stream = await axios.get(
+  //   `https://api.twitch.tv/kraken/streams/featured?&limit=1&client_id=${twitchAPI}`
+  // );
   const clips = await axios({
     method: 'get',
     url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
@@ -125,10 +125,10 @@ export const fetchStreamAndClips = (
     }
   });
 
-  dispatch({
-    type: FETCH_FEATURED_SUCCESS,
-    status: 'success',
-    featured: stream.data.featured
-  });
+  // dispatch({
+  //   type: FETCH_FEATURED_SUCCESS,
+  //   status: 'success',
+  //   featured: stream.data.featured
+  // });
   dispatch({ type: FETCH_CLIPS, status: 'success', clips: clips.data.clips });
 };

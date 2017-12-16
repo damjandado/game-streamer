@@ -29,7 +29,7 @@ const TwitchEmbed = props => {
               <div className="stream-details">
                 <span className="text-16">{status}</span>
                 <br />
-                <Link to={`#`}>
+                <Link to={`/search`}>
                   <span className="gs-game">{game}</span>
                 </Link>
               </div>

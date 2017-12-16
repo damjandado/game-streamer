@@ -29,12 +29,38 @@ a {
 #gs-header {
 }
 
-.gs-sidenav {
-  padding-top: 3rem;
+.row > .gs-sidenav {
+  padding: 3rem 0 1rem;
+  margin: 0;
 }
 
-.gs-sidenav * {
-  color: white;
+.gs-sidenav {
+  background-color: #17141F;
+}
+
+.gs-sidenav h6 {
+  color: #B8B5C0;
+  margin: 10px;
+}
+
+.gs-sidenav .gs-hr {
+  background-color: #2C2541;
+  margin: 5px;
+}
+
+.gs-sidenav ul li.list-group-item {
+  background-color: #17141F;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.gs-sidenav ul li.list-group-item:hover {
+  background-color: #2C2541;
+  text-decoration: none;
+}
+
+.gs-sidenav ul li.list-group-item a:hover {
+  text-decoration: none;
 }
 
 .gs-landing {
@@ -65,7 +91,6 @@ li {
   flex-wrap: nowrap;
   padding-top: .5rem;
   color: #4A484F;
-  font-size: .9rem;
 }
 
 .gs-stream-info a {
@@ -119,6 +144,21 @@ li {
   color: #6E6779;
 }
 
+img.media-object {
+  max-width: 30px;
+}
+
+.media-body {
+  color: #898395;
+  margin-left: 10px;
+  font-size: .75rem;
+}
+
+.media-heading {
+  color: #B8B5C0;
+  font-size: .875rem;
+}
+
 /* embedTwitchCSS -- Copyright (c) 2016 Gregle */
 .twitchWrapper {
   position: relative;
@@ -129,18 +169,18 @@ li {
   width: 75%;
 }
 
-.topStream {
+.topStream, .gs-clip {
   position: relative;
   width: 100%;
 }
 
-.twitchStream:before, .topStream:before {
+.twitchStream:before, .topStream:before, .gs-clip:before {
   content: "";
   display: block;
   padding-top: 56.25%; /* 16:9 */
 }
 
-.twitchChat{
+.twitchChat {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -148,7 +188,7 @@ li {
   width: 25%;
 }
 
-.twitchStream iframe, .twitchChat iframe, .topStream iframe {
+.twitchStream iframe, .twitchChat iframe, .topStream iframe, .gs-clip iframe {
   position: absolute;
   top: 0;
   left: 0;

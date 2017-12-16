@@ -1,23 +1,32 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import LeftBarItem from './LeftBarItem';
 
 class LeftBar extends Component {
+  renderItems() {
+    return (
+      this.props.featured.map(item => {
+        return (
+          <LeftBarItem
+            profileImage={item.stream.channel.logo}
+            name={item.stream.channel.display_name}
+            game={item.stream.channel.game}
+            ebdStream={item}
+          />
+        )
+      })
+    )
+  }
+
   render() {
     return (
-      <div className="bg col-sm-3 col-md-auto sidenav gs-sidenav">
+      <div className="col-sm-3 col-md-auto sidenav gs-sidenav">
         <div>
-          <h6>Genres</h6>
-          <ul>
-            <li>
-              <a>link g1</a>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <h6>Categories</h6>
-          <ul>
-            <li>
-              <a>link c1</a>
-            </li>
+          <h6>Featured Broadcasters</h6>
+          <hr className="gs-hr"/>
+          <ul className="list-group">
+            {this.renderItems()}
           </ul>
         </div>
       </div>
@@ -25,4 +34,8 @@ class LeftBar extends Component {
   }
 }
 
-export default LeftBar;
+function mapStateToProps({ featured }) {
+  return { featured: featured.featured }
+}
+
+export default connect(mapStateToProps)(LeftBar)
