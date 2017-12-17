@@ -23,7 +23,7 @@ passport.use(
       clientSecret: keys.twitchClientSecret,
       callbackURL: '/auth/twitch/callback',
       scope: 'user_read',
-      proxy: true
+      passReqToCallback: true
     },
     async (accessToken, refreshToken, profile, done) => {
       const existingUser = await User.findOne({ twitchId: profile.id });
