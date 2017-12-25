@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions/actions";
 
-import Navs from "./Navs";
 import Dashboard from "./Dashboard";
 import Featured from "./main/Featured";
 import TopGames from "./main/TopGames";
 import Channel from "./main/Channel";
 import SearchResults from "./main/SearchResults";
+import RegistrationNew from './registration/RegistrationNew';
 
 class Landing extends Component {
   render() {
@@ -18,10 +18,11 @@ class Landing extends Component {
         <div className="tab-content">
           <div className="tab-pane active">
             <Route exact path="/" component={Dashboard} />
-            <Route exact path="/featured" component={Featured} />
+            <Route path="/featured" component={Featured} />
             <Route path="/topgames" component={TopGames} />
             <Route path={"/" + this.props.embed.name} component={Channel} />
             <Route path="/search" component={SearchResults} />
+            <Route path="/registration" component={RegistrationNew} />
           </div>
         </div>
       </div>

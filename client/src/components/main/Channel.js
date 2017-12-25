@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import TwitchEmbed from "../TwitchEmbed";
+import TwitchEmbed from "../presentationals/TwitchEmbed";
 
 class Channel extends Component {
   componentDidMount() {

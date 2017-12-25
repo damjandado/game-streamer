@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default () => {
   return (
@@ -19,7 +20,7 @@ export default () => {
               <div className="container">
                 <div className="kpx_login">
                   <h3 className="kpx_authTitle">
-                    Login or <a href="/">Sign up</a>
+                    Login or <Link to="/registration" className="red btn-flat white-text" data-dismiss="modal" onClick="javascript:window.location='/registration'">Sign up</Link>
                   </h3>
                   <div className="row kpx_row-sm-offset-3 kpx_socialButtons">
                     <div className="col-xs-2 col-sm-2">
@@ -59,7 +60,7 @@ export default () => {
                     <div className="col-xs-12 col-sm-6">
                       <form
                         className="kpx_loginForm"
-                        action=""
+                        action="/"
                         autoComplete="off"
                         method="POST"
                       >

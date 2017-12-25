@@ -23,6 +23,10 @@ class TopGames extends Component {
         logo = { tg.game.logo.medium }
         viewers = { tg.viewers }
         channels = { tg.channels }
+        spanChannels = {true}
+        cardType={'stream-card'}
+        cardCover={'stream-cover'}
+        logoArt={true}
       />
     );
     const error = topGamesProps.error;

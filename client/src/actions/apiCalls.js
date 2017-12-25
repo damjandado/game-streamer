@@ -30,10 +30,10 @@ export const featuredApi = (limit = 20) => async dispatch => {
   }
 };
 
-export const topGamesApi = () => async dispatch => {
+export const topGamesApi = (limit = 10) => async dispatch => {
   //API request
   const res = await axios.get(
-    `https://api.twitch.tv/kraken/games/top?client_id=${twitchAPI}`
+    `https://api.twitch.tv/kraken/games/top?client_id=${twitchAPI}&limit=${limit}`
   );
   //dispatch FetchRequest, order 1
   dispatch(actions.fetchTopRequest());
@@ -111,11 +111,11 @@ export const fetchClips = (
 
 export const fetchStreamAndClips = (
   channel = 'Twitch',
-  limit = 5
+  limit = 4
 ) => async dispatch => {
-  // const stream = await axios.get(
-  //   `https://api.twitch.tv/kraken/streams/featured?&limit=1&client_id=${twitchAPI}`
-  // );
+  const stream = await axios.get(
+    `https://api.twitch.tv/kraken/streams/featured?&limit=5&client_id=${twitchAPI}`
+  );
   const clips = await axios({
     method: 'get',
     url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
@@ -125,10 +125,10 @@ export const fetchStreamAndClips = (
     }
   });
 
-  // dispatch({
-  //   type: FETCH_FEATURED_SUCCESS,
-  //   status: 'success',
-  //   featured: stream.data.featured
-  // });
+  dispatch({
+    type: FETCH_FEATURED_SUCCESS,
+    status: 'success',
+    featured: stream.data.featured
+  });
   dispatch({ type: FETCH_CLIPS, status: 'success', clips: clips.data.clips });
 };

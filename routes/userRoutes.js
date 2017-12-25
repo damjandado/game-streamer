@@ -1,23 +1,23 @@
 // const _ = require('lodash');
 // const Path = require('path-parser');
-const axios = require('axios');
-const { URL } = require('url');
-const mongoose = require('mongoose');
-const requireLogin = require('../middlewares/requireLogin');
-const twitchClientID = require('../config/keys').twitchClientID;
+const axios = require("axios");
+const { URL } = require("url");
+const mongoose = require("mongoose");
+const requireLogin = require("../middlewares/requireLogin");
+const twitchClientID = require("../config/keys").twitchClientID;
 
-const User = mongoose.model('users');
-const Game = mongoose.model('games');
+const User = mongoose.model("users");
+const Game = mongoose.model("games");
 
 module.exports = app => {
-  app.get('/api/users', requireLogin, async (req, res) => {
+  app.get("/api/users", requireLogin, async (req, res) => {
     const users = await User.find({ _id: req.user.id });
-    console.log('req.user: ', req.user);
+    console.log("req.user: ", req.user);
 
     res.send(users);
   });
 
-  app.get('/api/games', requireLogin, async (req, res) => {
+  app.get("/api/games", requireLogin, async (req, res) => {
     const userInDB = await User.find({ _id: req.user.id });
     const userdata = userInDB[0];
     let g = userdata.visits.games;
@@ -25,7 +25,7 @@ module.exports = app => {
     const games = g.map(item => encodeURI(item));
     const twGames = await fetchGames(games);
     console.log(twGames);
-    console.log('TYPEOF twGames', typeof twGames);
+    console.log("TYPEOF twGames", typeof twGames);
     const listGames = new Game({
       games: twGames
     });
@@ -37,10 +37,10 @@ module.exports = app => {
       res.status(422).send(err);
     }
 
-    console.log('req: ', req.user);
+    console.log("req: ", req.user);
   });
 
-  app.post('/api/users', requireLogin, async (req, res) => {
+  app.post("/api/users", requireLogin, async (req, res) => {
     const obj = req.body.stream || req.body;
     const game = obj.game;
     const broadcaster = obj.channel.display_name;
@@ -49,7 +49,7 @@ module.exports = app => {
     userdata.visits.games.push(game);
     userdata.visits.users.push(broadcaster);
 
-    console.log('BODY', req.body);
+    console.log("BODY", req.body);
     res.send(req.body);
 
     User.updateOne(
@@ -65,43 +65,52 @@ module.exports = app => {
     ).exec();
   });
 
-  app.get('/api/dashboard', requireLogin, async (req, res) => {
-    console.log('Backend responds');
+  app.get("/api/dashboard", requireLogin, async (req, res) => {
+    console.log("Backend responds");
     const user = await User.find({ _id: req.user.id });
 
-    const broadcasters = processQuery(user, 'users', 4);
-    console.log('BROADCASTERS', broadcasters);
-    const games = processQuery(user, 'games', 2);
-    let outputBroadcasters = await fetchBroadcasters(broadcasters);
-    let outputGames = await fetchGameStreams(games);
-    const obj = {
-      broadcasters: outputBroadcasters,
-      games: outputGames
-    };
-    // console.log(obj);
-    res.send(obj);
+    if (user[0].visits) {
+      const broadcasters = processQuery(user, "users", 4);
+      console.log("BROADCASTERS", broadcasters);
+      const games = processQuery(user, "games", 2);
+      let outputBroadcasters = await fetchBroadcasters(broadcasters);
+      let outputGames = await fetchGameStreams(games);
+      const obj = {
+        broadcasters: outputBroadcasters,
+        games: outputGames
+      };
+      res.send(obj);
+    } else {
+      let outputBroadcasters = await featuredApi();
+      let outputGames = await topGamesApi();
+      const obj = {
+        broadcasters: outputBroadcasters,
+        games: outputGames
+      };
+      res.send(obj);
+    }
   });
 };
 
-async function fetchBroadcasters(obj) {
-  const broadcasters = obj;
+async function fetchBroadcasters(list) {
+  const broadcasters = list;
   let outputBroadcasters;
   await Promise.all(
     broadcasters.map(async item => {
       try {
         const fetched = await axios({
-          method: 'get',
+          method: "get",
           url: `https://api.twitch.tv/helix/streams?user_login=${item}`,
-          headers: { 'Client-ID': twitchClientID }
+          headers: { "Client-ID": twitchClientID }
         });
         if (fetched.data.data.length) {
           let user = fetched.data.data[0];
-          let thumb = user.thumbnail_url.replace('{width}x{height}', '320x180');
+          let thumb = user.thumbnail_url.replace("{width}x{height}", "320x180");
           try {
             const findGamebyID = await axios({
-              method: 'get',
+              method: "get",
               url: `https://api.twitch.tv/helix/games?id=${user.game_id}`,
-              headers: { 'Client-ID': twitchClientID }
+              headers: { "Client-ID": twitchClientID }
             });
             const gameName = findGamebyID.data.data[0].name;
             let parsed = Object.assign({}, user, {
@@ -127,8 +136,8 @@ async function fetchBroadcasters(obj) {
   return outputBroadcasters;
 }
 
-async function fetchGameStreams(obj) {
-  const games = obj;
+async function fetchGameStreams(list) {
+  const games = list;
   let outputGames;
   await Promise.all(
     games.map(async item => {
@@ -145,16 +154,16 @@ async function fetchGameStreams(obj) {
   return outputGames;
 }
 
-async function fetchGames(obj) {
-  const games = obj;
+async function fetchGames(list) {
+  const games = list;
   let outputGames;
   await Promise.all(
     games.map(async item => {
       try {
         const fetched = await axios({
-          method: 'get',
+          method: "get",
           url: `https://api.twitch.tv/helix/games?name=${item}`,
-          headers: { 'Client-ID': twitchClientID }
+          headers: { "Client-ID": twitchClientID }
         });
         let game = fetched.data.data[0];
         return game;
@@ -212,3 +221,31 @@ function sortProperties(obj) {
   sortable = sortable.map(item => item[0]);
   return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
+
+const featuredApi = (limit = 8) => async dispatch => {
+  const res = await axios.get(
+    `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchClientID}`
+  );
+  try {
+    const featured = res.data.featured.map(function(feat) {
+      return feat.stream.channel.name;
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  return featured;
+};
+
+const topGamesApi = (limit = 8) => async dispatch => {
+  const res = await axios.get(
+    `https://api.twitch.tv/kraken/games/top?client_id=${twitchClientID}&limit=${limit}`
+  );
+  try {
+    const games = res.data.top.map(function(feat) {
+      return feat.game.name;
+    });
+  } catch (e) {
+    console.log(e);
+  }
+  return games;
+};

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import * as actions from "../actions/actions";
+import * as actions from "../../actions/actions";
 
 class Navs extends Component {
   render() {

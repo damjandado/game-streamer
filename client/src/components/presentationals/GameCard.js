@@ -10,28 +10,46 @@ class GameCard extends Component {
   }
 
   render() {
-    const { box, logo, name, viewers, channels } = this.props;
+    const {
+      box,
+      logo,
+      name,
+      viewers,
+      channels,
+      spanChannels,
+      cardType,
+      cardCover,
+      logoArt
+    } = this.props;
     console.log(this.props.name);
     return (
-      <div className="stream-card">
+      <div className={cardType}>
         <div className="gs-video-thumbnail">
           <Link to={"/search"} onClick={this.searchGame.bind(this)}>
-            <img className="stream-cover" src={box} />
+            <img className={cardCover} src={box} />
           </Link>
         </div>
         <div className="gs-game-info">
-          <div className="profile-image">
-            <figure className="gs-avatar">
-              <img src={logo} />
-            </figure>
-          </div>
+          {logoArt ? (
+            <div className="profile-image">
+              <figure className="gs-avatar">
+                <img src={logo} />
+              </figure>
+            </div>
+          ) : (
+            <span />
+          )}
           <div className="game-details">
             <Link to={"/search"} onClick={this.searchGame.bind(this)}>
               <span className="font-weight-bold">{name}</span>
             </Link>
             <div>
-            <span className=".gs-views">viewers: {viewers}</span> |
-            <span className=".gs-views"> channels: {channels}</span>
+              <span className=".gs-views">viewers: {viewers}</span>{" "}
+              {spanChannels ? (
+                <span className=".gs-views">| channels: {channels}</span>
+              ) : (
+                <span />
+              )}
             </div>
           </div>
         </div>

@@ -2,6 +2,14 @@
 import * as t from './types';
 import axios from 'axios';
 
+export const submitRegistration = (values, history) => async dispatch => {
+  const res = await axios.post('/api/registration', values);
+  console.log('VALUES', values);
+
+  history.push('/');
+  dispatch({ type: t.FETCH_USER, payload: res.data });
+};
+
 export const saveActivity = entity => async dispatch => {
   const res = await axios.post('/api/users', entity);
 

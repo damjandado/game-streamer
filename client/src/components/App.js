@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
 import * as apiCalls from '../actions/apiCalls';
 
-import Header from './Header';
-import LeftBar from './LeftBar';
+import Header from './navigation/Header';
+import LeftBar from './navigation/LeftBar';
 import Landing from './Landing';
 
 //top level of React component hierarchy

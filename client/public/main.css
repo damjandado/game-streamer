@@ -115,8 +115,17 @@ li {
   height: 3rem;
 }
 
-.gs-avatar img {
+.gs-avatar img, .gs-avatar-40 img {
   width: 100%;
+}
+
+.gs-avatar-40 {
+  width: 40px;
+  height: 40px;
+}
+
+.gs-figure {
+  margin: 0 0 .5rem;
 }
 
 .gs-name, .gs-game {
@@ -137,7 +146,15 @@ li {
 }
 
 .text-16 {
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+
+.text-14 {
+  font-size: 0.95rem;
+}
+
+.text-12 {
+  font-size: 0.87rem;
 }
 
 .gs-views {
@@ -357,6 +374,16 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .stream-cover {
+  position: relative;
+  margin: 0 10px 0 0;
+}
+
+.game-card {
+  padding: 0 .5rem 1rem;
+  width: 150px;
+}
+
+.game-cover {
   position: relative;
   margin: 0 10px 0 0;
 }
