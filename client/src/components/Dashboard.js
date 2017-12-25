@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as apiCalls from '../actions/apiCalls';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import * as apiCalls from "../actions/apiCalls";
 
-import AnonDash from './AnonDash';
+import AnonDash from "./AnonDash";
 
-import Loader from './presentationals/Loader';
-import StreamCard from './presentationals/StreamCard';
-import Alert from './presentationals/Alert';
+import Loader from "./presentationals/Loader";
+import StreamCard from "./presentationals/StreamCard";
+import GameCard from "./presentationals/GameCard";
+import Alert from "./presentationals/Alert";
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -30,7 +31,6 @@ class Dashboard extends Component {
           />
         );
     });
-    console.log('streamCardBroadcasters', streamCardBroadcasters);
     const streamCardGames = dsProps.games.map(gm => {
       if (gm !== null)
         return (
@@ -48,11 +48,11 @@ class Dashboard extends Component {
     return (
       <div>
         <div className="main">
-          {status === 'loading' ? (
+          {status === "loading" ? (
             <Loader />
-          ) : status === 'success' ? (
+          ) : status === "success" ? (
             <div className="stream-cards">{streamCardBroadcasters}</div>
-          ) : status === 'error' ? (
+          ) : status === "error" ? (
             <div>
               <Alert error={error} />
             </div>
@@ -61,11 +61,11 @@ class Dashboard extends Component {
           )}
         </div>
         <div className="main">
-          {status === 'loading' ? (
+          {status === "loading" ? (
             <Loader />
-          ) : status === 'success' ? (
+          ) : status === "success" ? (
             <div className="stream-cards">{streamCardGames}</div>
-          ) : status === 'error' ? (
+          ) : status === "error" ? (
             <div>
               <Alert error={error} />
             </div>
@@ -83,9 +83,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>
-        {this.props.auth ? this.renderDash() : this.renderAnonDash()}
-      </div>
+      <div>{this.props.auth ? this.renderDash() : this.renderAnonDash()}</div>
     );
   }
 }

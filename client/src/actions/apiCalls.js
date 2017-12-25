@@ -79,7 +79,7 @@ export const searchGamesApi = ({ search }) => async dispatch => {
 
 export const populateDashboard = () => async dispatch => {
   const res = await axios.get('/api/dashboard');
-  console.log('Backend call already issued');
+  console.log('Backend call already issued', res.data);
   dispatch({ type: FETCH_DASHBOARD, status: 'loading' });
   try {
     dispatch({

@@ -67,22 +67,51 @@ module.exports = app => {
 
   app.get("/api/dashboard", requireLogin, async (req, res) => {
     console.log("Backend responds");
+    let outputBroadcasters, outputGames;
     const user = await User.find({ _id: req.user.id });
-
     if (user[0].visits) {
-      const broadcasters = processQuery(user, "users", 4);
-      console.log("BROADCASTERS", broadcasters);
-      const games = processQuery(user, "games", 2);
-      let outputBroadcasters = await fetchBroadcasters(broadcasters);
-      let outputGames = await fetchGameStreams(games);
+      if (user[0].visits.users.length && user[0].visits.users.length < 4) {
+        const broadcasters = processQuery(
+          user,
+          "users",
+          user[0].visits.users.length
+        );
+        outputBroadcasters = await fetchBroadcasters(broadcasters);
+      } else if (user[0].visits.users.length >= 4) {
+        const broadcasters = processQuery(user, "users", 4);
+        outputBroadcasters = await fetchBroadcasters(broadcasters);
+      } else {
+        const broadcasters = await featuredApi();
+        outputBroadcasters = await fetchBroadcasters(broadcasters);
+        console.log("listBroadcasters", outputBroadcasters);
+      }
+      if (user[0].visits.games.length && user[0].visits.games.length == 1) {
+        const games = processQuery(user, "games", 1);
+        outputGames = await fetchGameStreams(games);
+        console.log('FIRST GAMES IF');
+      } else if (user[0].visits.games.length >= 2) {
+        const games = processQuery(
+          user,
+          "games",
+          2
+        );
+        outputGames = await fetchGameStreams(games);
+        console.log('SECOND GAMES IF');
+      } else {
+        const games = await topGamesApi();
+        outputGames = await fetchGameStreams(games);
+        console.log('THIRD GAMES IF');
+        console.log('games', games);
+      }
       const obj = {
         broadcasters: outputBroadcasters,
         games: outputGames
       };
+      console.log("res.send(OBJ)", obj);
       res.send(obj);
     } else {
-      let outputBroadcasters = await featuredApi();
-      let outputGames = await topGamesApi();
+      outputBroadcasters = await featuredApi();
+      outputGames = await topGamesApi();
       const obj = {
         broadcasters: outputBroadcasters,
         games: outputGames
@@ -222,7 +251,7 @@ function sortProperties(obj) {
   return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
 
-const featuredApi = (limit = 8) => async dispatch => {
+const featuredApi = async (limit = 8) => {
   const res = await axios.get(
     `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchClientID}`
   );
@@ -230,13 +259,13 @@ const featuredApi = (limit = 8) => async dispatch => {
     const featured = res.data.featured.map(function(feat) {
       return feat.stream.channel.name;
     });
+    return featured;
   } catch (e) {
     console.log(e);
   }
-  return featured;
 };
 
-const topGamesApi = (limit = 8) => async dispatch => {
+const topGamesApi = async (limit = 8) => {
   const res = await axios.get(
     `https://api.twitch.tv/kraken/games/top?client_id=${twitchClientID}&limit=${limit}`
   );
@@ -244,8 +273,8 @@ const topGamesApi = (limit = 8) => async dispatch => {
     const games = res.data.top.map(function(feat) {
       return feat.game.name;
     });
+    return games;
   } catch (e) {
     console.log(e);
   }
-  return games;
 };
