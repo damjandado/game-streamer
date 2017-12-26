@@ -32,7 +32,6 @@ const RegistrationFormReview = ({ onCancel, formValues, submitRegistration, hist
         className="green white-text btn-flat right"
       >
         Confirm
-        <i className="material-icons right">email</i>
       </button>
     </div>
   );

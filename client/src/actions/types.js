@@ -1,4 +1,5 @@
 export const FETCH_USER = 'FETCH_USER';
+export const CREATE_USER = 'CREATE_USER';
 export const TOGGLE_ACTIVE = 'TOGGLE_ACTIVE';
 export const EMBED_STREAM = 'EMBED_STREAM';
 export const SAVE_ACTIVITY = 'SAVE_ACTIVITY';

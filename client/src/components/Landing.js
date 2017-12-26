@@ -22,7 +22,7 @@ class Landing extends Component {
             <Route path="/topgames" component={TopGames} />
             <Route path={"/" + this.props.embed.name} component={Channel} />
             <Route path="/search" component={SearchResults} />
-            <Route path="/registration" component={RegistrationNew} />
+            <Route path="/registration" component={RegistrationNew} />           
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
@@ -12,11 +13,27 @@ require('./services/passport-twitch');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
+const db = mongoose.connection;
+
+//handle mongo error
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+});
 
 const app = express();
+
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+//use sessions for tracking logins
 app.use(
   cookieSession({
+    secret: 'work hard',
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: db
+    }),
     maxAge: 0.05 * 24 * 60 * 60 * 1000,
     keys: [keys.cookieKey]
   })
@@ -38,7 +55,7 @@ if (process.env.NODE_ENV === 'production') {
   const path = require('path');
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  })
+  });
 }
 
 /*app.get('/', (req, res) => {
@@ -46,4 +63,4 @@ if (process.env.NODE_ENV === 'production') {
 })*/
 
 const PORT = process.env.PORT || 5020;
-app.listen(PORT); 
+app.listen(PORT);
