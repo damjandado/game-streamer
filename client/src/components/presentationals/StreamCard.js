@@ -21,13 +21,13 @@ class StreamCard extends Component {
       <div className="stream-card">
         <div className="gs-video-thumbnail">
           <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
-            <img className="stream-cover" src={streamCover} />
+            <img className="stream-cover" src={streamCover} alt={title} />
           </Link>
         </div>
         <div className="gs-stream-info">
           <div className="profile-image">
             <figure className="gs-avatar">
-              <img src={logo} />
+              <img src={logo} alt='logo' />
             </figure>
           </div>
           <div className="stream-details">

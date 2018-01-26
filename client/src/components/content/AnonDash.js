@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import * as apiCalls from "../actions/apiCalls";
+import * as apiCalls from "../../actions/apiCalls";
 
-import TopStream from "./presentationals/TopStream";
-import TopStreamEmbed from "./presentationals/TopStreamEmbed";
-import Loader from "./presentationals/Loader";
-import VideoCard from "./presentationals/VideoCard";
-import GameCard from "./presentationals/GameCard";
-import Alert from "./presentationals/Alert";
+// import TopStream from "./presentationals/TopStream";
+import TopStreamEmbed from "../presentationals/TopStreamEmbed";
+import Loader from "../presentationals/Loader";
+import VideoCard from "../presentationals/VideoCard";
+import GameCard from "../presentationals/GameCard";
+import Alert from "../presentationals/Alert";
 
 class AnonDash extends Component {
   componentDidMount() {
@@ -32,6 +32,7 @@ class AnonDash extends Component {
         cardType={'game-card'}
         cardCover={'game-cover'}
         logoArt={false}
+        maxWidth={'150px'}
       />
     ));
     const error = topGamesProps.error;
@@ -95,7 +96,7 @@ class AnonDash extends Component {
           )}
         </div>
         <div className="gs-col-right col-md-auto">
-          <TopStreamEmbed />
+          {/*<TopStreamEmbed />*/}
           <div style={{ marginTop: "120px" }}>{this.renderGames()}</div>
         </div>
       </div>

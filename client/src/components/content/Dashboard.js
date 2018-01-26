@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import * as apiCalls from "../actions/apiCalls";
+import * as apiCalls from "../../actions/apiCalls";
 
 import AnonDash from "./AnonDash";
 
-import Loader from "./presentationals/Loader";
-import StreamCard from "./presentationals/StreamCard";
-import GameCard from "./presentationals/GameCard";
-import Alert from "./presentationals/Alert";
+import Loader from "../presentationals/Loader";
+import StreamCard from "../presentationals/StreamCard";
+// import GameCard from "../presentationals/GameCard";
+import Alert from "../presentationals/Alert";
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -83,7 +82,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>{this.props.auth ? this.renderDash() : this.renderAnonDash()}</div>
+      <div>{this.props.auth.authenticated ? this.renderDash() : this.renderAnonDash()}</div>
     );
   }
 }

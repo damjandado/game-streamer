@@ -16,7 +16,7 @@ const TopStreamEmbed = props => {
 
   if (!props.featured.featured[0]) return <div>Loading...</div>;
 
-  const { image, text, title, stream } = props.featured.featured[0];
+  const { text, title } = props.featured.featured[0];
   const {
     logo,
     name,
@@ -35,6 +35,7 @@ const TopStreamEmbed = props => {
           height="auto"
           frameBorder="0"
           scrolling="no"
+          title={title}
         />
         <br />
         <div id="gs-channel-info" className="row">
@@ -42,7 +43,7 @@ const TopStreamEmbed = props => {
             <div className="gs-stream-info">
               <div className="profile-image">
                 <figure className="gs-avatar-40 gs-figure">
-                  <img src={logo} />
+                  <img src={logo} alt='logo' />
                 </figure>
               </div>
               <div className="stream-details text-12">

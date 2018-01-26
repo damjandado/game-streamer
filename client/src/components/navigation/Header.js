@@ -3,31 +3,34 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import SearchForm from './SearchForm';
-import Login from './Login';
+import Login from '../auth/Login';
 import Navs from './Navs';
+import { onSignOut } from '../../actions/actions';
 
 class Header extends Component {
   renderContent() {
-    switch (this.props.auth) {
+    switch (this.props.auth.authenticated) {
       case null:
         return;
       case false:
         return (
-          <li>
-            <Login />
-          </li>
+          [<li key={'signin'}>
+            <Login link={'/signin'}>Log in</Login>
+          </li>,
+          <li key={'signup'}>
+            <Login link={'/signup'}>Sign up</Login>
+          </li>]
         );
       default:
         return (
           <li>
-            <a href="/api/logout">
               <button
                 type="button"
                 className="btn btn-primary"
+                onClick={this.props.onSignOut}
               >
-                Logout
+                Log out
               </button>
-            </a>
           </li>
         );
     }
@@ -75,8 +78,8 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps({auth}) {
+  return {auth};
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, { onSignOut })(Header);

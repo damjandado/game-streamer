@@ -9,6 +9,10 @@ const twitchClientID = require('../config/keys').twitchClientID;
 const User = mongoose.model('users');
 const Game = mongoose.model('games');
 
+const path = require('path');
+
+const users = require('./users');
+
 const {
   fetchBroadcasters,
   fetchGameStreams,
@@ -108,7 +112,7 @@ module.exports = app => {
         broadcasters: outputBroadcasters,
         games: outputGames
       };
-      console.log('res.send(OBJ)', obj);
+      // console.log('res.send(OBJ)', obj);
       res.send(obj);
     } else {
       outputBroadcasters = await featuredApi();
@@ -152,28 +156,26 @@ module.exports = app => {
           return next(error);
         } else {
           req.session.userId = user._id;
-          return res.redirect('/auth/profile');
+          return res.redirect('/auth/local');
         }
       });
+    // User tries to log in
     } else if (req.body.logemail && req.body.logpassword) {
       console.log('req.session', req.session);
-      console.log(
-        'User.authenticate(req.body.logemail, req.body.logpassword, ...)'
-      );
-      User.authenticate(req.body.logemail, req.body.logpassword, function(
+      await User.authenticate(req.body.logemail, req.body.logpassword, function(
         error,
         user
       ) {
-        console.log('error, user', user);
+        console.log('User.authenticate gives this back - ', user);
         if (error || !user) {
           var err = new Error('Wrong email or password.');
           err.status = 401;
-          return next(err);
+          return next(err); 
         } else {
           req.session.userId = user._id;
-          console.log('REDIRECTION HERE');
-          console.log('req.body', req.body);
-          return res.send(user);
+          console.log('REDIRECTION HERE, req.body is', req.body);
+          res.send(user);
+          console.log('HELLO?');
         }
       });
     } else {
@@ -183,22 +185,25 @@ module.exports = app => {
     }
   });
 
+  app.post("/register", users.register);
+  app.post("/auth/local", users.login);
+  app.get("/api/logout", users.logout);
+
   // GET route after registering
-  app.get('/auth/profile', function(req, res, next) {
-    console.log('app.get(/auth/profile...');
-    User.findById(req.session.userId).exec(function(error, user) {
-      console.log('req.session -+-+-+-+-', req.session);
-      if (error) {
-        return next(error);
-      } else {
-        if (user === null) {
-          var err = new Error('Not authorized! Go back!');
-          err.status = 400;
-          return next(err);
-        } else {
-          return res.redirect('/');
-        }
-      }
-    });
-  });
-};
+  // app.get('/auth/local', function(req, res, next) {
+  //   User.findById(req.session.userId).exec(function(error, user) {
+  //     console.log('req.user - ', req.user);
+  //     if (error) {
+  //       return next(error);
+  //     } else {
+  //       if (user === null) {
+  //         var err = new Error('Not authorized! Go back!');
+  //         err.status = 400;
+  //         return next(err);
+  //       } else {
+  //         return res.send('user');
+  //       }
+  //     }
+  //   });
+  // });
+ };

@@ -10,6 +10,7 @@ require('./models/User');
 require('./models/Game');
 require('./services/passport');
 require('./services/passport-twitch');
+require('./services/passport-local');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI);
@@ -22,6 +23,7 @@ db.once('open', function() {
 });
 
 const app = express();
+require('./services/passportab')(app, passport);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

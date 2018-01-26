@@ -111,7 +111,7 @@ export const fetchClips = (
 
 export const fetchStreamAndClips = (
   channel = 'Twitch',
-  limit = 4
+  limit = 2
 ) => async dispatch => {
   const stream = await axios.get(
     `https://api.twitch.tv/kraken/streams/featured?&limit=5&client_id=${twitchAPI}`

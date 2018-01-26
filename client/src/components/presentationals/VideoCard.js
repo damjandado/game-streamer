@@ -17,21 +17,21 @@ class VideoCard extends Component {
 
   iframe() {
     let iframeCustom = this.props.iframe.replace('tt_content=embed', 'tt_content=embed&autoplay=false');
-    const srcUrl = /src='(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'/;
+    // const srcUrl = /src='(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'/;
     iframeCustom = iframeCustom.replace('width=\'640\' height=\'360\'', 'width=\'100%\' height=\'100%\'');
     console.log('iframeCustom', iframeCustom);
     return { __html: iframeCustom }
   }
 
   render() {
-    const { slug, logo, title, name, game, thumbnail, iframe } = this.props;
+    const { logo, title, name, game } = this.props;
     return (
       <div className="gs-video-card">
         <div className="gs-clip" dangerouslySetInnerHTML={this.iframe()} />
         <div className="gs-stream-info">
           <div className="profile-image">
             <figure className="gs-avatar">
-              <img src={logo} />
+              <img src={logo} alt={title} />
             </figure>
           </div>
           <div className="gs-stream-details">

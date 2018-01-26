@@ -17,9 +17,11 @@ export default values => {
           required={required}
           className="form-control"
         />
-        <small class="form-text text-muted">{meta.touched && meta.error}</small>
-        <br />
+        <hr />
       </div>
+      <small className="form-text text-muted">
+        {meta.touched && meta.error}
+      </small>
     </div>
   );
 };

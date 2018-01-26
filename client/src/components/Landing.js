@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions/actions";
 
-import Dashboard from "./Dashboard";
-import Featured from "./main/Featured";
-import TopGames from "./main/TopGames";
-import Channel from "./main/Channel";
-import SearchResults from "./main/SearchResults";
-import RegistrationNew from './registration/RegistrationNew';
+import Dashboard from "./content/Dashboard";
+import Featured from "./content/Featured";
+import TopGames from "./content/TopGames";
+import Channel from "./content/Channel";
+import SearchResults from "./content/SearchResults";
+import RegistrationNew from './auth/RegistrationNew';
+import LoginNew from './auth/LoginNew';
 
 class Landing extends Component {
   render() {
@@ -18,11 +18,12 @@ class Landing extends Component {
         <div className="tab-content">
           <div className="tab-pane active">
             <Route exact path="/" component={Dashboard} />
+            <Route path="/signin" component={LoginNew} />
             <Route path="/featured" component={Featured} />
             <Route path="/topgames" component={TopGames} />
             <Route path={"/" + this.props.embed.name} component={Channel} />
             <Route path="/search" component={SearchResults} />
-            <Route path="/registration" component={RegistrationNew} />           
+            <Route path="/signup" component={RegistrationNew} />           
           </div>
         </div>
       </div>

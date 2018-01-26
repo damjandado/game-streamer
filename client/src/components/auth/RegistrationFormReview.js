@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import * as actions from "../../actions/actions";
 import formFields from "./formFields";
 
-const RegistrationFormReview = ({ onCancel, formValues, submitRegistration, history }) => {
+const RegistrationFormReview = ({ onCancel, formValues, onRegister, history }) => {
   const reviewFields = _.map(formFields, ({ name, placeholder }) => {
     return (
       <div>
@@ -28,7 +28,7 @@ const RegistrationFormReview = ({ onCancel, formValues, submitRegistration, hist
         Back
       </button>
       <button
-        onClick={() => submitRegistration(formValues, history)}
+        onClick={() => onRegister(formValues, history)}
         className="green white-text btn-flat right"
       >
         Confirm

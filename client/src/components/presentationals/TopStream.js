@@ -9,10 +9,10 @@ class TopStream extends Component {
   }
 
   render() {
-    const { logo, status, display_name, followers, name } = this.props.embed;
+    const { display_name, followers, name } = this.props.embed;
     return (
       <div id="gs-embed">
-        <p className="h4">{display_name} | Followers: {followers} aaaaaaaaa</p>
+        <p className="h4">{display_name} | Followers: {followers}</p>
         <TopStreamEmbed channel={name} />
       </div>
     );

@@ -19,14 +19,15 @@ class TopGames extends Component {
         key = { tg.game._id }
         game = { tg }
         name = { tg.game.name }
-        box = { tg.game.box.medium }
+        box = { tg.game.box.large }
         logo = { tg.game.logo.medium }
         viewers = { tg.viewers }
         channels = { tg.channels }
         spanChannels = {true}
-        cardType={'stream-card'}
+        cardType={'game-card'}
         cardCover={'stream-cover'}
         logoArt={true}
+        maxWidth={'200px'}
       />
     );
     const error = topGamesProps.error;

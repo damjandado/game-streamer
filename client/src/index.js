@@ -1,5 +1,5 @@
 import 'font-awesome/css/font-awesome.min.css';
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
@@ -9,6 +9,7 @@ import logger from 'redux-logger';
 // import Raven from 'raven-js';
 // import createRavenMiddleware from 'raven-for-redux';
 import reducers from './reducers';
+// import { SIGNIN_SUCCESS_USER } from './actions/types';
 
 import App from './components/App';
 import axios from 'axios';
@@ -25,6 +26,13 @@ let store = createStore(
   applyMiddleware(thunk, logger)
   // applyMiddleware(thunk, logger, createRavenMiddleware(Raven, {}))
 );
+
+// const token = localStorage.getItem('token');
+// // If we have a token, consider the user to be signed in
+// if (token) {
+//   // we need to update application state
+//   store.dispatch({ type: SIGNIN_SUCCESS_USER, logemail: email });
+// }
 
 ReactDOM.render(
   <Provider store={store}>

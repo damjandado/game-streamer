@@ -363,9 +363,9 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   flex-direction: row;
   flex-wrap: wrap;
   -webkit-align-items: center;
-  align-items: center;
+  align-items: stretch;
   -webkit-justify-content: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .stream-card {
@@ -380,7 +380,10 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 
 .game-card {
   padding: 0 .5rem 1rem;
-  width: 150px;
+}
+
+.game-card img {
+  width: 100%;
 }
 
 .game-cover {
@@ -388,3 +391,16 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   margin: 0 10px 0 0;
 }
 
+.iffyTip {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.gs-btn {
+  background: transparent;
+}
+
+.gs-center {
+  margin: 0 auto;
+}

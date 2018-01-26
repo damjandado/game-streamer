@@ -9,7 +9,6 @@ import formFields from './formFields';
 class RegistrationForm extends Component {
   renderFields() {
     return _.map(formFields, ({ name, type, placeholder, icon }) => {
-      console.log('renderFields', type);
       return (
         <Field
           key={name}
@@ -19,6 +18,7 @@ class RegistrationForm extends Component {
           placeholder={placeholder}
           required=""
           icon={icon}
+          size={40}
         />
       );
     });
@@ -26,10 +26,9 @@ class RegistrationForm extends Component {
 
   render() {
     return (
-      <div className="agile">
-        <div className="signin-form profile">
+        <div className="signin-form profile col-md-6 gs-center">
           <h3>Register</h3>
-
+          <br />
           <div className="login-form">
             <form
               onSubmit={this.props.handleSubmit(this.props.onRegistrationSubmit)}
@@ -39,10 +38,9 @@ class RegistrationForm extends Component {
             </form>
           </div>
           <p>
-            <a href="#"> By clicking register, I agree to your terms</a>
+            <small style={{ marginTop: '10px'}}> By clicking register, I agree to your terms</small>
           </p>
         </div>
-      </div>
     );
   }
 }
