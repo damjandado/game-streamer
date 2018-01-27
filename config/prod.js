@@ -7,6 +7,6 @@ module.exports = {
   cookieKey: process.env.COOKIE_KEY,
   redirectDomain: process.env.REDIRECT_DOMAIN,
   sendGridKey: process.env.SENDGRID_KEY,
-  redirectDomain: process.env.REDIRECT_DOMAIN
+  redirectDomain: process.env.REDIRECT_DOMAIN,
   secret: process.env.SECRET
 };
