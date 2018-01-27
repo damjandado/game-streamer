@@ -19,11 +19,11 @@ const userSchema = new Schema({
     trim: true
   },
   password: {
-    type: String,
+    type: String
     // required: true
   },
   passwordConf: {
-    type: String,
+    type: String
     // required: true
   },
   credits: { type: Number, default: 0 },
@@ -59,6 +59,7 @@ userSchema.statics.authenticate = function(email, password, callback) {
 //hashing a password before saving it to the database
 userSchema.pre('save', function(next) {
   const user = this;
+  console.log('save user is', user);
   if (!user.isModified('password')) return next();
   bcrypt.hash(user.password, 10, function(err, hash) {
     if (err) {
@@ -72,14 +73,14 @@ userSchema.pre('save', function(next) {
 /*
  Defining our own custom document instance method
  */
- userSchema.methods = {
+userSchema.methods = {
   comparePassword: function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-      if (err) return cb(err)
-      cb(null, isMatch)
-    })
+      if (err) return cb(err);
+      cb(null, isMatch);
+    });
   }
- }
+};
 
 /**
 * Statics

@@ -10,6 +10,7 @@ import Channel from "./content/Channel";
 import SearchResults from "./content/SearchResults";
 import SignupNew from './auth/SignupNew';
 import LoginNew from './auth/LoginNew';
+import Recovery from './auth/Recovery';
 
 class Landing extends Component {
   render() {
@@ -20,6 +21,7 @@ class Landing extends Component {
             <Route exact path="/" component={Dashboard} />
             <Route path="/login" component={LoginNew} />
             <Route path="/signup" component={SignupNew} />           
+            <Route path="/recovery" component={Recovery} />           
             <Route path="/featured" component={Featured} />
             <Route path="/topgames" component={TopGames} />
             <Route path={"/" + this.props.embed.name} component={Channel} />

@@ -4,11 +4,13 @@ const { URL } = require('url');
 const mongoose = require('mongoose');
 
 const requireLogin = require('../middlewares/requireLogin');
-const twitchClientID = require('../config/keys').twitchClientID;
 const localFuncs = require('./localFuncs');
+const Mailer = require('../services/Mailer');
+const mailTemplate = require('../services/emailTemplates/mailTemplate');
 
 const User = mongoose.model('users');
 const Game = mongoose.model('games');
+const twitchClientID = require('../config/keys').twitchClientID;
 
 const {
   featuredApi,
@@ -35,6 +37,36 @@ module.exports = app => {
     }
     res.send(req.user);
   });
+
+  app.post('/api/checkmail', async (req, res) => {
+    console.log('CHECKMAIL');
+    const user = await User.findOne({ email: req.body.email });
+    console.log('user', user);
+    if (user) {
+      return res.send({ valid: true });
+    }
+    return res.send({ valid: false });
+  });
+
+  app.post('/api/checkpass', async (req, res) => {
+    console.log('CHECKPASS');
+    const user = await User.findOne({ email: req.body.email });
+    const tempRemoved = User.findOneAndRemove({ email: req.body.email });
+    console.log('user %s and removed %s', user, tempRemoved);
+    user.password = req.body.password;
+    user.passwordConf = req.body.passwordConfirm;
+    User.create(user, (err, user) => {
+      if (err) {
+        console.error(err);
+        return res.send({ valid: false });
+      }
+      return res.send({ valid: true });
+    });
+  });
+
+  app.post('/api/recovery', localFuncs.sendgrid);
+  app.get('/api/recovery/:formId', localFuncs.sgLink);
+  app.post('/api/users/webhooks', localFuncs.sgWebhooks);
 
   app.get('/api/users', requireLogin, async (req, res) => {
     const users = await User.find({ _id: req.user.id });

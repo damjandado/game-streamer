@@ -404,3 +404,8 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 .gs-center {
   margin: 0 auto;
 }
+
+.gs-control {
+  display: inline-block;
+  width: 70%;
+}

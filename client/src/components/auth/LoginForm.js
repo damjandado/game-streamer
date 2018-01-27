@@ -2,18 +2,17 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import formFields from './formFields';
 import AuthField from './AuthField';
 
 import validateEmails from '../../utils/validateEmails';
-// import AuthField from './AuthField';
 import { onLogin } from '../../actions/actions';
 
 class LoginForm extends Component {
   state = { remember: false };
 
-  onRememberChange(checked) {
+  onRememberChange() {
     this.setState(prevState => {return { remember: !prevState.remember }});
     console.log('5th of Novembah');
   }
@@ -21,7 +20,7 @@ class LoginForm extends Component {
   renderFields() {
     const signinFields = [];
     signinFields.push(formFields[0], formFields[2]);
-    return _.map(signinFields, ({ name, type, placeholder, icon, defValue }) => {
+    return _.map(signinFields, ({ name, type, placeholder, icon }) => {
       return (
         <Field
           key={name}
@@ -82,9 +81,9 @@ class LoginForm extends Component {
           </div>
           <div className="col-xs-12 col-sm-3">
             <p className="kpx_forgotPwd">
-              <a href="#" className="gs-orange">
+              <Link to="/recovery" className="gs-orange">
                 Forgot password?
-              </a>
+              </Link>
             </p>
           </div>
 

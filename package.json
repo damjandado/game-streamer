@@ -25,7 +25,9 @@
     "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "forever": "^0.15.3",
     "jwt-simple": "^0.5.1",
+    "localtunnel": "^1.8.3",
     "mongoose": "^4.13.5",
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
@@ -33,7 +35,8 @@
     "passport-jwt": "^3.0.1",
     "passport-local": "^1.0.0",
     "passport-twitch": "^1.0.3",
-    "passport-twitchtv": "^0.1.4"
+    "passport-twitchtv": "^0.1.4",
+    "sendgrid": "^5.2.3"
   },
   "devDependencies": {
     "concurrently": "^3.5.1"

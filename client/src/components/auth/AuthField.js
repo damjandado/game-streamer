@@ -2,7 +2,7 @@ import React from 'react';
 
 export default values => {
   const { input, meta, type, placeholder, required, icon } = values;
-  // console.log('values', values);
+  console.log('values', values);
   return (
     <div className="form-group">
       <div className="input-group">

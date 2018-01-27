@@ -5,12 +5,15 @@ const User = require('../models/User');
 const passportService = require('../services/passport-local');
 const keys = require('../config/keys');
 
+// const Path = require('path-parser');
+// const { URL } = require('url');
+
 // -------------------------------------------
 
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
   const token = jwt.encode({ sub: user.id, iat: timestamp }, keys.secret);
-  return {token, tokenIAT: timestamp, timestamp};
+  return { token, tokenIAT: timestamp, timestamp };
 }
 
 exports.login = function(req, res, next) {
@@ -38,10 +41,15 @@ exports.login = function(req, res, next) {
         console.log(loginErr);
         return res.json({ success: false, message: loginErr });
       }
-      const {token, tokenIAT, timestamp} = tokenForUser(user);
-      let tokenExp = req.body.remember ? 14 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+      const { token, tokenIAT, timestamp } = tokenForUser(user);
+      let tokenExp = req.body.remember
+        ? 14 * 24 * 60 * 60 * 1000
+        : 24 * 60 * 60 * 1000;
       tokenExp += timestamp;
-      await User.updateOne({email: user.email}, {token, tokenIAT, tokenExp}).exec();
+      await User.updateOne(
+        { email: user.email },
+        { token, tokenIAT, tokenExp }
+      ).exec();
       return res.json({
         success: true,
         message: 'authentication succeeded',
@@ -68,7 +76,7 @@ exports.signup = function(req, res, next) {
   if (req.body.password !== req.body.passwordConf) {
     let err = new Error('Passwords do not match.');
     err.status = 400;
-    res.send('passwords don\'t match');
+    res.send("passwords don't match");
     return next(err);
   }
 
@@ -91,4 +99,40 @@ exports.signup = function(req, res, next) {
       });
     }
   });
+};
+
+exports.sendgrid = async (req, res, next) => {
+  const { email } = req.body;
+  console.log('REQUEST body', req.body);
+
+  const user = {
+    subject: 'Password recovery link',
+    recipients: email,
+    id: 'vyntiouydonwchfhgkbgvnitrhetirnve'
+  };
+
+  // Great place to send an email!
+  const mailer = new Mailer(user, mailTemplate(user));
+
+  try {
+    await mailer.send();
+    res.send(user);
+  } catch (err) {
+    res.status(422).send(err);
+  }
+};
+
+exports.sgLink = (req, res) => {
+  // const p = new Path('/api/users/:formId');
+  // const match = p.test(new URL(req.body.url).pathname);
+  // if (match) {
+  //   res.send({ proceed: true, formId: match.formId });
+  // }
+  res.redirect('/');
+
+};
+
+exports.sgWebhooks = (req, res) => {
+  console.log('Password recovery link was clicked');
+  res.send({ success: true });
 };
