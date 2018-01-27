@@ -16,6 +16,7 @@ class Recovery extends Component {
       data: email
     });
     if (res.data.valid) {
+      const res = await axios.post('/api/recovery', email);
       this.setState({ showEnterNew: true });
     } else {
       this.setState({ invalid: 'Email was not found' });
