@@ -4,10 +4,6 @@ import { connect } from "react-redux";
 import TopStreamEmbed from "./TopStreamEmbed";
 
 class TopStream extends Component {
-  componentDidMount() {
-    console.log("CHANNEL mounted", this.props);
-  }
-
   render() {
     const { display_name, followers, name } = this.props.embed;
     return (

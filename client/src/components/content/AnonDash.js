@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import * as apiCalls from "../../actions/apiCalls";
 
-// import TopStream from "./presentationals/TopStream";
 import TopStreamEmbed from "../presentationals/TopStreamEmbed";
 import Loader from "../presentationals/Loader";
 import VideoCard from "../presentationals/VideoCard";
@@ -96,7 +95,7 @@ class AnonDash extends Component {
           )}
         </div>
         <div className="gs-col-right col-md-auto">
-          {/*<TopStreamEmbed />*/}
+          <TopStreamEmbed />
           <div style={{ marginTop: "120px" }}>{this.renderGames()}</div>
         </div>
       </div>
