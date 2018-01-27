@@ -3,16 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "proxy": {
-    "/auth/google": {
+    "/auth/*": {
       "target": "http://localhost:5020"
     },
-    "/auth/twitch": {
+    "/social/*": {
       "target": "http://localhost:5020"
     },
-    "/auth/local": {
-      "target": "http://localhost:5020"
-    },
-    "/register": {
+    "/local/*": {
       "target": "http://localhost:5020"
     },
     "/api/*": {
@@ -34,6 +31,7 @@
     "react-router-dom": "^4.2.2",
     "react-router-modal": "^1.3.0",
     "react-scripts": "1.0.17",
+    "react-timeout": "^1.0.1",
     "react-tooltip": "^3.4.0",
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",

@@ -1,18 +1,18 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import RegistrationField from './RegistrationField';
+import AuthField from './AuthField';
 import validateEmails from "../../utils/validateEmails";
 import { reduxForm, Field } from 'redux-form';
 import formFields from './formFields';
 
-class RegistrationForm extends Component {
+class SignupForm extends Component {
   renderFields() {
     return _.map(formFields, ({ name, type, placeholder, icon }) => {
       return (
         <Field
           key={name}
-          component={RegistrationField}
+          component={AuthField}
           type={type}
           name={name}
           placeholder={placeholder}
@@ -63,4 +63,4 @@ export default reduxForm({
   validate,
   form: 'registrationForm',
   destroyOnUnmount: false
-})(RegistrationForm);
+})(SignupForm);

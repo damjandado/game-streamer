@@ -25,22 +25,4 @@ module.exports = app => {
       res.redirect('/');
     }
   );
-
-  // Local auth
-  app.post(
-    '/auth/localiii',
-    passport.authenticate('local', { failureRedirect: '/loginj' }),
-    function(req, res) {
-      res.redirect('/');
-    }
-  );
-
-  // app.get('/api/logout', (req, res) => {
-  //   req.logout();
-  //   res.redirect('/');
-  // });
-
-  app.get('/api/current_user', (req, res) => {
-    res.send(req.user);
-  });
 };

@@ -8,20 +8,21 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case "EMBED_STREAM":
-      const obj = action.ebd.stream || action.ebd;
+      let obj = action.ebd.stream || action.ebd;
       console.log('EMBED_STREAM');
+      obj = obj.channel || obj;
       const temp_state = {
-        channel: obj.channel || "null",
-        logo: obj.channel.logo || "https://static-cdn.jtvnw.net/ttv-static/404_preview-120x72.jpg",
+        channel: obj || "null",
+        logo: obj.logo || "https://static-cdn.jtvnw.net/ttv-static/404_preview-120x72.jpg",
         game: obj.game || "null",
-        name: obj.channel.name || obj.name,
-        display_name: obj.channel.display_name || "null",
-        status: obj.channel.status || "null",
+        name: obj.name || obj.name,
+        display_name: obj.display_name || "null",
+        status: obj.status || "null",
         text: action.ebd.text || "",
-        views: obj.channel.views || "null",
-        followers: obj.channel.followers || "null"
+        views: obj.views || "null",
+        followers: obj.followers || "null"
       };
-      return Object.assign({}, state, temp_state);
+      return Object.assign({}, temp_state);
     default:
       return state;
   }

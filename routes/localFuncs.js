@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
 const jwt = require('jwt-simple');
-const UserSec = require('../models/UserSec');
-const passportService = require('../services/passport-jwt');
-const config = require('../config');
+const User = require('../models/User');
+const passportService = require('../services/passport-local');
+const keys = require('../config/keys');
 
 // -------------------------------------------
 
 function tokenForUser(user) {
   const timestamp = new Date().getTime();
-  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
+  const token = jwt.encode({ sub: user.id, iat: timestamp }, keys.secret);
+  return {token, tokenIAT: timestamp, timestamp};
 }
 
 exports.login = function(req, res, next) {
@@ -17,6 +18,8 @@ exports.login = function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     console.log('err', err);
     console.log('user', user);
+    console.log('req.user', req.user);
+    console.log('req.body', req.body);
     console.log('info', info);
     if (err) return next(err);
     if (!user) {
@@ -30,15 +33,20 @@ exports.login = function(req, res, next) {
     // ***********************************************************************
     // Passport exposes a login() function on req (also aliased as logIn())
     // that can be used to establish a login session
-    req.logIn(user, loginErr => {
+    req.logIn(user, async loginErr => {
       if (loginErr) {
         console.log(loginErr);
         return res.json({ success: false, message: loginErr });
       }
+      const {token, tokenIAT, timestamp} = tokenForUser(user);
+      let tokenExp = req.body.remember ? 14 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+      tokenExp += timestamp;
+      await User.updateOne({email: user.email}, {token, tokenIAT, tokenExp}).exec();
       return res.json({
         success: true,
         message: 'authentication succeeded',
-        token: tokenForUser(user),
+        token,
+        tokenExp,
         email: user.email
       });
     });
@@ -55,20 +63,29 @@ exports.logout = function(req, res, next) {
 
 // -------------------------------------------
 
-exports.register = function(req, res, next) {
-  UserSec.findOne({ email: req.body.email }, (err, user) => {
+exports.signup = function(req, res, next) {
+  // confirm that user typed same password twice
+  if (req.body.password !== req.body.passwordConf) {
+    let err = new Error('Passwords do not match.');
+    err.status = 400;
+    res.send('passwords don\'t match');
+    return next(err);
+  }
+
+  User.findOne({ email: req.body.email }, (err, user) => {
     // is email address already in use?
     if (user) {
       res.json({ success: false, message: 'Email already in use' });
       return;
     } else {
       // go ahead and create the new user
-      UserSec.create(req.body, err => {
+      User.create(req.body, (err, user) => {
         if (err) {
           console.error(err);
           res.json({ success: false });
           return;
         }
+        // req.session.userId = user._id;
         res.json({ success: true });
         return;
       });

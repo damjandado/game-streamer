@@ -132,3 +132,20 @@ export const fetchStreamAndClips = (
   });
   dispatch({ type: FETCH_CLIPS, status: 'success', clips: clips.data.clips });
 };
+
+export const fetchChannelStream = id => async dispatch => {
+  const res = await axios({
+    method: 'get',
+    url: `https://api.twitch.tv/kraken/channels/${id}`,
+    headers: {
+      'Client-ID': `${twitchAPI}`,
+      'Accept': 'application/vnd.twitchtv.v5+json'
+    }
+  });
+  try {
+    const stream = res.data;
+    dispatch(actions.embedStream(stream));
+  } catch (e) {
+    dispatch(actions.fetchFailure(e));
+  }
+};

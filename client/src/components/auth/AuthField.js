@@ -2,8 +2,7 @@ import React from 'react';
 
 export default values => {
   const { input, meta, type, placeholder, required, icon } = values;
-  console.log('values', values);
-  console.log(meta);
+  // console.log('values', values);
   return (
     <div className="form-group">
       <div className="input-group">
@@ -17,11 +16,11 @@ export default values => {
           required={required}
           className="form-control"
         />
-        <hr />
       </div>
       <small className="form-text text-muted">
         {meta.touched && meta.error}
       </small>
+      <hr />
     </div>
   );
 };

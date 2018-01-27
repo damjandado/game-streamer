@@ -8,10 +8,6 @@ import ReactTooltip from 'react-tooltip';
 class GameCard extends Component {
   state = { truncated: false };
 
-  componentDidUpdate() {
-    console.log('component GameCard Did Update');
-  }
-
   componentWillUpdate() {
     console.log('this.state.truncated - ?', this.state.truncated);
   }
@@ -43,8 +39,6 @@ class GameCard extends Component {
       maxWidth
     } = this.props;
     let trunc = this.state.truncated;
-    console.log(this.props.name);
-    console.log(this.state.truncated);
     return (
       <div className={cardType} style={{ maxWidth }}>
         <div className="gs-video-thumbnail">

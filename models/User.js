@@ -30,7 +30,10 @@ const userSchema = new Schema({
   visits: {
     games: [String],
     users: [String]
-  }
+  },
+  token: String,
+  tokenIAT: Date,
+  tokenExp: Date
 });
 
 //authenticate input against database
@@ -55,7 +58,7 @@ userSchema.statics.authenticate = function(email, password, callback) {
 
 //hashing a password before saving it to the database
 userSchema.pre('save', function(next) {
-  let user = this;
+  const user = this;
   if (!user.isModified('password')) return next();
   bcrypt.hash(user.password, 10, function(err, hash) {
     if (err) {
@@ -65,6 +68,23 @@ userSchema.pre('save', function(next) {
     next();
   });
 });
+
+/*
+ Defining our own custom document instance method
+ */
+ userSchema.methods = {
+  comparePassword: function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+      if (err) return cb(err)
+      cb(null, isMatch)
+    })
+  }
+ }
+
+/**
+* Statics
+*/
+// UserSchema.statics = {}
 
 const User = mongoose.model('users', userSchema);
 module.exports = User;

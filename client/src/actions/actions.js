@@ -1,42 +1,44 @@
-import {withRouter} from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+
 import * as types from './types';
 
-export const onRegister = (values, history) => async dispatch => {
-    dispatch(beginRegister());
+export const onSignup = (values, history) => async dispatch => {
+  dispatch(beginSignup());
 
-    const res = await makeUserRequest('post', values, '/register');
-    try {
-      if (res.data.success) {
-        dispatch(registerSuccess());
-        const {email:logemail, password:logpassword} = values;
-        dispatch(onSignIn({logemail, logpassword}, '/', history));
-      } else {
-        dispatch(registerError());
-          let registerMessage = res.data.message;
-          return registerMessage;
-      }
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log('Error on registration:', e.message);
-      }
-    }
-}
-
-export const onSignIn = (values, path, history) => async dispatch => {
-  console.log('values', values);
-  console.log('path', path);
-  console.log('history', history);
-  dispatch(beginSignin());
-  const res = await makeUserRequest('post', values, '/auth/local');
+  const res = await makeUserRequest('post', values, '/local/signup');
   try {
     if (res.data.success) {
-      dispatch(signinSuccess(values));
+      dispatch(signupSuccess());
+      const { email: logemail, password: logpassword } = values;
+      dispatch(onLogin({ logemail, logpassword }, '/', history));
+    } else {
+      dispatch(signupError());
+      let signupMessage = res.data.message;
+      return signupMessage;
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      console.log('Error on registration:', e.message);
+    }
+  }
+};
+
+export const onLogin = (values, remember, path, history) => async dispatch => {
+  console.log('values', values);
+  console.log('remember', remember);
+  console.log('path', path);
+  console.log('history', history);
+  dispatch(beginLogin());
+  values.remember = remember;
+  const res = await makeUserRequest('post', values, '/local/login');
+  try {
+    if (res.data.success) {
+      dispatch(loginSuccess(values));
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('email', res.data.email);
       history.push(path);
     } else {
-      dispatch(signinError());
+      dispatch(loginError());
       let loginMessage = res.data.message;
       return loginMessage;
     }
@@ -47,25 +49,24 @@ export const onSignIn = (values, path, history) => async dispatch => {
   // history.push('/');
 };
 
-export const onSignOut = history => async dispatch => {
-  dispatch(beginSignout());
+export const onLogout = history => async dispatch => {
+  dispatch(beginLogout());
   const res = await axios.get('/api/logout');
   console.log('A P I logout', res);
   try {
     if (res.data.success) {
-      dispatch(signoutSuccess());
+      dispatch(logoutSuccess());
       localStorage.removeItem('token');
-      localStorage.removeItem('email');
-      history.push("/");
+      history.push('/');
     } else {
-      dispatch(signoutError());
+      dispatch(logoutError());
     }
   } catch (e) {
     console.log('Error', res.message);
   }
 };
 
-function makeUserRequest(method, data, api = '/login') {
+function makeUserRequest(method, data, api = '/local/login') {
   // returns a Promise
   return axios({
     method: method,
@@ -75,51 +76,50 @@ function makeUserRequest(method, data, api = '/login') {
 }
 
 export const fetchUser = () => async dispatch => {
-  const res = await axios.get('/api/current_user');
-
+  const res = await axios.get('/api/current_user?');
   dispatch({ type: types.FETCH_USER, payload: res.data });
 };
 
-// "Log In" action creators
-function beginSignin() {
-  return { type: types.SIGNIN_USER };
+// "Login" action creators
+function beginLogin() {
+  return { type: types.LOGIN_USER };
 }
 
-function signinSuccess(data) {
+function loginSuccess(data) {
   return {
-    type: types.SIGNIN_SUCCESS_USER,
+    type: types.LOGIN_SUCCESS_USER,
     data
   };
 }
 
-function signinError() {
-  return { type: types.SIGNIN_ERROR_USER };
+function loginError() {
+  return { type: types.LOGIN_ERROR_USER };
 }
 
-// "Log Out" action creators
-function beginSignout() {
-  return { type: types.SIGNOUT_USER };
+// "Logout" action creators
+function beginLogout() {
+  return { type: types.LOGOUT_USER };
 }
 
-function signoutSuccess() {
-  return { type: types.SIGNOUT_SUCCESS_USER };
+function logoutSuccess() {
+  return { type: types.LOGOUT_SUCCESS_USER };
 }
 
-function signoutError() {
-  return { type: types.SIGNOUT_ERROR_USER };
+function logoutError() {
+  return { type: types.LOGOUT_ERROR_USER };
 }
 
-// "Register" action creators
-function beginRegister() {
-  return { type: types.REGISTER_USER };
+// "Signup" action creators
+function beginSignup() {
+  return { type: types.SIGNUP_USER };
 }
 
-function registerSuccess() {
-  return { type: types.REGISTER_SUCCESS_USER };
+function signupSuccess() {
+  return { type: types.SIGNUP_SUCCESS_USER };
 }
 
-function registerError() {
-  return { type: types.REGISTER_ERROR_USER };
+function signupError() {
+  return { type: types.SIGNUP_ERROR_USER };
 }
 
 // export function authError(error) {

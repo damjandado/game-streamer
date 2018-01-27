@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import * as actions from "../../actions/actions";
 import formFields from "./formFields";
 
-const RegistrationFormReview = ({ onCancel, formValues, onRegister, history }) => {
+const SignupFormReview = ({ onCancel, formValues, onSignup, history }) => {
   const reviewFields = _.map(formFields, ({ name, placeholder }) => {
     return (
       <div>
@@ -28,7 +28,7 @@ const RegistrationFormReview = ({ onCancel, formValues, onRegister, history }) =
         Back
       </button>
       <button
-        onClick={() => onRegister(formValues, history)}
+        onClick={() => onSignup(formValues, history)}
         className="green white-text btn-flat right"
       >
         Confirm
@@ -41,4 +41,4 @@ function mapStateToProps(state) {
   return { formValues: state.form.registrationForm.values };
 }
 
-export default connect(mapStateToProps, actions)(withRouter(RegistrationFormReview));
+export default connect(mapStateToProps, actions)(withRouter(SignupFormReview));

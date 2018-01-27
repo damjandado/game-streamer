@@ -8,6 +8,7 @@ import * as apiCalls from "../../actions/apiCalls";
 class StreamCard extends Component {
   activeChannel() { 
     this.props.embedStream(this.props.ebdStream);
+    this.props.fetchChannelStream(this.props.ebdStream.user_id);
     this.props.saveActivity(this.props.ebdStream);
   }
 
@@ -16,6 +17,7 @@ class StreamCard extends Component {
   }
 
   render() {
+    console.log('This S T R E A M', this.props);
     const { streamCover, logo, title, name, game } = this.props;
     return (
       <div className="stream-card">
@@ -54,5 +56,6 @@ function mapStateToProps({ embed }) {
 export default connect(mapStateToProps, {
   embedStream: actions.embedStream,
   saveActivity: actions.saveActivity,
-  searchGamesApi: apiCalls.searchGamesApi
+  searchGamesApi: apiCalls.searchGamesApi,
+  fetchChannelStream: apiCalls.fetchChannelStream
 })(StreamCard);

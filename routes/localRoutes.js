@@ -1,19 +1,18 @@
-// const _ = require('lodash');
 // const Path = require('path-parser');
 const axios = require('axios');
 const { URL } = require('url');
 const mongoose = require('mongoose');
+
 const requireLogin = require('../middlewares/requireLogin');
 const twitchClientID = require('../config/keys').twitchClientID;
+const localFuncs = require('./localFuncs');
 
 const User = mongoose.model('users');
 const Game = mongoose.model('games');
 
-const path = require('path');
-
-const users = require('./users');
-
 const {
+  featuredApi,
+  topGamesApi,
   fetchBroadcasters,
   fetchGameStreams,
   processQuery,
@@ -24,10 +23,22 @@ const {
 } = require('./func.js');
 
 module.exports = app => {
+  // Current user
+  app.get('/api/current_user', (req, res) => {
+    const currentTime = new Date().getTime();
+    if (req.user) {
+      if (req.user.tokenExp < currentTime) {
+        req.logout();
+        console.log('U S E R after req.logout()', req.user);
+        return res.send(req.user);
+      }
+    }
+    res.send(req.user);
+  });
+
   app.get('/api/users', requireLogin, async (req, res) => {
     const users = await User.find({ _id: req.user.id });
     console.log('req.user: ', req.user);
-
     res.send(users);
   });
 
@@ -126,41 +137,7 @@ module.exports = app => {
   });
 
   app.post('/api/registration', async (req, res) => {
-    console.log('req.body', req.body);
-    const rb = req.body;
-
-    // confirm that user typed same password twice
-    if (req.body.password !== req.body.passwordConf) {
-      var err = new Error('Passwords do not match.');
-      err.status = 400;
-      res.send('passwords dont match');
-      return next(err);
-    }
-
-    if (
-      req.body.email &&
-      req.body.username &&
-      req.body.password &&
-      req.body.passwordConf
-    ) {
-      var userData = {
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password,
-        passwordConf: req.body.passwordConf
-      };
-
-      User.create(userData, function(error, user) {
-        console.log('User.create(userData, ...)');
-        if (error) {
-          return next(error);
-        } else {
-          req.session.userId = user._id;
-          return res.redirect('/auth/local');
-        }
-      });
-    // User tries to log in
-    } else if (req.body.logemail && req.body.logpassword) {
+    if (req.body.logemail && req.body.logpassword) {
       console.log('req.session', req.session);
       await User.authenticate(req.body.logemail, req.body.logpassword, function(
         error,
@@ -170,12 +147,10 @@ module.exports = app => {
         if (error || !user) {
           var err = new Error('Wrong email or password.');
           err.status = 401;
-          return next(err); 
+          return next(err);
         } else {
           req.session.userId = user._id;
-          console.log('REDIRECTION HERE, req.body is', req.body);
           res.send(user);
-          console.log('HELLO?');
         }
       });
     } else {
@@ -185,9 +160,9 @@ module.exports = app => {
     }
   });
 
-  app.post("/register", users.register);
-  app.post("/auth/local", users.login);
-  app.get("/api/logout", users.logout);
+  app.post('/local/signup', localFuncs.signup);
+  app.post('/local/login', localFuncs.login);
+  app.get('/api/logout', localFuncs.logout);
 
   // GET route after registering
   // app.get('/auth/local', function(req, res, next) {
@@ -206,4 +181,4 @@ module.exports = app => {
   //     }
   //   });
   // });
- };
+};

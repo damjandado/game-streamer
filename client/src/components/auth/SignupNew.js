@@ -1,22 +1,22 @@
 import React, { Component } from "react";
 import { reduxForm } from 'redux-form';
-import RegistrationForm from "./RegistrationForm";
-import RegistrationFormReview from "./RegistrationFormReview";
+import SignupForm from "./SignupForm";
+import SignupFormReview from "./SignupFormReview";
 
-class RegistrationNew extends Component {
+class SignupNew extends Component {
   state = { showFormReview: false };
 
   renderContent() {
     if (this.state.showFormReview) {
       return (
-        <RegistrationFormReview
+        <SignupFormReview
           onCancel={() => this.setState({ showFormReview: false })}
         />
       );
     }
 
     return (
-      <RegistrationForm
+      <SignupForm
         onRegistrationSubmit={() => this.setState({ showFormReview: true })}
       />
     );
@@ -29,4 +29,4 @@ class RegistrationNew extends Component {
 
 export default reduxForm({
   form: 'registrationForm'
-})(RegistrationNew);
+})(SignupNew);

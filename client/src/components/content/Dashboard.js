@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as apiCalls from "../../actions/apiCalls";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as apiCalls from '../../actions/apiCalls';
 
-import AnonDash from "./AnonDash";
+import AnonDash from './AnonDash';
 
-import Loader from "../presentationals/Loader";
-import StreamCard from "../presentationals/StreamCard";
+import Loader from '../presentationals/Loader';
+import StreamCard from '../presentationals/StreamCard';
 // import GameCard from "../presentationals/GameCard";
-import Alert from "../presentationals/Alert";
+import Alert from '../presentationals/Alert';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -15,9 +15,10 @@ class Dashboard extends Component {
   }
 
   renderDash() {
-    const dsProps = this.props.dashboard;
-    const status = dsProps.status;
-    const streamCardBroadcasters = dsProps.broadcasters.map(bc => {
+    const dash = this.props.dashboard;
+    const status = dash.status;
+    console.log('C H A N N E L S', dash.broadcasters);
+    const streamCardBroadcasters = dash.broadcasters.map(bc => {
       if (bc !== null)
         return (
           <StreamCard
@@ -30,7 +31,7 @@ class Dashboard extends Component {
           />
         );
     });
-    const streamCardGames = dsProps.games.map(gm => {
+    const streamCardGames = dash.games.map(gm => {
       if (gm !== null)
         return (
           <StreamCard
@@ -43,15 +44,18 @@ class Dashboard extends Component {
           />
         );
     });
-    const error = dsProps.error;
+    const error = dash.error;
     return (
       <div>
         <div className="main">
-          {status === "loading" ? (
+          {status === 'loading' ? (
             <Loader />
-          ) : status === "success" ? (
-            <div className="stream-cards">{streamCardBroadcasters}</div>
-          ) : status === "error" ? (
+          ) : status === 'success' ? (
+            <div>
+              <h3>Recommended Channels</h3>
+              <div className="stream-cards">{streamCardBroadcasters}</div>
+            </div>
+          ) : status === 'error' ? (
             <div>
               <Alert error={error} />
             </div>
@@ -60,11 +64,14 @@ class Dashboard extends Component {
           )}
         </div>
         <div className="main">
-          {status === "loading" ? (
+          {status === 'loading' ? (
             <Loader />
-          ) : status === "success" ? (
-            <div className="stream-cards">{streamCardGames}</div>
-          ) : status === "error" ? (
+          ) : status === 'success' ? (
+            <div>
+              <h3>Recommended Games</h3>
+              <div className="stream-cards">{streamCardGames}</div>
+            </div>
+          ) : status === 'error' ? (
             <div>
               <Alert error={error} />
             </div>
@@ -82,7 +89,11 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>{this.props.auth.authenticated ? this.renderDash() : this.renderAnonDash()}</div>
+      <div>
+        {this.props.auth.authenticated
+          ? this.renderDash()
+          : this.renderAnonDash()}
+      </div>
     );
   }
 }

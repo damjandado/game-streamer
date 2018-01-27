@@ -8,8 +8,7 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 require('./models/User');
 require('./models/Game');
-require('./services/passport');
-require('./services/passport-twitch');
+require('./services/passport-social');
 require('./services/passport-local');
 
 mongoose.Promise = global.Promise;
@@ -23,7 +22,6 @@ db.once('open', function() {
 });
 
 const app = express();
-require('./services/passportab')(app, passport);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -44,8 +42,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./routes/authRoutes')(app);
-require('./routes/userRoutes')(app);
+require('./routes/socialRoutes')(app);
+require('./routes/localRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

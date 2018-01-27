@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import SearchForm from './SearchForm';
-import Login from '../auth/Login';
+import AuthButton from './AuthButton';
 import Navs from './Navs';
-import { onSignOut } from '../../actions/actions';
+import { onLogout } from '../../actions/actions';
 
 class Header extends Component {
   renderContent() {
@@ -14,11 +14,11 @@ class Header extends Component {
         return;
       case false:
         return (
-          [<li key={'signin'}>
-            <Login link={'/signin'}>Log in</Login>
+          [<li key={'login'}>
+            <AuthButton link={'/login'}>Log in</AuthButton>
           </li>,
           <li key={'signup'}>
-            <Login link={'/signup'}>Sign up</Login>
+            <AuthButton link={'/signup'}>Sign up</AuthButton>
           </li>]
         );
       default:
@@ -27,7 +27,7 @@ class Header extends Component {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={this.props.onSignOut}
+                onClick={this.props.onLogout}
               >
                 Log out
               </button>
@@ -82,4 +82,4 @@ function mapStateToProps({auth}) {
   return {auth};
 }
 
-export default connect(mapStateToProps, { onSignOut })(Header);
+export default connect(mapStateToProps, { onLogout })(Header);
