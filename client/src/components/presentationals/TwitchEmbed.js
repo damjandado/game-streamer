@@ -2,10 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import * as actions from '../../actions/actions';
+import * as apiCalls from '../../actions/apiCalls';
+
 const TwitchEmbed = props => {
   const { logo, game, name, status, display_name, text, views } = props.embed;
   const renderText = () => {
     return { __html: text };
+  };
+
+  const searchGame = () => {
+    props.searchGamesApi({ search: game });
   };
   return (
     <div className="twitchWrapper">
@@ -29,7 +36,7 @@ const TwitchEmbed = props => {
               <div className="stream-details">
                 <span className="text-16">{status}</span>
                 <br />
-                <Link to={`/search`}>
+                <Link to={`/search`} onClick={searchGame.bind(this)}>
                   <span className="gs-game">{game}</span>
                 </Link>
               </div>
@@ -59,4 +66,7 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps)(TwitchEmbed);
+export default connect(mapStateToProps, {
+  saveActivity: actions.saveActivity,
+  searchGamesApi: apiCalls.searchGamesApi
+})(TwitchEmbed);

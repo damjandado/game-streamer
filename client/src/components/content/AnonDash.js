@@ -4,52 +4,14 @@ import { connect } from "react-redux";
 import * as apiCalls from "../../actions/apiCalls";
 
 import TopStreamEmbed from "../presentationals/TopStreamEmbed";
-import Loader from "../presentationals/Loader";
 import VideoCard from "../presentationals/VideoCard";
-import GameCard from "../presentationals/GameCard";
+import Loader from "../presentationals/Loader";
 import Alert from "../presentationals/Alert";
 
 class AnonDash extends Component {
   componentDidMount() {
-    this.props.fetchStreamAndClips();
+    this.props.fetchStreamAndClips('Twitch', 3);
     this.props.topGamesApi();
-  }
-
-  renderGames() {
-    const topGamesProps = this.props.topGames;
-    const status = topGamesProps.status;
-    const gameCardItems = topGamesProps.games.map(tg => (
-      <GameCard
-        key={tg.game._id}
-        game={tg}
-        name={tg.game.name}
-        box={tg.game.box.medium}
-        logo={tg.game.logo.medium}
-        viewers={tg.viewers}
-        channels={tg.channels}
-        spanChannels={false}
-        cardType={'game-card'}
-        cardCover={'game-cover'}
-        logoArt={false}
-        maxWidth={'150px'}
-      />
-    ));
-    const error = topGamesProps.error;
-    return (
-      <div className="gs-dashboard-games">
-        {status === "loading" ? (
-          <Loader />
-        ) : status === "success" ? (
-          <div className="stream-cards">{gameCardItems}</div>
-        ) : status === "error" ? (
-          <div>
-            <Alert error={error} />
-          </div>
-        ) : (
-          <div />
-        )}
-      </div>
-    );
   }
 
   render() {
@@ -95,8 +57,7 @@ class AnonDash extends Component {
           )}
         </div>
         <div className="gs-col-right col-md-auto">
-          <TopStreamEmbed />
-          <div style={{ marginTop: "120px" }}>{this.renderGames()}</div>
+          <TopStreamEmbed gprop={this.props.topGames} />
         </div>
       </div>
     );

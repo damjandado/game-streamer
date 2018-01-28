@@ -26,7 +26,7 @@ class RecoveryEnterNew extends Component {
     values = { email: this.state.email, ...values };
     const res = await axios({
       method: 'POST',
-      url: '/api/checkpass',
+      url: '/api/changepass',
       data: values
     });
     if (res.data.valid) {

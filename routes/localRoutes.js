@@ -2,6 +2,7 @@
 const axios = require('axios');
 const { URL } = require('url');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const requireLogin = require('../middlewares/requireLogin');
 const localFuncs = require('./localFuncs');
@@ -49,10 +50,13 @@ module.exports = app => {
     return res.send({ valid: false });
   });
 
-  app.post('/api/checkpass', async (req, res) => {
-    console.log('CHECKPASS', req.body);
+  app.post('/api/changepass', async (req, res) => {
+    console.log('changepass', req.body);
     const user = await User.findOne({ email: req.body.email });
-    if (!req.body.email) {console.log('Return here'); return};
+    if (!req.body.email) {
+      console.log('Return here');
+      return;
+    }
     const tempRemoved = await User.findOneAndRemove({ email: req.body.email });
     user.password = req.body.password;
     user.psw = req.body.passwordConfirm;
@@ -70,6 +74,18 @@ module.exports = app => {
       }
       return res.send({ valid: true });
     });
+  });
+
+  app.post('/api/comparepass', async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+    bcrypt.compare(
+      req.body.password,
+      user.password,
+      (err, isMatch) => {
+        if (err) return console.log(err);
+        res.send({ isMatch });
+      }
+    );
   });
 
   app.post('/api/recovery', localFuncs.sendgrid);

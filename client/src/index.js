@@ -31,7 +31,7 @@ let store = createStore(
 // // If we have a token, consider the user to be signed in
 // if (token) {
 //   // we need to update application state
-//   store.dispatch({ type: SIGNIN_SUCCESS_USER, logemail: email });
+//   store.dispatch({ type: SIGNIN_SUCCESS_USER, email });
 // }
 
 ReactDOM.render(

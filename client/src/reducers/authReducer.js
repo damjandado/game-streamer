@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         isWaiting: false,
         authenticated: true,
-        email: action.data.logemail
+        email: action.data.email
       });
     case LOGIN_ERROR_USER:
       return Object.assign({}, state, {

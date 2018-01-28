@@ -9,8 +9,8 @@ export const onSignup = (values, history) => async dispatch => {
   try {
     if (res.data.success) {
       dispatch(signupSuccess());
-      const { email: logemail, password: logpassword } = values;
-      dispatch(onLogin({ logemail, logpassword }, '/', history));
+      const { email, password } = values;
+      dispatch(onLogin({ email, password }, '/', history));
     } else {
       dispatch(signupError());
       let signupMessage = res.data.message;

@@ -30,7 +30,7 @@ class LoginForm extends Component {
           key={name}
           component={AuthField}
           type={type}
-          name={`log${name}`}
+          name={name}
           placeholder={placeholder}
           required=""
           icon={icon}
@@ -108,8 +108,8 @@ class LoginForm extends Component {
 function validate(values) {
   const errors = {};
 
-  errors.logemail = validateEmails(values.logemail || '');
-  
+  errors.email = validateEmails(values.email || '');
+
   const keys = _.keys(values);
   _.each(keys, name => {
     if (!values[name]) {
@@ -123,14 +123,22 @@ function validate(values) {
 }
 
 const asyncValidate = async values => {
-  let data = { email: values.logemail };
   const res = await axios({
     method: 'POST',
     url: '/api/checkmail',
-    data
+    data: { email: values.email }
   });
   if (!res.data.valid) {
-    throw { logemail: 'That email does not exists' };
+    throw { email: 'That email does not exists' };
+  } else {
+    let resP = await axios({
+      method: 'POST',
+      url: '/api/comparepass',
+      data: values
+    });
+    if (!resP.data.isMatch) {
+      throw { password: 'Wrong password' }
+    }
   }
 };
 
@@ -138,8 +146,8 @@ LoginForm = connect(null, { onLogin })(LoginForm);
 
 export default reduxForm({
   form: 'loginForm',
-  initialValues: { logemail: 'a@b.c', logpassword: 'abc' },
+  initialValues: { email: 'a@b.c', password: 'abc' },
   validate,
   asyncValidate,
-  asyncBlurFields: ['logemail']
+  asyncBlurFields: ['email']
 })(withRouter(LoginForm));

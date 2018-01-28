@@ -6,11 +6,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 
 // Create local strategy
-const localOptions = {
-  usernameField: 'logemail',
-  passwordField: 'logpassword'
-};
-const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
+const localLogin = new LocalStrategy((email, password, done) => {
   console.log('This LocalStrategy is working');
 
   User.findOne({ email }, function(err, user) {

@@ -148,3 +148,19 @@ export const fetchChannelStream = id => async dispatch => {
     dispatch(actions.fetchFailure(e));
   }
 };
+
+export const fetchStreamByChannelName = name => async dispatch => {
+  const res = await axios({
+    method: 'get',
+    url: `https://api.twitch.tv/kraken/channels/${name}`,
+    headers: {
+      'Client-ID': `${twitchAPI}`
+    }
+  });
+  try {
+    const stream = res.data;
+    dispatch(actions.embedStream(stream));
+  } catch (e) {
+    dispatch(actions.fetchFailure(e));
+  }
+};
