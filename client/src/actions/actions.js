@@ -1,4 +1,3 @@
-import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 import * as types from './types';
@@ -90,6 +89,15 @@ export const sendMail = email => async dispatch => {
     console.log('Email was not sent');
   }
 };
+
+export const checkEmail = (email) => async dispatch => {
+    const res = await makeUserRequest('POST', email, '/api/checkmail');
+      if (res.data.valid) {
+        dispatch({ type: types.CHECK_MAIL, payload: true })
+      } else {
+        dispatch({ type: types.CHECK_MAIL, payload: false })
+      }
+  }
 
 // "Login" action creators
 function beginLogin() {

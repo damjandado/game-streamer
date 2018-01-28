@@ -9,11 +9,15 @@ import AuthField from './AuthField';
 import validateEmails from '../../utils/validateEmails';
 import { onLogin } from '../../actions/actions';
 
+import axios from 'axios';
+
 class LoginForm extends Component {
   state = { remember: false };
 
   onRememberChange() {
-    this.setState(prevState => {return { remember: !prevState.remember }});
+    this.setState(prevState => {
+      return { remember: !prevState.remember };
+    });
     console.log('5th of Novembah');
   }
 
@@ -37,7 +41,7 @@ class LoginForm extends Component {
 
   render() {
     console.log('LoginForm this.props', this.props);
-    const { handleSubmit, history } = this.props;
+    const { handleSubmit, onLogin, history } = this.props;
     const { remember } = this.state;
     console.log('S T A T E', this.state);
     return (
@@ -46,8 +50,8 @@ class LoginForm extends Component {
           <div className="col-xs-12 col-sm-6">
             <form
               className="kpx_loginForm"
-              onSubmit={handleSubmit(values =>
-                this.props.onLogin(values, remember, '/', history)
+              onSubmit={handleSubmit(val =>
+                onLogin(val, remember, '/', history)
               )}
               autoComplete="off"
               method="GET"
@@ -104,10 +108,13 @@ class LoginForm extends Component {
 function validate(values) {
   const errors = {};
 
-  errors.email = validateEmails(values.email || '');
-
-  _.each(formFields, ({ name }) => {
+  errors.logemail = validateEmails(values.logemail || '');
+  
+  const keys = _.keys(values);
+  _.each(keys, name => {
     if (!values[name]) {
+      console.log('values', values);
+      console.log('values[name] in validate function', values[name]);
       errors[name] = 'You must provide a value';
     }
   });
@@ -115,10 +122,24 @@ function validate(values) {
   return errors;
 }
 
+const asyncValidate = async values => {
+  let data = { email: values.logemail };
+  const res = await axios({
+    method: 'POST',
+    url: '/api/checkmail',
+    data
+  });
+  if (!res.data.valid) {
+    throw { logemail: 'That email does not exists' };
+  }
+};
+
 LoginForm = connect(null, { onLogin })(LoginForm);
 
 export default reduxForm({
   form: 'loginForm',
-  initialValues: {logemail: 'a@b.c', logpassword: 'abc'},
-  validate
+  initialValues: { logemail: 'a@b.c', logpassword: 'abc' },
+  validate,
+  asyncValidate,
+  asyncBlurFields: ['logemail']
 })(withRouter(LoginForm));

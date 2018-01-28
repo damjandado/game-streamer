@@ -12,12 +12,8 @@ class Recovery extends Component {
   state = { showSuccess: false, invalid: '' };
 
   async checkEmail(email, history) {
-    const res = await axios({
-      method: 'POST',
-      url: '/api/checkmail',
-      data: email
-    });
-    if (res.data.valid) {
+    await this.props.checkEmail(email);
+    if (this.props.auth.emailExists) {
       const sendmail = await axios.post('/api/recovery', email);
       if (sendmail.data.success) {
         console.log(history);
@@ -86,7 +82,7 @@ function validate(values) {
 }
 
 function mapStateToProps({ auth }) {
-  return { slugId: auth.slugId };
+  return { auth };
 }
 
 const RecoveryHOC = connect(mapStateToProps, { sendMail })(Recovery);

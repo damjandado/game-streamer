@@ -2,7 +2,6 @@ import axios from 'axios';
 import twitchAPI from '../config/keys';
 import * as actions from './actions';
 import {
-  FETCH_USER,
   FETCH_FEATURED_SUCCESS,
   FETCH_DASHBOARD,
   FETCH_BROADCASTERS,

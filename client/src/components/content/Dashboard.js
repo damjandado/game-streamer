@@ -30,6 +30,7 @@ class Dashboard extends Component {
             game={bc.game}
           />
         );
+      return;
     });
     const streamCardGames = dash.games.map(gm => {
       if (gm !== null)
@@ -43,6 +44,7 @@ class Dashboard extends Component {
             game={gm.channel.game}
           />
         );
+      return;
     });
     const error = dash.error;
     return (

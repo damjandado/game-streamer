@@ -9,7 +9,8 @@ import {
   LOGOUT_USER,
   LOGOUT_SUCCESS_USER,
   LOGOUT_ERROR_USER,
-  SEND_MAIL
+  SEND_MAIL,
+  CHECK_MAIL
 } from '../actions/types';
 
 const initialState = {
@@ -20,7 +21,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_USER:
-      const token = localStorage.getItem('token');
+      // const token = localStorage.getItem('token');
       const user = action.payload;
       console.log('u s e r ', user);
       return user
@@ -63,12 +64,8 @@ export default (state = initialState, action) => {
         isWaiting: false,
         authenticated: true
       });
-    case SIGNUP_USER:
-      return Object.assign({}, state, { isWaiting: true });
-    case SIGNUP_SUCCESS_USER:
-      return Object.assign({}, state, { isWaiting: false });
-    case SIGNUP_ERROR_USER:
-      return Object.assign({}, state, { isWaiting: false });
+	case CHECK_MAIL:
+      return Object.assign({}, state, { emailExists: action.payload });
     case SEND_MAIL:
       return Object.assign({}, state, { slugId: action.slugId || '' });
     default:

@@ -1,8 +1,4 @@
 import { SAVE_ACTIVITY } from '../actions/types';
-const initialState = {
-  stream: "monstercat",
-  game: "Monstercat"
-};
 
 export default function (state = [], action) {
   switch (action.type) {
