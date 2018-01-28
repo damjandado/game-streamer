@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import axios from 'axios';
 
-import RecoveryEnterNew from './RecoveryEnterNew';
 import AuthField from './AuthField';
 import validateEmails from '../../utils/validateEmails';
 import { sendMail } from '../../actions/actions';
 
 class Recovery extends Component {
-  state = { showEnterNew: false, invalid: '' };
+  state = { showSuccess: false, invalid: '' };
 
   async checkEmail(email, history) {
     const res = await axios({
@@ -19,12 +18,15 @@ class Recovery extends Component {
       data: email
     });
     if (res.data.valid) {
-      await this.props.sendMail(email);
-      console.log(history);
-      history.push(`/rec/${this.props.slugId}`);
-      // this.setState({ showEnterNew: true });
+      const sendmail = await axios.post('/api/recovery', email);
+      if (sendmail.data.success) {
+        console.log(history);
+        this.setState({ showSuccess: true });
+      } else {
+        this.setState({ invalid: 'Error: Email not sent' });
+      }
     } else {
-      this.setState({ invalid: 'Email was not found' });
+      this.setState({ invalid: 'Email not found' });
     }
   }
 
@@ -32,12 +34,14 @@ class Recovery extends Component {
     const { handleSubmit, history } = this.props;
     console.log('Recovery P R O P S', this.props);
     console.log('Recovery S T A T E', this.state);
-    if (!this.state.showEnterNew) {
+    if (!this.state.showSuccess) {
       return (
         <div>
           <h4>Enter your login email here to recover password:</h4>
           <br />
-          <form onSubmit={handleSubmit((values) => this.checkEmail(values, history))}>
+          <form
+            onSubmit={handleSubmit(values => this.checkEmail(values, history))}
+          >
             <Field
               type="text"
               name="email"
@@ -56,7 +60,7 @@ class Recovery extends Component {
         </div>
       );
     }
-    return <RecoveryEnterNew />;
+    return <div>Success</div>;
   }
 
   render() {
@@ -81,11 +85,11 @@ function validate(values) {
   return errors;
 }
 
-function mapStateToProps ({ auth }) {
-  return { slugId: auth.slugId }
+function mapStateToProps({ auth }) {
+  return { slugId: auth.slugId };
 }
 
-const RecoveryHOC = connect(mapStateToProps, {sendMail})(Recovery);
+const RecoveryHOC = connect(mapStateToProps, { sendMail })(Recovery);
 
 export default reduxForm({
   form: 'recoveryForm',

@@ -22,7 +22,7 @@ const userSchema = new Schema({
     type: String
     // required: true
   },
-  passwordConf: {
+  psw: {
     type: String
     // required: true
   },
@@ -33,7 +33,8 @@ const userSchema = new Schema({
   },
   token: String,
   tokenIAT: Date,
-  tokenExp: Date
+  tokenExp: Date,
+  userId: String
 });
 
 //authenticate input against database

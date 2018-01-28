@@ -111,7 +111,7 @@ exports.sendgrid = async (req, res, next) => {
 
   const user = {
     subject: 'Password recovery link',
-    recipients: [{email}],
+    recipients: [{ email }],
     id: makeid(16)
   };
 
@@ -119,9 +119,10 @@ exports.sendgrid = async (req, res, next) => {
   const mailer = new Mailer(user, mailTemplate(user));
   // console.log('mailer', mailer);
   try {
-    // await mailer.send();
+    await mailer.send();
     console.log('mail sent');
-    res.send(user);
+    await User.updateOne({ email }, { userId: user.id });
+    res.send({ success: true, ...user });
   } catch (err) {
     res.status(422).send(err);
   }
@@ -135,11 +136,27 @@ exports.sgLink = (req, res) => {
   // }
   console.log('sgLink req.body', req.body);
   res.redirect('/');
-
 };
 
 exports.sgWebhooks = (req, res) => {
   console.log('Password recovery link was clicked');
   console.log('req.body', req.body);
   res.send({ success: true });
+};
+
+exports.findByUserId = (req, res) => {
+  console.log('req.body on findByUserId');
+  console.log('------------------------');
+  console.log(req.body);
+  User.findOne({ userId: req.body.userId }, (err, user) => {
+    if (err) console.log(err);
+    if (user) {
+      console.log('findByUserId:');
+      console.log('-------------');
+      console.log(user);
+      res.send({ success: true, email: user.email });
+    } else {
+      res.send({ error: 'User not found' });
+    }
+  });
 };

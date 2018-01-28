@@ -9,7 +9,7 @@ module.exports = (user) => {
         <p>Click on a link below to visit the password recovery page: </p>
         <p><br /></p>
         <div>
-          <a href="${keys.redirectDomain}/api/recovery/${user.id}">Yes</a>
+          <a href="${keys.redirectDomain}/users/${user.id}">Yes</a>
         </div>
       </div>
      </body>

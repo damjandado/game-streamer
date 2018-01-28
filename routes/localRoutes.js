@@ -54,11 +54,15 @@ module.exports = app => {
     const user = await User.findOne({ email: req.body.email });
     if (!req.body.email) {console.log('Return here'); return};
     const tempRemoved = await User.findOneAndRemove({ email: req.body.email });
-    // console.log('user %s and removed %s', user, tempRemoved);
     user.password = req.body.password;
-    user.passwordConf = req.body.passwordConfirm;
-    const userAgain = { email, password, passwordConf } = user;
-    console.log('User to save in DB', userAgain);
+    user.psw = req.body.passwordConfirm;
+    const { email, username, visits, password, psw } = user;
+    const userAgain = { email, username, visits, password, psw };
+    console.log('User found in DB:', user);
+    console.log('-------------------');
+    console.log('User to save in DB:', userAgain);
+    console.log('-------------------');
+    // console.log('user %s and removed %s', user, tempRemoved);
     await User.create(userAgain, (err, user) => {
       if (err) {
         console.error(err);
@@ -71,6 +75,7 @@ module.exports = app => {
   app.post('/api/recovery', localFuncs.sendgrid);
   app.get('/api/recovery/:formId', localFuncs.sgLink);
   app.post('/api/users/webhooks', localFuncs.sgWebhooks);
+  app.post('/api/users/userid', localFuncs.findByUserId);
 
   app.get('/api/users', requireLogin, async (req, res) => {
     const users = await User.find({ _id: req.user.id });

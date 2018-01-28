@@ -5,9 +5,25 @@ import axios from 'axios';
 import AuthField from './AuthField';
 
 class RecoveryEnterNew extends Component {
-  state = { showSuccess: false };
+  state = { showSuccess: false, email: '' };
+
+  async componentDidMount() {
+    const { match: { params } } = this.props;
+    console.log('params? ? ? ?', params);
+    const res = await axios({
+      method: 'POST',
+      url: '/api/users/userid',
+      data: params
+    });
+    if (res.data.success) {
+      this.setState({ email: res.data.email });
+    } else {
+      console.log('Error:', res.data.error);
+    }
+  }
 
   async checkPasswords(values) {
+    values = { email: this.state.email, ...values };
     const res = await axios({
       method: 'POST',
       url: '/api/checkpass',

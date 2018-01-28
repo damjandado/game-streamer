@@ -24,7 +24,7 @@ class Landing extends Component {
             <Route path="/login" component={LoginNew} />
             <Route path="/signup" component={SignupNew} />           
             <Route path="/recovery" component={Recovery} />           
-            <Route exact path={`/rec/${this.props.slugId}`} component={RecoveryEnterNew} />           
+            <Route exact path='/users/:userId' component={RecoveryEnterNew} />           
             <Route path="/featured" component={Featured} />
             <Route path="/topgames" component={TopGames} />
             <Route path={"/" + this.props.embed.name} component={Channel} />
