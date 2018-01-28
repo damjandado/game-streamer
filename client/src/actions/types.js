@@ -1,4 +1,5 @@
 export const FETCH_USER = 'FETCH_USER';
+export const SEND_MAIL = 'SEND_MAIL';
 export const CREATE_USER = 'CREATE_USER';
 export const SAVE_ACTIVITY = 'SAVE_ACTIVITY';
 

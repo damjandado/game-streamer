@@ -21,7 +21,8 @@ const {
   flatten,
   remove_duplicates_es6,
   count_items,
-  sortProperties
+  sortProperties,
+  makeid
 } = require('./func.js');
 
 module.exports = app => {
@@ -49,13 +50,16 @@ module.exports = app => {
   });
 
   app.post('/api/checkpass', async (req, res) => {
-    console.log('CHECKPASS');
+    console.log('CHECKPASS', req.body);
     const user = await User.findOne({ email: req.body.email });
-    const tempRemoved = User.findOneAndRemove({ email: req.body.email });
-    console.log('user %s and removed %s', user, tempRemoved);
+    if (!req.body.email) {console.log('Return here'); return};
+    const tempRemoved = await User.findOneAndRemove({ email: req.body.email });
+    // console.log('user %s and removed %s', user, tempRemoved);
     user.password = req.body.password;
     user.passwordConf = req.body.passwordConfirm;
-    User.create(user, (err, user) => {
+    const userAgain = { email, password, passwordConf } = user;
+    console.log('User to save in DB', userAgain);
+    await User.create(userAgain, (err, user) => {
       if (err) {
         console.error(err);
         return res.send({ valid: false });

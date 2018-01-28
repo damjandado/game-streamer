@@ -1,23 +1,28 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
 import { reduxForm, Field } from 'redux-form';
 import axios from 'axios';
 
 import RecoveryEnterNew from './RecoveryEnterNew';
 import AuthField from './AuthField';
 import validateEmails from '../../utils/validateEmails';
+import { sendMail } from '../../actions/actions';
 
 class Recovery extends Component {
   state = { showEnterNew: false, invalid: '' };
 
-  async checkEmail(email) {
+  async checkEmail(email, history) {
     const res = await axios({
       method: 'POST',
       url: '/api/checkmail',
       data: email
     });
     if (res.data.valid) {
-      const res = await axios.post('/api/recovery', email);
-      this.setState({ showEnterNew: true });
+      await this.props.sendMail(email);
+      console.log(history);
+      history.push(`/rec/${this.props.slugId}`);
+      // this.setState({ showEnterNew: true });
     } else {
       this.setState({ invalid: 'Email was not found' });
     }
@@ -32,7 +37,7 @@ class Recovery extends Component {
         <div>
           <h4>Enter your login email here to recover password:</h4>
           <br />
-          <form onSubmit={handleSubmit(this.checkEmail.bind(this))}>
+          <form onSubmit={handleSubmit((values) => this.checkEmail(values, history))}>
             <Field
               type="text"
               name="email"
@@ -76,8 +81,15 @@ function validate(values) {
   return errors;
 }
 
+function mapStateToProps ({ auth }) {
+  return { slugId: auth.slugId }
+}
+
+const RecoveryHOC = connect(mapStateToProps, {sendMail})(Recovery);
+
 export default reduxForm({
   form: 'recoveryForm',
   validate,
-  asyncBlurFields: ['email']
-})(Recovery);
+  asyncBlurFields: ['email'],
+  destroyOnUnmount: false
+})(withRouter(RecoveryHOC));

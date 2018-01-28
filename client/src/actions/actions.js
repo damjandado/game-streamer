@@ -76,8 +76,19 @@ function makeUserRequest(method, data, api = '/local/login') {
 }
 
 export const fetchUser = () => async dispatch => {
-  const res = await axios.get('/api/current_user?');
+  const res = await axios.get('/api/current_user');
   dispatch({ type: types.FETCH_USER, payload: res.data });
+};
+
+export const sendMail = email => async dispatch => {
+  const res = await axios.post('/api/recovery', email);
+  try {
+    if(res.data.id) {
+      dispatch({ type: types.SEND_MAIL, slugId: res.data.id });
+    }
+  } catch(e) {
+    console.log('Email was not sent');
+  }
 };
 
 // "Login" action creators

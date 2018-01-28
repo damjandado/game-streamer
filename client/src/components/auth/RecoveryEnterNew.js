@@ -62,5 +62,6 @@ function validate(val) {
 
 export default reduxForm({
   form: 'recoveryForm',
-  validate
+  validate,
+  destroyOnUnmount: false
 })(RecoveryEnterNew);

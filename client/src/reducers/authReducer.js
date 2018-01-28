@@ -8,7 +8,8 @@ import {
   SIGNUP_ERROR_USER,
   LOGOUT_USER,
   LOGOUT_SUCCESS_USER,
-  LOGOUT_ERROR_USER
+  LOGOUT_ERROR_USER,
+  SEND_MAIL
 } from '../actions/types';
 
 const initialState = {
@@ -23,7 +24,7 @@ export default (state = initialState, action) => {
       const user = action.payload;
       console.log('u s e r ', user);
       return user
-        ? Object.assign({}, state, {user}, { authenticated: true })
+        ? Object.assign({}, state, { user }, { authenticated: true })
         : Object.assign({}, state, { authenticated: false });
     case LOGIN_USER:
       return Object.assign({}, state, { isWaiting: true });
@@ -68,6 +69,8 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { isWaiting: false });
     case SIGNUP_ERROR_USER:
       return Object.assign({}, state, { isWaiting: false });
+    case SEND_MAIL:
+      return Object.assign({}, state, { slugId: action.slugId || '' });
     default:
       return state;
   }

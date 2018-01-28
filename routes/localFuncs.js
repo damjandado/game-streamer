@@ -8,6 +8,10 @@ const keys = require('../config/keys');
 // const Path = require('path-parser');
 // const { URL } = require('url');
 
+const Mailer = require('../services/Mailer');
+const mailTemplate = require('../services/emailTemplates/mailTemplate');
+const { makeid } = require('./func');
+
 // -------------------------------------------
 
 function tokenForUser(user) {
@@ -107,15 +111,16 @@ exports.sendgrid = async (req, res, next) => {
 
   const user = {
     subject: 'Password recovery link',
-    recipients: email,
-    id: 'vyntiouydonwchfhgkbgvnitrhetirnve'
+    recipients: [{email}],
+    id: makeid(16)
   };
 
   // Great place to send an email!
   const mailer = new Mailer(user, mailTemplate(user));
-
+  // console.log('mailer', mailer);
   try {
-    await mailer.send();
+    // await mailer.send();
+    console.log('mail sent');
     res.send(user);
   } catch (err) {
     res.status(422).send(err);
@@ -128,11 +133,13 @@ exports.sgLink = (req, res) => {
   // if (match) {
   //   res.send({ proceed: true, formId: match.formId });
   // }
+  console.log('sgLink req.body', req.body);
   res.redirect('/');
 
 };
 
 exports.sgWebhooks = (req, res) => {
   console.log('Password recovery link was clicked');
+  console.log('req.body', req.body);
   res.send({ success: true });
 };

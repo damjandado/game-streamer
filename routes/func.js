@@ -1,6 +1,16 @@
 const axios = require('axios');
 const twitchClientID = require('../config/keys').twitchClientID;
 
+exports.makeid = (num) => {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < num; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+};
+
 const featuredApi = async (limit = 8) => {
   const res = await axios.get(
     `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchClientID}`

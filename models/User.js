@@ -59,13 +59,13 @@ userSchema.statics.authenticate = function(email, password, callback) {
 //hashing a password before saving it to the database
 userSchema.pre('save', function(next) {
   const user = this;
-  console.log('save user is', user);
   if (!user.isModified('password')) return next();
   bcrypt.hash(user.password, 10, function(err, hash) {
     if (err) {
       return next(err);
     }
     user.password = hash;
+    console.log('USER pass', user.password);
     next();
   });
 });
