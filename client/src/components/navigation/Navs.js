@@ -1,60 +1,40 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import * as actions from "../../actions/actions";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/actions';
 
 class Navs extends Component {
   render() {
+    const { featured, top, channel, search } = this.props.activeTab;
     return (
-      <ul className="nav nav-pills" role="tablist">
-        <li
-          className="nav-item"
-          onClick={() => this.props.toggleActive("featured")}
-        >
+      <ul className="nav nav-tabs" role="tablist">
+        <li className="nav-item">
           <Link
-            className={
-              "btn btn-outline-success my-2 my-sm-0" +
-              (this.props.activeTab.featured ? " active" : "")
-            }
+            className={'btn btn-outline-success my-2 my-sm-0' + featured}
             to="/featured"
           >
             Featured
           </Link>
         </li>
-        <li className="nav-item" onClick={() => this.props.toggleActive("top")}>
+        <li className="nav-item">
           <Link
-            className={
-              "btn btn-outline-success my-2 my-sm-0" +
-              (this.props.activeTab.top ? " active" : "")
-            }
+            className={'btn btn-outline-success my-2 my-sm-0' + top}
             to="/topgames"
           >
             Top Games
           </Link>
         </li>
-        <li
-          className="nav-item"
-          onClick={() => this.props.toggleActive("channel")}
-        >
+        <li className="nav-item">
           <Link
-            className={
-              "btn btn-outline-success my-2 my-sm-0" +
-              (this.props.activeTab.channel ? " active" : "")
-            }
-            to={"/" + this.props.embed.name}
+            className={'btn btn-outline-success my-2 my-sm-0' + channel}
+            to={'/' + this.props.embed.name}
           >
             Channel
           </Link>
         </li>
-        <li
-          className="nav-item"
-          onClick={() => this.props.toggleActive("search")}
-        >
+        <li className="nav-item">
           <Link
-            className={
-              "btn btn-outline-success my-2 my-sm-0" +
-              (this.props.activeTab.search ? " active" : "")
-            }
+            className={'btn btn-outline-success my-2 my-sm-0' + search}
             to="/search"
           >
             Search Results

@@ -5,7 +5,14 @@ import Loader from '../presentationals/Loader';
 import StreamCard from '../presentationals/StreamCard';
 import Alert from '../presentationals/Alert';
 
+import * as actions from '../../actions';
+
 class SearchResults extends Component {
+  componentDidMount() {
+    console.log('SearchResults Component mounted');
+    this.props.toggleActive('search');
+  }
+
   render() {
     const searchProps = this.props.search;
     const status = searchProps.status;
@@ -54,4 +61,4 @@ function mapStateToProps({ search }) {
   return { search };
 }
 
-export default connect(mapStateToProps)(SearchResults);
+export default connect(mapStateToProps, actions)(SearchResults);

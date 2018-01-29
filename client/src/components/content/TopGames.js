@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as apiCalls from '../../actions/apiCalls';
+import * as actions from '../../actions';
 
 import Loader from '../presentationals/Loader';
 import GameCard from  '../presentationals/GameCard';
@@ -8,6 +8,8 @@ import Alert from  '../presentationals/Alert';
 
 class TopGames extends Component {
   componentDidMount () {
+    console.log('TopGames Component mounted');
+    this.props.toggleActive('top');
     this.props.topGamesApi();
   }
 
@@ -60,4 +62,4 @@ function mapStateToProps({ topGames }) {
   return { topGames };
 }
 
-export default connect(mapStateToProps, apiCalls)(TopGames); 
+export default connect(mapStateToProps, actions)(TopGames); 

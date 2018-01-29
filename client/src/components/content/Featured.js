@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as apiCalls from '../../actions/apiCalls';
+import * as actions from '../../actions';
 
 import Loader from '../presentationals/Loader';
 import StreamCard from '../presentationals/StreamCard';
@@ -8,7 +8,13 @@ import Alert from '../presentationals/Alert';
 
 class Featured extends Component {
   componentDidMount() {
+    console.log('Featured Component mounted');
+    this.props.toggleActive('featured');
     this.props.featuredApi();
+  }
+
+  componentDidUpdate() {
+    console.log('Featured Component updated');
   }
 
   render() {
@@ -50,4 +56,4 @@ function mapStateToProps({ featured }) {
   return { featured };
 }
 
-export default connect(mapStateToProps, apiCalls)(Featured);
+export default connect(mapStateToProps, actions)(Featured);

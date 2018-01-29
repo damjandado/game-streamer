@@ -1,23 +1,23 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 const initialState = {
-  featured: true,
-  top: false,
-  search: false,
-  channel: false
+  featured: '',
+  top: '',
+  search: '',
+  channel: ''
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case "TOGGLE_ACTIVE":
-      const current = state;
-      const tab = current[action.tab];
-      if (!tab) {
-        _.each(current, (val, key) => (current[key] = false));
-        console.log('Current TAB state', current);
-        // current[action.tab] = true;
-        return Object.assign({}, current);
-      }
+    case 'TOGGLE_ACTIVE':
+      state = {
+        featured: '',
+        top: '',
+        search: '',
+        channel: ''
+      };
+      console.log('TOGGLE_ACTIVE state before', state);
+      state[action.tab] = ' active';
       return state;
     default:
       return state;

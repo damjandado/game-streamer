@@ -5,7 +5,9 @@ import LeftBarItem from './LeftBarItem';
 
 class LeftBar extends Component {
   renderItems() {
-    return this.props.featured.map(item => {
+    console.log('this.props.featured', this.props.featured);
+    const fts = this.props.featured.slice(0,5);
+    return fts.map(item => {
       return (
         <LeftBarItem
           key={item.stream.channel.display_name}

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchStreamByChannelName } from '../../actions/apiCalls';
+import * as actions from '../../actions';
 import TwitchEmbed from '../presentationals/TwitchEmbed';
 
 class Channel extends Component {
   async componentDidMount() {
-    const { match: { params } } = this.props;
     console.log('CHANNEL mounted', this.props);
+    this.props.toggleActive('channel');
+    const { match: { params } } = this.props;
     console.log('params?', params);
     await this.props.fetchStreamByChannelName(params.channelName);
   }
@@ -29,4 +30,4 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, { fetchStreamByChannelName })(Channel);
+export default connect(mapStateToProps, actions)(Channel);

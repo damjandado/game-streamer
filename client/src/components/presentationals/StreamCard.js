@@ -17,7 +17,6 @@ class StreamCard extends Component {
   }
 
   render() {
-    console.log('This S T R E A M', this.props);
     const { streamCover, logo, title, name, game } = this.props;
     return (
       <div className="stream-card">
