@@ -1,9 +1,10 @@
 const axios = require('axios');
 const twitchClientID = require('../config/keys').twitchClientID;
 
-exports.makeid = (num) => {
-  var text = "";
-  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+exports.makeid = num => {
+  var text = '';
+  var possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (var i = 0; i < num; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -52,22 +53,35 @@ async function fetchBroadcasters(list) {
         });
         if (fetched.data.data.length) {
           let user = fetched.data.data[0];
+          console.log('user -> api.twitch.tv/helix/streams?user_login=');
+          console.log('***------------***');
+          console.log(user);
           let thumb = user.thumbnail_url.replace('{width}x{height}', '320x180');
           try {
-            const findGamebyID = await axios({
+            // const findGamebyID = await axios({
+            //   method: 'get',
+            //   url: `https://api.twitch.tv/helix/games?id=${user.game_id}`,
+            //   headers: { 'Client-ID': twitchClientID }
+            // });
+            // const gameName = findGamebyID.data.data[0].name;
+            // let parsed = Object.assign({}, user, {
+            //   display_name: item,
+            //   name: item,
+            //   game: gameName,
+            //   channel: {},
+            //   thumbnail_url: thumb
+            // });
+            const streamInfo = await axios({
               method: 'get',
-              url: `https://api.twitch.tv/helix/games?id=${user.game_id}`,
-              headers: { 'Client-ID': twitchClientID }
+              url: `https://api.twitch.tv/kraken/streams/${user.user_id}`,
+              headers: {
+                'Client-ID': twitchClientID,
+                'Accept': 'application/vnd.twitchtv.v5+json'
+              }
             });
-            const gameName = findGamebyID.data.data[0].name;
-            let parsed = Object.assign({}, user, {
-              display_name: item,
-              name: item,
-              game: gameName,
-              channel: {},
-              thumbnail_url: thumb
-            });
-            return parsed;
+            console.log('streamInfo.data ->');
+            console.log(streamInfo.data.stream);
+            return streamInfo.data.stream;
           } catch (e) {
             console.log(e);
           }
@@ -78,6 +92,9 @@ async function fetchBroadcasters(list) {
       }
     })
   ).then(result => {
+    console.log('outputBroadcasters');
+    console.log('***------------***');
+    console.log(result);
     outputBroadcasters = [].concat(result);
   });
   return outputBroadcasters;
@@ -173,6 +190,7 @@ exports.featuredApi = featuredApi;
 exports.topGamesApi = topGamesApi;
 exports.fetchBroadcasters = fetchBroadcasters;
 exports.fetchGameStreams = fetchGameStreams;
+
 exports.processQuery = processQuery;
 exports.flatten = flatten;
 exports.remove_duplicates_es6 = remove_duplicates_es6;

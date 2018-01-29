@@ -3,12 +3,8 @@ import { Link } from 'react-router-dom';
 
 export default ({ children, link }) => {
   return (
-    <div className="container">
-      <Link to={link}>
-        <button type="button" className="btn btn-primary gs-btn">
+      <Link to={link} className="nav-link">
           {children}
-        </button>
       </Link>
-    </div>
   );
 };

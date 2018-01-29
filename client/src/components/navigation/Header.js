@@ -7,30 +7,32 @@ import AuthButton from './AuthButton';
 import Navs from './Navs';
 import { onLogout } from '../../actions/actions';
 
+import logo from '../../images/logo_ticc_b.png';
+
 class Header extends Component {
   renderContent() {
     switch (this.props.auth.authenticated) {
       case null:
         return;
       case false:
-        return (
-          [<li key={'login'}>
+        return [
+          <li key={'login'} className="nav-item">
             <AuthButton link={'/login'}>Log in</AuthButton>
           </li>,
-          <li key={'signup'}>
+          <li key={'signup'} className="nav-item">
             <AuthButton link={'/signup'}>Sign up</AuthButton>
-          </li>]
-        );
+          </li>
+        ];
       default:
         return (
-          <li>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={this.props.onLogout}
-              >
-                Log out
-              </button>
+          <li className="nav-item">
+            <a
+              id="gs-logout"
+              className="nav-link"
+              onClick={this.props.onLogout}
+            >
+              Log out
+            </a>
           </li>
         );
     }
@@ -56,20 +58,12 @@ class Header extends Component {
               <span className="navbar-toggler-icon" />
             </button>
             <a id="game-streamer" className="navbar-brand" href="/">
-              GameStreamer
+              <img src={logo} id="gs-logo" className="d-inline-block align-top" />
             </a>
           </div>
-
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mr-auto">
-              <li>
-                <Navs />
-              </li>
-            </ul>
+            <Navs />
             <SearchForm />
-          </div>
-
-          <div className="collapse navbar-collapse">
             <ul className="navbar-nav ml-auto">{this.renderContent()}</ul>
           </div>
         </div>
@@ -78,8 +72,8 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({auth}) {
-  return {auth};
+function mapStateToProps({ auth }) {
+  return { auth };
 }
 
 export default connect(mapStateToProps, { onLogout })(Header);

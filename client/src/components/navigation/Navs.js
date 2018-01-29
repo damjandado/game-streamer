@@ -7,10 +7,10 @@ class Navs extends Component {
   render() {
     const { featured, top, channel, search } = this.props.activeTab;
     return (
-      <ul className="nav nav-tabs" role="tablist">
+      <ul className="navbar-nav mr-sm-4" role="tablist">
         <li className="nav-item">
           <Link
-            className={'btn btn-outline-success my-2 my-sm-0' + featured}
+            className={'nav-link my-2 my-sm-0' + featured}
             to="/featured"
           >
             Featured
@@ -18,7 +18,7 @@ class Navs extends Component {
         </li>
         <li className="nav-item">
           <Link
-            className={'btn btn-outline-success my-2 my-sm-0' + top}
+            className={'nav-link my-2 my-sm-0' + top}
             to="/topgames"
           >
             Top Games
@@ -26,7 +26,7 @@ class Navs extends Component {
         </li>
         <li className="nav-item">
           <Link
-            className={'btn btn-outline-success my-2 my-sm-0' + channel}
+            className={'nav-link my-2 my-sm-0' + channel}
             to={'/' + this.props.embed.name}
           >
             Channel
@@ -34,10 +34,10 @@ class Navs extends Component {
         </li>
         <li className="nav-item">
           <Link
-            className={'btn btn-outline-success my-2 my-sm-0' + search}
+            className={'nav-link my-2 my-sm-0' + search}
             to="/search"
           >
-            Search Results
+            Searched
           </Link>
         </li>
       </ul>

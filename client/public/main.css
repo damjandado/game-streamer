@@ -22,11 +22,17 @@ a {
 }
 
 /* Game Streamer styles */
-#navbarSupportedContent * {
+nav#gs-header a, nav#gs-header button {
   color: white;
 }
 
+nav#gs-header a:hover {
+  text-decoration: underline;
+}
+
 #gs-header {
+  white-space: nowrap;
+  padding: 0;
 }
 
 .row > .gs-sidenav {
@@ -408,4 +414,13 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 .gs-control {
   display: inline-block;
   width: 70%;
+}
+
+#gs-logo {
+  width: 80%;
+  height: auto;
+}
+
+a#gs-logout:hover {
+  cursor: pointer;
 }

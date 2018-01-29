@@ -22,12 +22,12 @@ class Dashboard extends Component {
       if (bc !== null)
         return (
           <StreamCard
-            key={bc.id}
+            key={bc._id}
             ebdStream={bc}
-            streamCover={bc.thumbnail_url}
-            title={bc.title}
-            name={bc.display_name}
+            streamCover={bc.preview.medium}
+            name={bc.channel.display_name}
             game={bc.game}
+            logo={bc.channel.logo}
           />
         );
       return;

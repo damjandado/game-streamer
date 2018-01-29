@@ -1,32 +1,65 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import * as apiCalls from '../../actions/apiCalls';
+import _ from 'lodash';
+
+import * as actions from '../../actions';
 
 class SearchForm extends Component {
+  state = {
+    width: window.innerWidth,
+    height: window.innerHeight
+  };
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions = _.debounce(() => {
+    this.setState({
+      height: window.innerHeight,
+      width: window.innerWidth
+    });
+  }, 100);
+
   render() {
-    const { handleSubmit, pristine, reset, submitting } = this.props;
+    const { handleSubmit, searchGamesApi } = this.props;
+    const { width, height } = this.state;
+    const full = width > 991 || width < 576;
     return (
       <form
         className="form-inline my-2 my-lg-0"
-        onSubmit={handleSubmit(value => this.props.searchGamesApi(value))}
+        onSubmit={handleSubmit(value => searchGamesApi(value))}
       >
         <Field
-          className="form-control mr-sm-2"
+          className="form-control-sm mr-sm-2"
           type="text"
           name="search"
           placeholder="Search"
           component="input"
+          size={full ? 40 : (width > 767 ? 30 : 20)}
         />
-        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">
-          Search
-        </button>
+
+        {full ? (
+          <button
+            className="btn btn-sm btn-outline-success my-2 my-sm-0"
+            type="submit"
+          >
+            {`Search`}
+          </button>
+        ) : (
+          <div />
+        )}
       </form>
     );
   }
 }
 
-SearchForm = connect(null, apiCalls)(SearchForm);
+SearchForm = connect(null, actions)(SearchForm);
 
 export default reduxForm({
   form: 'searchForm'
