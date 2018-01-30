@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import AuthField from './AuthField';
 import validateEmails from '../../utils/validateEmails';
-import { sendMail } from '../../actions/actions';
+import * as actions from '../../actions';
 
 class Recovery extends Component {
   state = { showSuccess: false, invalid: '' };
@@ -43,6 +43,7 @@ class Recovery extends Component {
               name="email"
               component={AuthField}
               icon="envelope"
+              formName="recoveryForm"
             />
             <button
               type="submit"
@@ -72,7 +73,9 @@ class Recovery extends Component {
 
 function validate(values) {
   const errors = {};
-  errors.email = validateEmails(values.email || '');
+  let err = validateEmails(values.email || '');
+  console.log('err', err);
+  if (err) { errors.email = err; }
   console.log('validateEmails', errors);
   if (!values.email) {
     errors.email = 'You must provide a value';
@@ -85,7 +88,7 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-const RecoveryHOC = connect(mapStateToProps, { sendMail })(Recovery);
+const RecoveryHOC = connect(mapStateToProps, actions)(Recovery);
 
 export default reduxForm({
   form: 'recoveryForm',

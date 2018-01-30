@@ -41,8 +41,18 @@ module.exports = app => {
   });
 
   app.post('/api/checkmail', async (req, res) => {
-    console.log('CHECKMAIL');
+    console.log('CHECK-MAIL');
     const user = await User.findOne({ email: req.body.email });
+    console.log('user', user);
+    if (user) {
+      return res.send({ valid: true });
+    }
+    return res.send({ valid: false });
+  });
+
+  app.post('/api/checkusername', async (req, res) => {
+    console.log('CHECK-USERNAME');
+    const user = await User.findOne({ username: req.body.username });
     console.log('user', user);
     if (user) {
       return res.send({ valid: true });
@@ -59,7 +69,7 @@ module.exports = app => {
     }
     const tempRemoved = await User.findOneAndRemove({ email: req.body.email });
     user.password = req.body.password;
-    user.psw = req.body.passwordConfirm;
+    user.psw = req.body.psw;
     const { email, username, visits, password, psw } = user;
     const userAgain = { email, username, visits, password, psw };
     console.log('User found in DB:', user);

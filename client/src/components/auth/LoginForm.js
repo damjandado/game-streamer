@@ -34,6 +34,7 @@ class LoginForm extends Component {
           placeholder={placeholder}
           required=""
           icon={icon}
+          formName="loginForm"
         />
       );
     });
@@ -137,7 +138,7 @@ const asyncValidate = async values => {
       data: values
     });
     if (!resP.data.isMatch) {
-      throw { password: 'Wrong password' }
+      throw { password: 'Wrong password' };
     }
   }
 };

@@ -1,9 +1,14 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
+import axios from 'axios';
+
 import AuthField from './AuthField';
 import validateEmails from "../../utils/validateEmails";
-import { reduxForm, Field } from 'redux-form';
+
+import * as actions from '../../actions';
 import formFields from './formFields';
 
 class SignupForm extends Component {
@@ -19,6 +24,9 @@ class SignupForm extends Component {
           required=""
           icon={icon}
           size={40}
+          formGroupClass={'row'}
+          inputGroupClass={'col-10'}
+          formName='signupForm'
         />
       );
     });
@@ -34,7 +42,7 @@ class SignupForm extends Component {
               onSubmit={this.props.handleSubmit(this.props.onRegistrationSubmit)}
             >
               {this.renderFields()}
-              <input type="submit" value="REGISTER" />
+              <input type="submit" value="Next" className="btn btn-primary" />
             </form>
           </div>
           <p>
@@ -59,8 +67,32 @@ function validate(values) {
   return errors;
 }
 
+const asyncValidate = async values => {
+  const { email, username } = values;
+  const res = await axios({
+    method: 'POST',
+    url: '/api/checkmail',
+    data: { email }
+  });
+  if (res.data.valid) {
+    throw { email: 'Email already exists!' };
+  }
+  const resU = await axios({
+    method: 'POST',
+    url: '/api/checkusername',
+    data: { username }
+  })
+  if (resU.data.valid) {
+    throw { username: 'Username already exists!' };
+  }
+};
+
+SignupForm = connect(null, actions)(SignupForm);
+
 export default reduxForm({
+  form: 'signupForm',
   validate,
-  form: 'registrationForm',
+  asyncValidate,
+  asyncBlurFields: ['email', 'username'],
   destroyOnUnmount: false
 })(SignupForm);

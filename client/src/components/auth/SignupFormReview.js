@@ -6,7 +6,7 @@ import * as actions from "../../actions/actions";
 import formFields from "./formFields";
 
 const SignupFormReview = ({ onCancel, formValues, onSignup, history }) => {
-  const reviewFields = _.map(formFields, ({ name, placeholder }) => {
+  const reviewFields = _.map(formFields.slice(0, 2), ({ name, placeholder }) => {
     return (
       <div>
         <div key={name}>
@@ -38,7 +38,7 @@ const SignupFormReview = ({ onCancel, formValues, onSignup, history }) => {
 };
 
 function mapStateToProps(state) {
-  return { formValues: state.form.registrationForm.values };
+  return { formValues: state.form.signupForm.values };
 }
 
 export default connect(mapStateToProps, actions)(withRouter(SignupFormReview));

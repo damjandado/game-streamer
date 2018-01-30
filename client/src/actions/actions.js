@@ -82,22 +82,22 @@ export const fetchUser = () => async dispatch => {
 export const sendMail = email => async dispatch => {
   const res = await axios.post('/api/recovery', email);
   try {
-    if(res.data.id) {
+    if (res.data.id) {
       dispatch({ type: types.SEND_MAIL, slugId: res.data.id });
     }
-  } catch(e) {
+  } catch (e) {
     console.log('Email was not sent');
   }
 };
 
-export const checkEmail = (email) => async dispatch => {
-    const res = await makeUserRequest('POST', email, '/api/checkmail');
-      if (res.data.valid) {
-        dispatch({ type: types.CHECK_MAIL, payload: true })
-      } else {
-        dispatch({ type: types.CHECK_MAIL, payload: false })
-      }
+export const checkEmail = email => async dispatch => {
+  const res = await makeUserRequest('POST', email, '/api/checkmail');
+  if (res.data.valid) {
+    dispatch({ type: types.CHECK_MAIL, payload: true });
+  } else {
+    dispatch({ type: types.CHECK_MAIL, payload: false });
   }
+};
 
 // "Login" action creators
 function beginLogin() {

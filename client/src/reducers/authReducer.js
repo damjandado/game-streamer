@@ -10,7 +10,8 @@ import {
   LOGOUT_SUCCESS_USER,
   LOGOUT_ERROR_USER,
   SEND_MAIL,
-  CHECK_MAIL
+  CHECK_MAIL,
+  AUTH_FORM
 } from '../actions/types';
 
 const initialState = {
