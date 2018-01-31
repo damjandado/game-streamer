@@ -54,7 +54,7 @@ class Dashboard extends Component {
             <Loader />
           ) : status === 'success' ? (
             <div>
-              <h3>Recommended Channels</h3>
+              <h3 className="text-center text-muted">Recommended Channels</h3>
               <div className="stream-cards">{streamCardBroadcasters}</div>
             </div>
           ) : status === 'error' ? (
@@ -65,12 +65,13 @@ class Dashboard extends Component {
             <div />
           )}
         </div>
+        <hr className="mt-0 mb-4" />
         <div className="main">
           {status === 'loading' ? (
             <Loader />
           ) : status === 'success' ? (
             <div>
-              <h3>Recommended Games</h3>
+              <h3 className="text-center text-muted">Recommended Games</h3>
               <div className="stream-cards">{streamCardGames}</div>
             </div>
           ) : status === 'error' ? (

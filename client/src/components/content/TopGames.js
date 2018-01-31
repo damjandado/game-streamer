@@ -10,7 +10,7 @@ class TopGames extends Component {
   componentDidMount () {
     console.log('TopGames Component mounted');
     this.props.toggleActive('top');
-    this.props.topGamesApi();
+    this.props.topGamesApi(100);
   }
 
   render() {

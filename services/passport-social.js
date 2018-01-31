@@ -25,13 +25,28 @@ passport.use(
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      const existingUser = await User.findOne({ googleId: profile.id });
+      console.log('Google+ user authing...');
+      console.log('[[-------------------]]');
+      console.log('accessToken is ', accessToken);
+      console.log('-----------------------');
+      console.log(profile);
+      console.log('-----------------------');
+      const { id, displayName, photos, emails, gender, _json } = profile;
+      console.log('**-------------------**');
+      const existingUser = await User.findOne({ 'google.id': profile.id });
       if (existingUser) {
         return done(null, existingUser);
       }
-      const user = await new User({ googleId: profile.id }).save();
+      const user = await new User({
+        google: {
+          name: displayName,
+          id,
+          photo: photos[0].value,
+          gender,
+          email: emails[0].value
+        }
+      }).save();
       done(null, user);
-      console.log(profile.id);
     }
   )
 );
@@ -41,19 +56,33 @@ passport.use(
     {
       clientID: keys.twitchClientID,
       clientSecret: keys.twitchClientSecret,
-      callbackURL: '/auth/twitch/callback',
+      callbackURL: 'http://localhost:5020/auth/twitch/callback',
       scope: 'user_read',
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      const existingUser = await User.findOne({ twitchId: profile.id });
-      console.log('Existing Twitch user is', existingUser);
+      console.log('Twitch user authing...');
+      console.log('[[-------------------]]');
+      console.log('accessToken is ', accessToken);
+      console.log('-----------------------');
+      console.log(profile);
+      console.log('-----------------------');
+      const { id, displayName, email, _json } = profile;
+      const existingUser = await User.findOne({ 'twitch.id': profile.id });
       if (existingUser) {
         return done(null, existingUser);
       }
-      const user = await new User({ twitchId: profile.id }).save();
+      const user = await new User({
+        twitch: {
+          id,
+          name: displayName,
+          email,
+          logo: _json.logo,
+          bio: _json.bio,
+          link: _json._links.self
+        }
+      }).save();
       done(null, user);
-      console.log(profile.id);
     }
   )
 );

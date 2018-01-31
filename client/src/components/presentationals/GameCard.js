@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as apiCalls from '../../actions/apiCalls';
 import ReactTooltip from 'react-tooltip';
+import { Lazy } from 'react-lazy';
+
+import * as actions from '../../actions';
 
 //Presentational React Component
 class GameCard extends Component {
@@ -17,9 +19,7 @@ class GameCard extends Component {
   }
 
   showTooltip() {
-    // console.log('TRUNCATED TEXT?');
     // console.log('this.span.offsetWidth - ', this.span.offsetWidth);
-    // console.log('this.info.offsetWidth - ', this.info.offsetWidth);
     if (this.span.offsetWidth > this.info.offsetWidth) {
       this.setState({ truncated: true });
     } else {
@@ -43,7 +43,9 @@ class GameCard extends Component {
       <div className={cardType} style={{ maxWidth }}>
         <div className="gs-video-thumbnail">
           <Link to={'/search'} onClick={this.searchGame.bind(this)}>
-            <img className={cardCover} src={box} alt={name}/>
+            <Lazy component="a" cushion={200}>
+              <img className={cardCover} src={box} alt={name} />
+            </Lazy>
           </Link>
         </div>
         <div className="gs-game-info" ref={div => (this.info = div)}>
@@ -93,4 +95,4 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, apiCalls)(GameCard);
+export default connect(mapStateToProps, actions)(GameCard);

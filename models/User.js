@@ -3,8 +3,21 @@ const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
-  googleId: String,
-  twitchId: String,
+  google: {
+    name: String,
+    id: String,
+    photo: String,
+    gender: String,
+    email: String
+  },
+  twitch: {
+    name: String,
+    id: String,
+    email: String,
+    logo: String,
+    bio: String,
+    link: String
+  },
   email: {
     type: String,
     unique: true,

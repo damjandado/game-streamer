@@ -71,7 +71,7 @@ nav#gs-header a:hover {
 
 .gs-landing {
   margin: 0 15px;
-  padding-top: 2rem;
+  padding-top: 1.5rem;
   min-height: 92.5vh;
 }
 
@@ -372,6 +372,7 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   align-items: stretch;
   -webkit-justify-content: center;
   justify-content: flex-start;
+  margin-top: 1.5rem;
 }
 
 .stream-card {

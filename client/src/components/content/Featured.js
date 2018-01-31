@@ -10,7 +10,7 @@ class Featured extends Component {
   componentDidMount() {
     console.log('Featured Component mounted');
     this.props.toggleActive('featured');
-    this.props.featuredApi();
+    this.props.featuredApi(100);
   }
 
   componentDidUpdate() {
