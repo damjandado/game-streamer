@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
-import * as apiCalls from '../../actions/apiCalls';
+import * as actions from '../../actions';
 
 import FrontGames from './FrontGames';
 
@@ -11,14 +10,11 @@ const TopStreamEmbed = props => {
 
   const { text, title, stream } = props.featured.featured[0];
   const { logo, name, display_name, game } = stream.channel;
+  const { history, searchGamesApi } = props;
 
   const activeChannel = () => {
     props.embedStream(stream);
     props.saveActivity(stream);
-  };
-
-  const searchGame = () => {
-    props.searchGamesApi({ search: game });
   };
 
   const renderText = () => {
@@ -52,7 +48,7 @@ const TopStreamEmbed = props => {
                   {display_name}
                 </Link>{' '}
                 plays{' '}
-                <Link to={'/search'} onClick={searchGame.bind(this)}>
+                <Link to={'/search'} onClick={() => searchGamesApi({ search: game }, history)}>
                   {game}
                 </Link>
               </div>
@@ -78,8 +74,4 @@ function mapStateToProps({ embed, featured }) {
   return { embed, featured };
 }
 
-export default connect(mapStateToProps, {
-  embedStream: actions.embedStream,
-  saveActivity: actions.saveActivity,
-  searchGamesApi: apiCalls.searchGamesApi
-})(TopStreamEmbed);
+export default connect(mapStateToProps, actions)(withRouter(TopStreamEmbed));

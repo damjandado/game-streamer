@@ -10,6 +10,7 @@ function searchReducer(state = initialState, action) {
   switch(action.type) {
     case 'FETCH_SEARCH_REQUEST':
       const requested = Object.assign({}, state, {
+        term: action.term,
         status: action.status
       })
       return requested
@@ -26,6 +27,8 @@ function searchReducer(state = initialState, action) {
         error: action.error
       })
       return failed
+    case 'NO_SEARCH':
+      return Object.assign({}, state, { status: action.status })
     default:
       return state
   }

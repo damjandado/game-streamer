@@ -7,20 +7,9 @@ class Loader extends React.Component {
     console.log('Loader loaded');
     console.log('Loader loaded');
     console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
     return (
       <div className="loader">
-        <div className="box">
+        <div className="box gs-center">
           <div className="line-1" />
           <div className="line-2">
             <div className="triangle">

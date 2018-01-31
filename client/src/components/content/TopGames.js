@@ -9,8 +9,9 @@ import Alert from  '../presentationals/Alert';
 class TopGames extends Component {
   componentDidMount () {
     console.log('TopGames Component mounted');
-    this.props.toggleActive('top');
+    this.props.fetchTopRequest();
     this.props.topGamesApi(100);
+    this.props.toggleActive('top');
   }
 
   render() {
@@ -35,6 +36,7 @@ class TopGames extends Component {
     const error = topGamesProps.error;
     return (
       <div className="main">
+      <h3 className="text-center text-muted">Top Games on Twitch</h3>
       {status === "loading" ? (
          <Loader />
        ) : (

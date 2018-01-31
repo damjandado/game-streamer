@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ReactTooltip from 'react-tooltip';
 import { Lazy } from 'react-lazy';
@@ -12,10 +12,6 @@ class GameCard extends Component {
 
   componentWillUpdate() {
     console.log('this.state.truncated - ?', this.state.truncated);
-  }
-
-  searchGame() {
-    this.props.searchGamesApi({ search: this.props.name });
   }
 
   showTooltip() {
@@ -36,13 +32,15 @@ class GameCard extends Component {
       spanChannels,
       cardType,
       cardCover,
-      maxWidth
+      maxWidth,
+      history,
+      searchGamesApi
     } = this.props;
     let trunc = this.state.truncated;
     return (
       <div className={cardType} style={{ maxWidth }}>
         <div className="gs-video-thumbnail">
-          <Link to={'/search'} onClick={this.searchGame.bind(this)}>
+          <Link to={'/search'} onClick={() => searchGamesApi({ search: name }, history)}>
             <Lazy component="a" cushion={200}>
               <img className={cardCover} src={box} alt={name} />
             </Lazy>
@@ -53,7 +51,7 @@ class GameCard extends Component {
             className="game-details iffyTip"
             onMouseOver={this.showTooltip.bind(this)}
           >
-            <Link to={'/search'} onClick={this.searchGame.bind(this)}>
+            <Link to={'/search'} onClick={() => searchGamesApi({ search: name }, history)}>
               {trunc}
               <span
                 className="font-weight-bold"
@@ -95,4 +93,4 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, actions)(GameCard);
+export default connect(mapStateToProps, actions)(withRouter(GameCard));

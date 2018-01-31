@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Lazy } from 'react-lazy';
 
@@ -18,13 +18,14 @@ class StreamCard extends Component {
   }
 
   render() {
-    const { streamCover, logo, title, name, game } = this.props;
+    const { streamCover, logo, title, name, game, history, searchGamesApi, userLogo } = this.props;
+    const width = userLogo ? 200 : "100%";
     return (
       <div className="stream-card">
         <div className="gs-video-thumbnail">
           <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
             <Lazy component="a" cushion={200} >
-              <img className="stream-cover" src={streamCover} alt={title} />
+              <img className="stream-cover" src={streamCover} alt={title} style={{width}}/>
             </Lazy>
           </Link>
         </div>
@@ -41,7 +42,7 @@ class StreamCard extends Component {
               {name}
             </Link>{' '}
             plays{' '}
-            <Link to={'/search'} onClick={this.searchGame.bind(this)}>
+            <Link to={'/search'} onClick={() => searchGamesApi({ search: game }, history)}>
               {game}
             </Link>
           </div>
@@ -55,4 +56,4 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, actions)(StreamCard);
+export default connect(mapStateToProps, actions)(withRouter(StreamCard));

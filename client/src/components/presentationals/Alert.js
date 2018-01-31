@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 //Presentational React Component
-class Alert extends React.Component {
-  componentDidMount () {
-    alert(this.props.error);
-  }
+class Alert extends Component {
+  componentDidMount() {}
 
   render() {
-      return (
-        <div>
-        Error
-        </div>
-      )
-    }
+    return (
+      <div>
+        <h3 className="text-center text-muted">Error.</h3>
+      </div>
+    );
   }
-export default Alert
+}
+export default Alert;

@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import * as types from './types';
 
 export const onSignup = (values, history) => async dispatch => {
@@ -163,6 +162,14 @@ export function fetchSuccess(featured) {
   };
 }
 
+export function fetchSuccessLoading(featured) {
+  return {
+    type: types.FETCH_FEATURED_SUCCESS,
+    status: 'loading',
+    featured
+  };
+}
+
 export function fetchFailure(error) {
   return {
     type: types.FETCH_FEATURED_FAILURE,
@@ -194,9 +201,17 @@ export function fetchTopFailure(error) {
   };
 }
 
-export function fetchSearchRequest() {
+export function noSearch() {
+  return {
+    type: types.NO_SEARCH,
+    status: 'no_search'
+  };
+}
+
+export function fetchSearchRequest(term) {
   return {
     type: types.FETCH_SEARCH_REQUEST,
+    term,
     status: 'loading'
   };
 }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
-import * as apiCalls from '../../actions/apiCalls';
+import * as actions from '../../actions';
 
 //Presentational React Component
 class VideoCard extends Component {
@@ -51,8 +50,4 @@ class VideoCard extends Component {
   }
 }
 
-export default connect(null, {
-  embedStream: actions.embedStream,
-  saveActivity: actions.saveActivity,
-  searchGamesApi: apiCalls.searchGamesApi
-})(VideoCard);
+export default connect(null, actions)(VideoCard);

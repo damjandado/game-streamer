@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as apiCalls from '../../actions/apiCalls';
+import * as actions from '../../actions';
 
 import AnonDash from './AnonDash';
 
@@ -105,4 +105,4 @@ function mapStateToProps({ auth, dashboard }) {
   return { auth, dashboard };
 }
 
-export default connect(mapStateToProps, apiCalls)(Dashboard);
+export default connect(mapStateToProps, actions)(Dashboard);

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../actions/actions';
-import * as apiCalls from '../actions/apiCalls';
+import * as actions from '../actions';
 
 import Header from './navigation/Header';
 import LeftBar from './navigation/LeftBar';
@@ -14,6 +13,7 @@ class App extends Component {
     console.log('App PROPS are...', this.props);
     this.props.fetchUser();
     this.props.featuredApi(5);
+    this.props.noSearch();
   }
 
   render() {
@@ -33,7 +33,4 @@ class App extends Component {
   }
 }
 
-export default connect(null, {
-  fetchUser: actions.fetchUser,
-  featuredApi: apiCalls.featuredApi
-})(App);
+export default connect(null, actions)(App);

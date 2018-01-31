@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import * as apiCalls from "../../actions/apiCalls";
+import * as actions from "../../actions";
 
 import TopStreamEmbed from "../presentationals/TopStreamEmbed";
 import VideoCard from "../presentationals/VideoCard";
@@ -46,7 +46,7 @@ class AnonDash extends Component {
             <Loader />
           ) : status === "success" ? (
             <div>
-              <div className="stream-cards">{clipCards}</div>
+              <div className="stream-cards" style={{marginTop: 0}}>{clipCards}</div>
             </div>
           ) : status === "error" ? (
             <div>
@@ -68,4 +68,4 @@ function mapStateToProps({ clips, featured, topGames }) {
   return { clips, featured, topGames };
 }
 
-export default connect(mapStateToProps, apiCalls)(AnonDash);
+export default connect(mapStateToProps, actions)(AnonDash);

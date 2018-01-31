@@ -9,12 +9,14 @@ import Alert from '../presentationals/Alert';
 class Featured extends Component {
   componentDidMount() {
     console.log('Featured Component mounted');
-    this.props.toggleActive('featured');
+    this.props.fetchRequest();
     this.props.featuredApi(100);
+    this.props.toggleActive('featured');
   }
 
   componentDidUpdate() {
     console.log('Featured Component updated');
+    // this.props.fetchSuccess();
   }
 
   render() {
@@ -36,6 +38,7 @@ class Featured extends Component {
     console.log('streamCardItems', streamCardItems);
     return (
       <div className="main">
+      <h3 className="text-center text-muted">Featured Streams</h3>
         {status === 'loading' ? (
           <Loader />
         ) : status === 'success' ? (

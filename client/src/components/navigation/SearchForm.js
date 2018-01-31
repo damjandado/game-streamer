@@ -1,7 +1,8 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import _ from 'lodash';
+import { withRouter } from 'react-router-dom';
 
 import * as actions from '../../actions';
 
@@ -27,13 +28,13 @@ class SearchForm extends Component {
   }, 100);
 
   render() {
-    const { handleSubmit, searchGamesApi } = this.props;
+    const { handleSubmit, history, searchGamesApi } = this.props;
     const { width, height } = this.state;
     const full = width > 991 || width < 576;
     return (
       <form
         className="form-inline my-2 my-lg-0"
-        onSubmit={handleSubmit(value => searchGamesApi(value))}
+        onSubmit={handleSubmit(value => searchGamesApi(value, history))}
       >
         <Field
           className="form-control-sm mr-sm-2"
@@ -63,4 +64,4 @@ SearchForm = connect(null, actions)(SearchForm);
 
 export default reduxForm({
   form: 'searchForm'
-})(SearchForm);
+})(withRouter(SearchForm));

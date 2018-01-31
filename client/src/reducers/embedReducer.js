@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case "EMBED_STREAM":
       let obj = action.ebd.stream || action.ebd;
-      console.log('EMBED_STREAM');
+      console.log('EMBED_STREAM', action.ebd);
       obj = obj.channel || obj;
       const temp_state = {
         channel: obj || "null",
@@ -19,6 +19,7 @@ export default function(state = initialState, action) {
         display_name: obj.display_name || "null",
         status: obj.status || "null",
         text: action.ebd.text || "",
+        title: action.ebd.title || "",
         views: obj.views || "null",
         followers: obj.followers || "null"
       };
