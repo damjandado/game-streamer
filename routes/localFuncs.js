@@ -153,12 +153,19 @@ exports.sgWebhooks = async (req, res) => {
       username,
       password,
       psw,
-      userId
+      userId,
+      egg: true
     };
     const newUser = new User(user);
-    newUser.save((err, user) => {
+    newUser.save(async (err, user) => {
       if (err) return res.send({ success: false });
-      return res.send({ success: true });
+      await pendingUser.findOneAndRemove({ email }, (err, user) => {
+        if (err) {
+          return res.send({ success: false });
+        } else {
+          return res.send({ success: true });
+        }
+      });
     });
   }
 };
@@ -181,6 +188,10 @@ exports.findByUserId = (req, res) => {
     });
   } else {
     let user = pendingUser.findOne({ userId: req.body.userId });
-    if (user) res.send({ success: true, email: user.email });
+    console.log('pending user is ', user);
+    if (user.email) {
+      return res.send({ success: true, email: user.email });
+    }
+    return res.send({ success: false });
   }
 };

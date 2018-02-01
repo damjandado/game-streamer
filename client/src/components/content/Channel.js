@@ -4,18 +4,28 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import TwitchEmbed from '../presentationals/TwitchEmbed';
 import Loader from '../presentationals/Loader';
+import NotFound from '../presentationals/NotFound';
 
 class Channel extends Component {
-  state = { active: false };
+  state = { active: false, errorPage: false };
 
   async componentDidMount() {
     console.log('Channel mounted', this.props);
     this.setState({ active: false });
     this.props.toggleActive('channel');
-    const { match: { params } } = this.props;
+    const { match: { params }, embed, fetchStreamByChannelName } = this.props;
     console.log('params?', params);
-    await this.props.fetchStreamByChannelName(params.channelName);
-    this.setState({ active: true });
+    if (params.channelName !== 'undefined') {
+      await fetchStreamByChannelName(params.channelName);
+      if (this.props.embed.found) {
+        this.setState({ active: true });
+      } else {
+        this.setState({ errorPage: true });
+      }
+    } else {
+      await fetchStreamByChannelName('monstercat');
+      this.setState({ active: true });
+    }
   }
 
   render() {
@@ -30,6 +40,8 @@ class Channel extends Component {
         </p>
         <TwitchEmbed channel={name} />
       </div>
+    ) : this.state.errorPage ? (
+      <NotFound />
     ) : (
       <Loader />
     );

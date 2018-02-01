@@ -13,7 +13,8 @@ class Header extends Component {
   state = { dropdownActive: false };
 
   renderContent() {
-    switch (this.props.auth.authenticated) {
+    const { authenticated, user } = this.props.auth;
+    switch (authenticated) {
       case null:
         return;
       case false:
@@ -30,7 +31,7 @@ class Header extends Component {
           <li className="nav-item">
             <div className="dropdown">
               <button className="dropbtn">
-                {this.props.auth.user.name}{'  '}
+                {user.name || user.username}{'  '}
                 <i className="fa fa-caret-down" />
               </button>
               <div className="dropdown-content bg">

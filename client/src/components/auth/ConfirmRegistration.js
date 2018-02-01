@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-import image404 from '../../images/image404.gif';
+import NotFound from '../presentationals/NotFound';
 
 class ConfirmRegistration extends Component {
-  state = { success: false, errorPage: true, email: '' };
+  state = { success: false, errorPage: false, email: '' };
 
   async componentDidMount() {
     const { match: { params }, history } = this.props;
@@ -37,9 +37,7 @@ class ConfirmRegistration extends Component {
       );
     } else if (this.state.errorPage) {
       return (
-        <div>
-          <img src={image404} />
-        </div>
+        <NotFound />
       );
     }
     return <div />;

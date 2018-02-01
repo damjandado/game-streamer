@@ -1,8 +1,6 @@
 const initialState = {
-  name: "monstercat",
-  display_name: "Monstercat",
-  text: "Monstercat prides itself in supporting rising electronic artists from around the globe. We are proving that independent labels have the ability to reshape the music industry landscape.",
-  logo: "https://static-cdn.jtvnw.net/jtv_user_pictures/monstercat-profile_image-3e109d75f8413319-300x300.jpeg"
+  name: 'monstercat',
+  found: false
 };
 
 export default function(state = initialState, action) {
@@ -21,9 +19,12 @@ export default function(state = initialState, action) {
         text: action.ebd.text || "",
         title: action.ebd.title || "",
         views: obj.views || "null",
-        followers: obj.followers || "null"
+        followers: obj.followers || "null",
+        found: true
       };
       return Object.assign({}, temp_state);
+    case "NOT_FOUND":
+      return { found: false };
     default:
       return state;
   }

@@ -46,7 +46,8 @@ const userSchema = new Schema({
   token: String,
   tokenIAT: Date,
   tokenExp: Date,
-  userId: String
+  userId: String,
+  egg: Boolean
 });
 
 //authenticate input against database
@@ -73,6 +74,7 @@ userSchema.statics.authenticate = function(email, password, callback) {
 userSchema.pre('save', function(next) {
   const user = this;
   if (!user.isModified('password')) return next();
+  if (user.get('egg')) return next();
   bcrypt.hash(user.password, 10, function(err, hash) {
     if (err) {
       return next(err);

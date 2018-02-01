@@ -6,6 +6,7 @@ import * as actions from '../../actions/actions';
 class Navs extends Component {
   render() {
     const { featured, top, channel, search } = this.props.activeTab;
+    const { name } = this.props.embed;
     return (
       <ul className="navbar-nav mr-sm-4" role="tablist">
         <li className="nav-item">
@@ -27,7 +28,7 @@ class Navs extends Component {
         <li className="nav-item">
           <Link
             className={'nav-link my-2 my-sm-0' + channel}
-            to={'/' + this.props.embed.name}
+            to={'/' + name || 'monstercat'}
           >
             Channel
           </Link>

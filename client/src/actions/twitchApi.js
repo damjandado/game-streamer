@@ -168,17 +168,19 @@ export const fetchChannelStream = id => async dispatch => {
 };
 
 export const fetchStreamByChannelName = name => async dispatch => {
-  const res = await axios({
-    method: 'get',
-    url: `https://api.twitch.tv/kraken/channels/${name}`,
-    headers: {
-      'Client-ID': `${twitchId}`
-    }
-  });
   try {
+    const res = await axios({
+      method: 'get',
+      url: `https://api.twitch.tv/kraken/channels/${name}`,
+      headers: {
+        'Client-ID': `${twitchId}`
+      }
+    });
     const stream = res.data;
     dispatch(actions.embedStream(stream));
   } catch (e) {
-    dispatch(actions.fetchFailure(e));
+    console.log('404 where do you think you are going...');
+    dispatch({ type: types.NOT_FOUND, found: false });
   }
+  console.log('Can it reach here? Yes');
 };

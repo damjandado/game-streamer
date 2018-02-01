@@ -27,8 +27,14 @@ class Landing extends Component {
               <Route path="/login" component={LoginNew} />
               <Route path="/signup" component={SignupNew} />
               <Route path="/recovery" component={Recovery} />
-              <Route path="/users/password-recovery/:userId" component={RecoveryEnterNew} />
-			  <Route path="/users/confirmation/:userId" component={ConfirmRegistration} />
+              <Route
+                path="/users/password-recovery/:userId"
+                component={RecoveryEnterNew}
+              />
+              <Route
+                path="/users/confirmation/:userId"
+                component={ConfirmRegistration}
+              />
               <Route path="/featured" component={Featured} />
               <Route path="/topgames" component={TopGames} />
               <Route path="/search" component={SearchResults} />
