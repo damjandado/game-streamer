@@ -16,8 +16,8 @@ const AuthField = values => {
       : ''
     : '';
   return (
-    <div className={`form-group ${formGroupClass}`}>
-      <div className={`input-group ${inputGroupClass}`}>
+    <div>
+      <div className={`input-group`}>
         <span className="input-group-addon">
           <span className={`fa fa-${icon}`} />
         </span>

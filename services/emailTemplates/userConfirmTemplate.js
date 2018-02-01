@@ -5,11 +5,11 @@ module.exports = (user) => {
     <html>
      <body>
       <div style="text-align: center;">
-        <h3>Password recovery</h3>
-        <p>Click on a link below to visit the password recovery page: </p>
+        <h3>Registration</h3>
+        <p>Click on a link below to confirm your registration: </p>
         <p><br /></p>
         <div>
-          <a href="${keys.redirectDomain}/users/${user.id}">Yes</a>
+          <a href="${keys.redirectDomain}/users/confirmation/${user.id}">Confirm</a>
         </div>
       </div>
      </body>

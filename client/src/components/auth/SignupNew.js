@@ -10,14 +10,14 @@ class SignupNew extends Component {
     if (this.state.showFormReview) {
       return (
         <SignupFormReview
-          onCancel={() => this.setState({ showFormReview: false })}
+          onBack={() => this.setState({ showFormReview: false })}
         />
       );
     }
 
     return (
       <SignupForm
-        onRegistrationSubmit={() => this.setState({ showFormReview: true })}
+        onNext={() => this.setState({ showFormReview: true })}
       />
     );
   }

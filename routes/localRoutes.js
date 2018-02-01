@@ -9,7 +9,8 @@ const localFuncs = require('./localFuncs');
 const twitch = require('./twitch');
 const users = require('./users');
 const Mailer = require('../services/Mailer');
-const mailTemplate = require('../services/emailTemplates/mailTemplate');
+const userConfirmTemplate = require('../services/emailTemplates/userConfirmTemplate');
+const passRecoveryTemplate = require('../services/emailTemplates/passRecoveryTemplate');
 
 const User = mongoose.model('users');
 const Game = mongoose.model('games');
@@ -37,8 +38,8 @@ module.exports = app => {
 
   app.post('/api/users/webhooks', localFuncs.sgWebhooks);
   app.post('/api/users/userid', localFuncs.findByUserId);
-  app.post('/api/recovery', localFuncs.sendgrid);
-  app.get('/api/recovery/:formId', localFuncs.sgLink);
+  app.post('/api/send_email', localFuncs.sendgrid);
+  app.get('/api/password_recovery/:formId', localFuncs.sgLink);
 
   app.post('/api/check_email', users.checkEmail);
   app.post('/api/check_username', users.checkUsername);

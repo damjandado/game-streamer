@@ -1,16 +1,19 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
 const jwt = require('jwt-simple');
-const User = require('../models/User');
+
 const passportService = require('../services/passport-local');
 const keys = require('../config/keys');
+const Mailer = require('../services/Mailer');
+const userConfirmTemplate = require('../services/emailTemplates/userConfirmTemplate');
+const passRecoveryTemplate = require('../services/emailTemplates/passRecoveryTemplate');
+const { makeid } = require('./func');
+
+const User = require('../models/User');
+const pendingUser = require('../models/pendingUser');
 
 // const Path = require('path-parser');
 // const { URL } = require('url');
-
-const Mailer = require('../services/Mailer');
-const mailTemplate = require('../services/emailTemplates/mailTemplate');
-const { makeid } = require('./func');
 
 // -------------------------------------------
 
@@ -27,7 +30,7 @@ exports.login = function(req, res, next) {
     console.log('user', user);
     console.log('req.body', req.body);
     console.log('info', info);
-    info = info || { message: 'message - undefined' }
+    info = info || { message: 'message - undefined' };
     if (err) return next(err);
     if (!user) {
       return res.json({ success: false, message: info.message });
@@ -78,42 +81,33 @@ exports.logout = function(req, res, next) {
 
 exports.signup = function(req, res, next) {
   // confirm that user typed same password twice
-  if (req.body.password !== req.body.passwordConf) {
+  if (req.body.password !== req.body.psw) {
     let err = new Error('Passwords do not match.');
     err.status = 400;
     res.send("passwords don't match");
     return next(err);
   }
 
-  User.findOne({ email: req.body.email }, (err, user) => {
-    // is email address already in use?
+  let { template, ...pending } = req.body;
+  pendingUser.create(pending, (err, user) => {
     if (user) {
-      res.json({ success: false, message: 'Email already in use' });
+      res.json({ success: true });
       return;
-    } else {
-      // go ahead and create the new user
-      User.create(req.body, (err, user) => {
-        if (err) {
-          console.error(err);
-          res.json({ success: false });
-          return;
-        }
-        // req.session.userId = user._id;
-        res.json({ success: true });
-        return;
-      });
     }
   });
 };
 
 exports.sendgrid = async (req, res, next) => {
-  const { email } = req.body;
+  const { email, template } = req.body;
   console.log('REQUEST body', req.body);
 
+  const mailTemplate =
+    template === 'signup' ? userConfirmTemplate : passRecoveryTemplate;
+
   const user = {
-    subject: 'Password recovery link',
+    subject: 'Email link',
     recipients: [{ email }],
-    id: makeid(16)
+    id: makeid(32)
   };
 
   // Great place to send an email!
@@ -122,8 +116,12 @@ exports.sendgrid = async (req, res, next) => {
   try {
     await mailer.send();
     console.log('mail sent');
-    await User.updateOne({ email }, { userId: user.id });
-    res.send({ success: true, ...user });
+    if (template !== 'signup') {
+      await User.updateOne({ email }, { userId: user.id });
+    } else {
+      await pendingUser.updateOne({ email }, { userId: user.id });
+    }
+    res.send({ success: true, userId: user.id });
   } catch (err) {
     res.status(422).send(err);
   }
@@ -139,25 +137,50 @@ exports.sgLink = (req, res) => {
   res.redirect('/');
 };
 
-exports.sgWebhooks = (req, res) => {
-  console.log('Password recovery link was clicked');
+exports.sgWebhooks = async (req, res) => {
+  console.log('Sendgrid provided link was clicked >');
   console.log('req.body', req.body);
-  res.send({ success: true });
+  const { email } = req.body[0];
+  console.log('sendgrid webhook | email: ', email);
+  let pending = await pendingUser.findOne({ email });
+  let { _id, ...unwrap } = pending;
+  console.log('> pending...', pending);
+  console.log('> user', unwrap);
+  if (pending.email) {
+    const { username, password, psw, userId } = pending;
+    let user = {
+      email,
+      username,
+      password,
+      psw,
+      userId
+    };
+    const newUser = new User(user);
+    newUser.save((err, user) => {
+      if (err) return res.send({ success: false });
+      return res.send({ success: true });
+    });
+  }
 };
 
 exports.findByUserId = (req, res) => {
   console.log('req.body on findByUserId');
   console.log('------------------------');
   console.log(req.body);
-  User.findOne({ userId: req.body.userId }, (err, user) => {
-    if (err) console.log(err);
-    if (user) {
-      console.log('findByUserId:');
-      console.log('-------------');
-      console.log(user);
-      res.send({ success: true, email: user.email });
-    } else {
-      res.send({ error: 'User not found' });
-    }
-  });
+  if (req.body.user) {
+    User.findOne({ userId: req.body.userId }, (err, user) => {
+      if (err) console.log(err);
+      if (user) {
+        console.log('findByUserId:');
+        console.log('-------------');
+        console.log(user);
+        return res.send({ success: true, email: user.email });
+      } else {
+        return res.send({ error: 'User not found' });
+      }
+    });
+  } else {
+    let user = pendingUser.findOne({ userId: req.body.userId });
+    if (user) res.send({ success: true, email: user.email });
+  }
 };

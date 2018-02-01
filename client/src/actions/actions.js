@@ -1,15 +1,13 @@
 import axios from 'axios';
 import * as types from './types';
 
-export const onSignup = (values, history) => async dispatch => {
+export const onSignup = values => async dispatch => {
   dispatch(beginSignup());
-
+  console.log('onSignup provided values: ', values);
   const res = await makeUserRequest('post', values, '/local/signup');
   try {
     if (res.data.success) {
-      dispatch(signupSuccess());
-      const { email, password } = values;
-      dispatch(onLogin({ email, password }, '/', history));
+      const res = await axios.post('/api/send_email', {email: values.email, template: values.template});
     } else {
       dispatch(signupError());
       let signupMessage = res.data.message;
@@ -79,11 +77,12 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: types.FETCH_USER, payload: res.data });
 };
 
-export const sendMail = email => async dispatch => {
-  const res = await axios.post('/api/recovery', email);
+export const sendMail = (values) => async dispatch => {
+  console.log('sendMail sendMail sendMail');
+  const res = await axios.post('/api/send_email', values);
   try {
-    if (res.data.id) {
-      dispatch({ type: types.SEND_MAIL, slugId: res.data.id });
+    if (res.data.success) {
+      dispatch({ type: types.SEND_MAIL, userId: res.data.userId });
     }
   } catch (e) {
     console.log('Email was not sent');

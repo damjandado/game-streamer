@@ -6,7 +6,7 @@ import { reduxForm, Field } from 'redux-form';
 import axios from 'axios';
 
 import AuthField from './AuthField';
-import validateEmails from "../../utils/validateEmails";
+import validateEmails from '../../utils/validateEmails';
 
 import * as actions from '../../actions';
 import formFields from './formFields';
@@ -14,41 +14,59 @@ import formFields from './formFields';
 class SignupForm extends Component {
   renderFields() {
     return _.map(formFields, ({ name, type, placeholder, icon }) => {
-      return (
-        <Field
-          key={name}
-          component={AuthField}
-          type={type}
-          name={name}
-          placeholder={placeholder}
-          required=""
-          icon={icon}
-          size={40}
-          formGroupClass={'row'}
-          inputGroupClass={'col-10'}
-          formName='signupForm'
-        />
-      );
+      return [
+        <div className="form-group row">
+          <label
+            for={name}
+            className="col-sm-3 col-form-label pl-4 pr-0 text-left"
+          >
+            {placeholder}
+          </label>
+          <div className="col-sm-7 pl-0">
+            <Field
+              key={name}
+              component={AuthField}
+              type={type}
+              name={name}
+              id={name}
+              placeholder={placeholder}
+              required=""
+              icon={icon}
+              size={40}
+              formName="signupForm"
+              className=""
+            />
+          </div>
+        </div>
+      ];
     });
   }
 
   render() {
     return (
-        <div className="signin-form profile col-md-6 gs-center">
-          <h3>Register</h3>
-          <br />
-          <div className="login-form">
-            <form
-              onSubmit={this.props.handleSubmit(this.props.onRegistrationSubmit)}
-            >
-              {this.renderFields()}
-              <input type="submit" value="Next" className="btn btn-primary" />
-            </form>
-          </div>
-          <p>
-            <small style={{ marginTop: '10px'}}> By clicking register, I agree to your terms</small>
-          </p>
+      <div
+        className="signin-form profile col-lg-7 gs-center"
+        style={{ marginTop: '5%' }}
+      >
+        <h3 className="col-md-4">Sign up</h3>
+        <br />
+        <div className="login-form">
+          <form
+            onSubmit={this.props.handleSubmit(this.props.onNext)}
+          >
+            {this.renderFields()}
+            <div className="col-sm-10 pr-0 text-right">
+              <input type="submit" value=" Next " className="btn btn-primary" />
+            </div>
+          </form>
         </div>
+        <p className="text-right pr-0 col-sm-10">
+          <small style={{ marginTop: '12px' }}>
+            {' '}
+            Click next for the final step
+          </small>
+        </p>
+      </div>
     );
   }
 }
@@ -81,7 +99,7 @@ const asyncValidate = async values => {
     method: 'POST',
     url: '/api/check_username',
     data: { username }
-  })
+  });
   if (resU.data.valid) {
     throw { username: 'Username already exists!' };
   }

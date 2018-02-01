@@ -74,7 +74,7 @@ export default (state = initialState, action) => {
     case CHECK_MAIL:
       return Object.assign({}, state, { emailExists: action.payload });
     case SEND_MAIL:
-      return Object.assign({}, state, { slugId: action.slugId || '' });
+      return Object.assign({}, state, { userId: action.userId || '' });
     default:
       return state;
   }

@@ -14,8 +14,8 @@ class Recovery extends Component {
   async checkEmail(email, history) {
     await this.props.checkEmail(email);
     if (this.props.auth.emailExists) {
-      const sendmail = await axios.post('/api/recovery', email);
-      if (sendmail.data.success) {
+      const mail = await axios.post('/api/send_email', {email, template: 'r'});
+      if (mail.data.success) {
         console.log(history);
         this.setState({ showSuccess: true });
       } else {
