@@ -11,6 +11,7 @@ import Alert from '../presentationals/Alert';
 
 class Dashboard extends Component {
   componentDidMount() {
+    this.props.statusDashboard('loading');
     this.props.populateDashboard();
   }
 
@@ -48,40 +49,24 @@ class Dashboard extends Component {
     });
     const error = dash.error;
     return (
-      <div>
-        <div className="main">
-          {status === 'loading' ? (
-            <Loader />
-          ) : status === 'success' ? (
-            <div>
-              <h3 className="text-center text-muted">Recommended Channels</h3>
-              <div className="stream-cards">{streamCardBroadcasters}</div>
-            </div>
-          ) : status === 'error' ? (
-            <div>
-              <Alert error={error} />
-            </div>
-          ) : (
-            <div />
-          )}
-        </div>
-        <hr className="mt-0 mb-4" />
-        <div className="main">
-          {status === 'loading' ? (
-            <Loader />
-          ) : status === 'success' ? (
-            <div>
-              <h3 className="text-center text-muted">Recommended Games</h3>
-              <div className="stream-cards">{streamCardGames}</div>
-            </div>
-          ) : status === 'error' ? (
-            <div>
-              <Alert error={error} />
-            </div>
-          ) : (
-            <div />
-          )}
-        </div>
+      <div className="main">
+        {status === 'loading' ? (
+          <Loader />
+        ) : status === 'success' ? (
+          <div>
+            <h3 className="text-center text-muted">Recommended Channels</h3>
+            <div className="stream-cards">{streamCardBroadcasters}</div>
+            <hr className="mt-0 mb-4" />
+            <h3 className="text-center text-muted">Recommended Games</h3>
+            <div className="stream-cards">{streamCardGames}</div>
+          </div>
+        ) : status === 'error' ? (
+          <div>
+            <Alert error={error} />
+          </div>
+        ) : (
+          <div />
+        )}
       </div>
     );
   }
@@ -91,11 +76,16 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { authenticated, isWaiting } = this.props.auth;
     return (
       <div>
-        {this.props.auth.authenticated
-          ? this.renderDash()
-          : this.renderAnonDash()}
+        {isWaiting ? (
+          <Loader />
+        ) : authenticated ? (
+          this.renderDash()
+        ) : (
+          this.renderAnonDash()
+        )}
       </div>
     );
   }

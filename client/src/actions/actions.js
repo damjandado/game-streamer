@@ -32,7 +32,7 @@ export const onLogin = (values, remember, path, history) => async dispatch => {
   const res = await makeUserRequest('post', values, '/local/login');
   try {
     if (res.data.success) {
-      dispatch(loginSuccess(values));
+      dispatch(loginSuccess(res.data));
       localStorage.setItem('token', res.data.token);
       history.push(path);
     } else {
@@ -75,6 +75,7 @@ function makeUserRequest(method, data, api = '/local/login') {
 
 export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user');
+  dispatch({ type: types.LOGIN_USER });
   dispatch({ type: types.FETCH_USER, payload: res.data });
 };
 
@@ -90,7 +91,7 @@ export const sendMail = email => async dispatch => {
 };
 
 export const checkEmail = email => async dispatch => {
-  const res = await makeUserRequest('POST', email, '/api/checkmail');
+  const res = await makeUserRequest('POST', email, '/api/check_email');
   if (res.data.valid) {
     dispatch({ type: types.CHECK_MAIL, payload: true });
   } else {
@@ -234,7 +235,7 @@ export function fetchSearchFailure(error) {
 }
 
 export const saveActivity = entity => async dispatch => {
-  const res = await axios.post('/api/users', entity);
+  const res = await axios.post('/api/twitch/users', entity);
 
   dispatch({ type: types.SAVE_ACTIVITY, payload: res.data });
 };

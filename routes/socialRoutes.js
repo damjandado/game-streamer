@@ -15,7 +15,7 @@ module.exports = app => {
       res.redirect('/');
     }
   );
-  
+
   // Twitch auth
   app.get('/auth/twitch', passport.authenticate('twitch'));
   app.get(

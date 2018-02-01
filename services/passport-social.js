@@ -1,6 +1,6 @@
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const TwitchStrategy = require('passport-twitch').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 
@@ -15,41 +15,6 @@ passport.deserializeUser((id, done) => {
     done(null, user);
   });
 });
-
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: keys.googleClientID,
-      clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback',
-      proxy: true
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      console.log('Google+ user authing...');
-      console.log('[[-------------------]]');
-      console.log('accessToken is ', accessToken);
-      console.log('-----------------------');
-      console.log(profile);
-      console.log('-----------------------');
-      const { id, displayName, photos, emails, gender, _json } = profile;
-      console.log('**-------------------**');
-      const existingUser = await User.findOne({ 'google.id': profile.id });
-      if (existingUser) {
-        return done(null, existingUser);
-      }
-      const user = await new User({
-        google: {
-          name: displayName,
-          id,
-          photo: photos[0].value,
-          gender,
-          email: emails[0].value
-        }
-      }).save();
-      done(null, user);
-    }
-  )
-);
 
 passport.use(
   new TwitchStrategy(
@@ -73,13 +38,50 @@ passport.use(
         return done(null, existingUser);
       }
       const user = await new User({
+        name: displayName,
         twitch: {
           id,
-          name: displayName,
           email,
           logo: _json.logo,
           bio: _json.bio,
           link: _json._links.self
+        }
+      }).save();
+      done(null, user);
+    }
+  )
+);
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: '/auth/google/callback',
+
+      // proxy: true
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log('Google+ user authing...');
+      console.log('[[-------------------]]');
+      console.log('accessToken is ', accessToken);
+      console.log('-----------------------');
+      console.log(profile);
+      console.log('-----------------------');
+      console.log('**-------------------**');
+      const { id, displayName, photos, emails, gender, _json } = profile;
+      
+      const existingUser = await User.findOne({ 'google.id': profile.id });
+      if (existingUser) {
+        return done(null, existingUser);
+      }
+      const user = await new User({
+        name: displayName,
+        google: {
+          id,
+          photo: photos[0].value,
+          gender,
+          email: emails[0].value
         }
       }).save();
       done(null, user);

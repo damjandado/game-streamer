@@ -22,7 +22,7 @@ class Channel extends Component {
     const { display_name, followers, name } = this.props.embed;
     return this.state.active ? (
       <div id="gs-embed">
-        <h3 className="text-center text-muted">
+        <h3 className="text-center text-muted mb-4">
           You are watching <i className="text-info">{display_name}'s</i> channel
         </h3>
         <p className="h4">

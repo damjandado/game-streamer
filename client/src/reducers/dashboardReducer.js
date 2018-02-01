@@ -1,6 +1,7 @@
 const initialState = {
   broadcasters: [],
   games: [],
+  status: "loading",
   error: ""
 }
 
@@ -13,13 +14,13 @@ export default function(state = initialState, action) {
       return requested
     case 'FETCH_BROADCASTERS':
       const broadcasters = Object.assign({}, state, {
-        status: action.status,
+        status_broadcasters: action.status,
         broadcasters: action.payload
       })
       return broadcasters
     case 'FETCH_GAMES':
       const games = Object.assign({}, state, {
-        status: action.status,
+        status_games: action.status,
         games: action.payload
       })
       return games

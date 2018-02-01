@@ -126,7 +126,7 @@ function validate(values) {
 const asyncValidate = async values => {
   const res = await axios({
     method: 'POST',
-    url: '/api/checkmail',
+    url: '/api/check_email',
     data: { email: values.email }
   });
   if (!res.data.valid) {
@@ -134,7 +134,7 @@ const asyncValidate = async values => {
   } else {
     let resP = await axios({
       method: 'POST',
-      url: '/api/comparepass',
+      url: '/api/compare_pass',
       data: values
     });
     if (!resP.data.isMatch) {
@@ -147,7 +147,7 @@ LoginForm = connect(null, { onLogin })(LoginForm);
 
 export default reduxForm({
   form: 'loginForm',
-  initialValues: { email: 'a@b.c', password: 'abc' },
+  initialValues: { email: 'damjandado@ymail.com', password: 'b' },
   validate,
   asyncValidate,
   asyncBlurFields: ['email']

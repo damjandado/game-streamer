@@ -71,19 +71,35 @@ export const searchGamesApi = ({ search }, history) => async dispatch => {
 };
 
 export const populateDashboard = () => async dispatch => {
-  const res = await axios.get('/api/dashboard');
-  console.log('Backend call already issued', res.data);
+  const res = await axios.get('/api/twitch/dashboard');
   dispatch({ type: types.FETCH_DASHBOARD, status: 'loading' });
+  console.log('DASHBOARD res.data', res.data);
   try {
     dispatch({
       type: types.FETCH_BROADCASTERS,
       status: 'success',
       payload: res.data.broadcasters
     });
-    dispatch({ type: types.FETCH_GAMES, status: 'success', payload: res.data.games });
+    dispatch({
+      type: types.FETCH_GAMES,
+      status: 'success',
+      payload: res.data.games
+    });
+    dispatch(statusDashboard('success'));
   } catch (e) {
-    dispatch({ type: types.FETCH_DASHBOARD_FAILURE, status: 'error', error: e });
+    dispatch({
+      type: types.FETCH_DASHBOARD_FAILURE,
+      status: 'error',
+      error: e
+    });
   }
+};
+
+export const statusDashboard = status => {
+  return {
+    type: types.FETCH_DASHBOARD,
+    status
+  };
 };
 
 export const fetchClips = (
@@ -99,7 +115,11 @@ export const fetchClips = (
     }
   });
 
-  dispatch({ type: types.FETCH_CLIPS, status: 'success', clips: res.data.clips });
+  dispatch({
+    type: types.FETCH_CLIPS,
+    status: 'success',
+    clips: res.data.clips
+  });
 };
 
 export const fetchStreamAndClips = (
@@ -123,7 +143,11 @@ export const fetchStreamAndClips = (
     status: 'success',
     featured: stream.data.featured
   });
-  dispatch({ type: types.FETCH_CLIPS, status: 'success', clips: clips.data.clips });
+  dispatch({
+    type: types.FETCH_CLIPS,
+    status: 'success',
+    clips: clips.data.clips
+  });
 };
 
 export const fetchChannelStream = id => async dispatch => {
@@ -132,7 +156,7 @@ export const fetchChannelStream = id => async dispatch => {
     url: `https://api.twitch.tv/kraken/channels/${id}`,
     headers: {
       'Client-ID': `${twitchId}`,
-      'Accept': 'application/vnd.twitchtv.v5+json'
+      Accept: 'application/vnd.twitchtv.v5+json'
     }
   });
   try {

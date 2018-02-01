@@ -71,7 +71,7 @@ const asyncValidate = async values => {
   const { email, username } = values;
   const res = await axios({
     method: 'POST',
-    url: '/api/checkmail',
+    url: '/api/check_email',
     data: { email }
   });
   if (res.data.valid) {
@@ -79,7 +79,7 @@ const asyncValidate = async values => {
   }
   const resU = await axios({
     method: 'POST',
-    url: '/api/checkusername',
+    url: '/api/check_username',
     data: { username }
   })
   if (resU.data.valid) {

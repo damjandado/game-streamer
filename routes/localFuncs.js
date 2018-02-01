@@ -25,9 +25,9 @@ exports.login = function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     console.log('err', err);
     console.log('user', user);
-    console.log('req.user', req.user);
     console.log('req.body', req.body);
     console.log('info', info);
+    info = info || { message: 'message - undefined' }
     if (err) return next(err);
     if (!user) {
       return res.json({ success: false, message: info.message });
@@ -56,10 +56,11 @@ exports.login = function(req, res, next) {
       ).exec();
       return res.json({
         success: true,
-        message: 'authentication succeeded',
+        name: user.username,
+        email: user.email,
         token,
-        tokenExp,
-        email: user.email
+        tokenExp: new Date(tokenExp),
+        message: 'authentication succeeded'
       });
     });
   })(req, res, next);

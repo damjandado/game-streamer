@@ -10,6 +10,8 @@ import { onLogout } from '../../actions/actions';
 import logo from '../../images/logo_ticc_b.png';
 
 class Header extends Component {
+  state = { dropdownActive: false };
+
   renderContent() {
     switch (this.props.auth.authenticated) {
       case null:
@@ -26,13 +28,21 @@ class Header extends Component {
       default:
         return (
           <li className="nav-item">
-            <a
-              id="gs-logout"
-              className="nav-link"
-              onClick={this.props.onLogout}
-            >
-              Log out
-            </a>
+            <div className="dropdown">
+              <button className="dropbtn">
+                {this.props.auth.user.name}{'  '}
+                <i className="fa fa-caret-down" />
+              </button>
+              <div className="dropdown-content bg">
+                <a
+                  id="gs-logout"
+                  className="nav-link text-center"
+                  onClick={this.props.onLogout}
+                >
+                  Log out
+                </a>
+              </div>
+            </div>
           </li>
         );
     }
@@ -58,7 +68,11 @@ class Header extends Component {
               <span className="navbar-toggler-icon" />
             </button>
             <a id="game-streamer" className="navbar-brand" href="/">
-              <img src={logo} id="gs-logo" className="d-inline-block align-top" />
+              <img
+                src={logo}
+                id="gs-logo"
+                className="d-inline-block align-top"
+              />
             </a>
           </div>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">

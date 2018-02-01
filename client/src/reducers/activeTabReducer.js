@@ -17,7 +17,7 @@ export default function(state = initialState, action) {
         channel: ''
       };
       console.log('TOGGLE_ACTIVE state before', state);
-      state[action.tab] = ' active';
+      state[action.tab] = ' active text-success';
       return state;
     default:
       return state;

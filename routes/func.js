@@ -12,7 +12,7 @@ exports.makeid = num => {
   return text;
 };
 
-const featuredApi = async (limit = 8) => {
+exports.featuredApi = async (limit = 8) => {
   const res = await axios.get(
     `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchClientID}`
   );
@@ -26,7 +26,7 @@ const featuredApi = async (limit = 8) => {
   }
 };
 
-const topGamesApi = async (limit = 8) => {
+exports.topGamesApi = async (limit = 8) => {
   const res = await axios.get(
     `https://api.twitch.tv/kraken/games/top?client_id=${twitchClientID}&limit=${limit}`
   );
@@ -40,7 +40,7 @@ const topGamesApi = async (limit = 8) => {
   }
 };
 
-async function fetchBroadcasters(list) {
+exports.fetchBroadcasters = async list => {
   const broadcasters = list;
   let outputBroadcasters;
   await Promise.all(
@@ -62,14 +62,6 @@ async function fetchBroadcasters(list) {
             //   method: 'get',
             //   url: `https://api.twitch.tv/helix/games?id=${user.game_id}`,
             //   headers: { 'Client-ID': twitchClientID }
-            // });
-            // const gameName = findGamebyID.data.data[0].name;
-            // let parsed = Object.assign({}, user, {
-            //   display_name: item,
-            //   name: item,
-            //   game: gameName,
-            //   channel: {},
-            //   thumbnail_url: thumb
             // });
             const streamInfo = await axios({
               method: 'get',
@@ -98,9 +90,9 @@ async function fetchBroadcasters(list) {
     outputBroadcasters = [].concat(result);
   });
   return outputBroadcasters;
-}
+};
 
-async function fetchGameStreams(list) {
+exports.fetchGameStreams = async list => {
   const games = list;
   let outputGames;
   await Promise.all(
@@ -116,9 +108,9 @@ async function fetchGameStreams(list) {
     outputGames = [].concat(flattened);
   });
   return outputGames;
-}
+};
 
-async function fetchGames(list) {
+exports.fetchGames = async list => {
   const games = list;
   let outputGames;
   await Promise.all(
@@ -139,9 +131,9 @@ async function fetchGames(list) {
     outputGames = [].concat(result);
   });
   return outputGames;
-}
+};
 
-let processQuery = (user, prop, count) => {
+exports.processQuery = (user, prop, count) => {
   const select = user[0].visits[prop];
 
   const countObj = count_items(select);
@@ -186,12 +178,6 @@ function sortProperties(obj) {
   return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
 
-exports.featuredApi = featuredApi;
-exports.topGamesApi = topGamesApi;
-exports.fetchBroadcasters = fetchBroadcasters;
-exports.fetchGameStreams = fetchGameStreams;
-
-exports.processQuery = processQuery;
 exports.flatten = flatten;
 exports.remove_duplicates_es6 = remove_duplicates_es6;
 exports.count_items = count_items;

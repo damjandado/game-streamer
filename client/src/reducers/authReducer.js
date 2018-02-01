@@ -26,15 +26,21 @@ export default (state = initialState, action) => {
       const user = action.payload;
       console.log('u s e r ', user);
       return user
-        ? Object.assign({}, state, { user }, { authenticated: true })
-        : Object.assign({}, state, { authenticated: false });
+        ? Object.assign(
+            {},
+            state,
+            { user },
+            { authenticated: true, isWaiting: false }
+          )
+        : Object.assign({}, state, { authenticated: false, isWaiting: false });
     case LOGIN_USER:
       return Object.assign({}, state, { isWaiting: true });
     case LOGIN_SUCCESS_USER:
+      const { name, email } = action.data;
       return Object.assign({}, state, {
         isWaiting: false,
         authenticated: true,
-        email: action.data.email
+        user: { name, email }
       });
     case LOGIN_ERROR_USER:
       return Object.assign({}, state, {
@@ -65,7 +71,7 @@ export default (state = initialState, action) => {
         isWaiting: false,
         authenticated: true
       });
-	case CHECK_MAIL:
+    case CHECK_MAIL:
       return Object.assign({}, state, { emailExists: action.payload });
     case SEND_MAIL:
       return Object.assign({}, state, { slugId: action.slugId || '' });
