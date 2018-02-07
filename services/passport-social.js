@@ -21,7 +21,7 @@ passport.use(
     {
       clientID: keys.twitchClientID,
       clientSecret: keys.twitchClientSecret,
-      callbackURL: 'http://localhost:5020/auth/twitch/callback',
+      callbackURL: '/auth/twitch/callback',
       scope: 'user_read',
       proxy: true
     },
