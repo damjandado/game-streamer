@@ -147,7 +147,7 @@ LoginForm = connect(null, { onLogin })(LoginForm);
 
 export default reduxForm({
   form: 'loginForm',
-  initialValues: { email: 'damjandado@ymail.com', password: 'b' },
+  // initialValues: { email: 'damjandado@ymail.com', password: 'b' },
   validate,
   asyncValidate,
   asyncBlurFields: ['email']
