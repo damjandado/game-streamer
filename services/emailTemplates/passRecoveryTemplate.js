@@ -5,7 +5,7 @@ module.exports = (user) => {
     <html>
      <body>
       <div style="text-align: center;">
-        <h3>Password recovery</h3>
+        <h3>Password recovery on GameStreamer App</h3>
         <p>Click on a link below to visit the password recovery page: </p>
         <p><br /></p>
         <div>

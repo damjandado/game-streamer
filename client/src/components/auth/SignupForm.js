@@ -74,7 +74,7 @@ class SignupForm extends Component {
 function validate(values) {
   const errors = {};
 
-  errors.recipients = validateEmails(values.email || '');
+  errors.email = validateEmails(values.email || '');
 
   _.each(formFields, ({ name }) => {
     if (!values[name]) {
@@ -86,7 +86,7 @@ function validate(values) {
 }
 
 const asyncValidate = async values => {
-  const { email, username } = values;
+  const { email, username, password, psw } = values;
   const res = await axios({
     method: 'POST',
     url: '/api/check_email',
@@ -103,6 +103,7 @@ const asyncValidate = async values => {
   if (resU.data.valid) {
     throw { username: 'Username already exists!' };
   }
+  if (password !== psw) throw { psw: 'Passwords do not match!' };
 };
 
 SignupForm = connect(null, actions)(SignupForm);

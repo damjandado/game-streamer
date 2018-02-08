@@ -5,7 +5,7 @@ module.exports = (user) => {
     <html>
      <body>
       <div style="text-align: center;">
-        <h3>Registration</h3>
+        <h3>Sign up on GameStreamer App</h3>
         <p>Click on a link below to confirm your registration: </p>
         <p><br /></p>
         <div>

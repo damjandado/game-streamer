@@ -21,7 +21,7 @@ passport.use(
     {
       clientID: keys.twitchClientID,
       clientSecret: keys.twitchClientSecret,
-      callbackURL: '/auth/twitch/callback',
+      callbackURL: 'https://game-streamer.herokuapp.com/auth/twitch/callback',
       scope: 'user_read',
       proxy: true
     },

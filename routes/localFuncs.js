@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
-const passport = require('passport');
-const jwt = require('jwt-simple');
+const mongoose = require("mongoose");
+const passport = require("passport");
+const jwt = require("jwt-simple");
 
-const passportService = require('../services/passport-local');
-const keys = require('../config/keys');
-const Mailer = require('../services/Mailer');
-const userConfirmTemplate = require('../services/emailTemplates/userConfirmTemplate');
-const passRecoveryTemplate = require('../services/emailTemplates/passRecoveryTemplate');
-const { makeid } = require('./func');
+const passportService = require("../services/passport-local");
+const keys = require("../config/keys");
+const Mailer = require("../services/Mailer");
+const userConfirmTemplate = require("../services/emailTemplates/userConfirmTemplate");
+const passRecoveryTemplate = require("../services/emailTemplates/passRecoveryTemplate");
+const { makeid } = require("./func");
 
-const User = require('../models/User');
-const pendingUser = require('../models/pendingUser');
+const User = require("../models/User");
+const pendingUser = require("../models/pendingUser");
 
 // const Path = require('path-parser');
 // const { URL } = require('url');
@@ -25,12 +25,12 @@ function tokenForUser(user) {
 
 exports.login = function(req, res, next) {
   // Do email and password validation for the server
-  passport.authenticate('local', function(err, user, info) {
-    console.log('err', err);
-    console.log('user', user);
-    console.log('req.body', req.body);
-    console.log('info', info);
-    info = info || { message: 'message - undefined' };
+  passport.authenticate("local", function(err, user, info) {
+    console.log("err", err);
+    console.log("user", user);
+    console.log("req.body", req.body);
+    console.log("info", info);
+    info = info || { message: "message - undefined" };
     if (err) return next(err);
     if (!user) {
       return res.json({ success: false, message: info.message });
@@ -63,7 +63,7 @@ exports.login = function(req, res, next) {
         email: user.email,
         token,
         tokenExp: new Date(tokenExp),
-        message: 'authentication succeeded'
+        message: "authentication succeeded"
       });
     });
   })(req, res, next);
@@ -82,7 +82,7 @@ exports.logout = function(req, res, next) {
 exports.signup = function(req, res, next) {
   // confirm that user typed same password twice
   if (req.body.password !== req.body.psw) {
-    let err = new Error('Passwords do not match.');
+    let err = new Error("Passwords do not match.");
     err.status = 400;
     res.send("passwords don't match");
     return next(err);
@@ -99,13 +99,13 @@ exports.signup = function(req, res, next) {
 
 exports.sendgrid = async (req, res, next) => {
   const { email, template } = req.body;
-  console.log('REQUEST body', req.body);
+  console.log("REQUEST body", req.body);
 
   const mailTemplate =
-    template === 'signup' ? userConfirmTemplate : passRecoveryTemplate;
+    template === "signup" ? userConfirmTemplate : passRecoveryTemplate;
 
   const user = {
-    subject: 'Email link',
+    subject: "Email link",
     recipients: [{ email }],
     id: makeid(32)
   };
@@ -115,8 +115,8 @@ exports.sendgrid = async (req, res, next) => {
   // console.log('mailer', mailer);
   try {
     await mailer.send();
-    console.log('mail sent');
-    if (template !== 'signup') {
+    console.log("mail sent");
+    if (template !== "signup") {
       await User.updateOne({ email }, { userId: user.id });
     } else {
       await pendingUser.updateOne({ email }, { userId: user.id });
@@ -133,65 +133,86 @@ exports.sgLink = (req, res) => {
   // if (match) {
   //   res.send({ proceed: true, formId: match.formId });
   // }
-  console.log('sgLink req.body', req.body);
-  res.redirect('/');
+  console.log("sgLink req.body", req.body);
+  res.redirect("/");
 };
 
 exports.sgWebhooks = async (req, res) => {
-  console.log('Sendgrid provided link was clicked >');
-  console.log('req.body', req.body);
-  const { email } = req.body[0];
-  console.log('sendgrid webhook | email: ', email);
-  let pending = await pendingUser.findOne({ email });
-  let { _id, ...unwrap } = pending;
-  console.log('> pending...', pending);
-  console.log('> user', unwrap);
-  if (pending.email) {
-    const { username, password, psw, userId } = pending;
-    let user = {
-      email,
-      username,
-      password,
-      psw,
-      userId,
-      egg: true
-    };
-    const newUser = new User(user);
-    newUser.save(async (err, user) => {
-      if (err) return res.send({ success: false });
-      await pendingUser.findOneAndRemove({ email }, (err, user) => {
-        if (err) {
-          return res.send({ success: false });
-        } else {
-          return res.send({ success: true });
-        }
-      });
-    });
-  }
+  console.log("Sendgrid provided link was clicked >");
+  console.log("req.body", req.body);
+  // const { email } = req.body[0];
+  // console.log("sendgrid webhook | email: ", email);
+  // let pending = await pendingUser.findOne({ email });
+  // console.log("> pending...", pending);
+  // let { _id, ...unwrap } = pending;
+  // if (pending.email) {
+  //   const { username, password, psw, userId } = pending;
+  //   let user = {
+  //     email,
+  //     username,
+  //     password,
+  //     psw,
+  //     userId,
+  //     egg: true
+  //   };
+  //   console.log("> user", user);
+  //   const newUser = new User(user);
+  //   newUser.save((err, user) => {
+  //     if (err) return res.send({ success: false });
+  //     pendingUser.findOneAndRemove({ email }, (err, user) => {
+  //       if (err) {
+  //         return res.send({ success: false });
+  //       } else {
+  //         return res.send({ success: true });
+  //       }
+  //     });
+  //   });
+  // }
 };
 
-exports.findByUserId = (req, res) => {
-  console.log('req.body on findByUserId');
-  console.log('------------------------');
+exports.findByUserId = async (req, res) => {
+  console.log("req.body on findByUserId");
+  console.log("------------------------");
   console.log(req.body);
   if (req.body.user) {
     User.findOne({ userId: req.body.userId }, (err, user) => {
       if (err) console.log(err);
       if (user) {
-        console.log('findByUserId:');
-        console.log('-------------');
+        console.log("findByUserId:");
+        console.log("-------------");
         console.log(user);
         return res.send({ success: true, email: user.email });
       } else {
-        return res.send({ error: 'User not found' });
+        return res.send({ error: "User not found" });
       }
     });
   } else {
-    let user = pendingUser.findOne({ userId: req.body.userId });
-    console.log('pending user is ', user);
-    if (user.email) {
-      return res.send({ success: true, email: user.email });
+    let pending = await pendingUser.findOne({ userId: req.body.userId });
+    console.log("pending user is ", pending);
+    if (pending.email) {
+      const { email, username, password, psw, userId } = pending;
+      let user = {
+        email,
+        username,
+        password,
+        psw,
+        userId,
+        egg: true
+      };
+      console.log("> user", user);
+      const newUser = new User(user);
+      newUser.save((err, user) => {
+        if (err) return res.send({ success: false });
+        pendingUser.findOneAndRemove({ email }, (err, user) => {
+          if (err) {
+            console.log('pending user should\'ve been removed but...', err);
+            return res.send({ success: false });
+          } else {
+            console.log('*user* was just saved in db:');
+            return res.send({ success: true, email: pending.email });
+          }
+        });
+      });
     }
-    return res.send({ success: false });
   }
 };
