@@ -10,8 +10,8 @@ import Alert from "../presentationals/Alert";
 
 class AnonDash extends Component {
   componentDidMount() {
-    this.props.fetchStreamAndClips('Twitch', 3);
-    this.props.topGamesApi();
+    this.props.fetchStreamAndClips('Twitch', 5);
+    this.props.topGamesApi(12);
   }
 
   render() {

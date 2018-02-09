@@ -8,7 +8,7 @@ import Alert from '../presentationals/Alert';
  const FrontGames = (props) => {
   const topGamesProps = props.topGames;
   const status = topGamesProps.status;
-  const gameCardItems = topGamesProps.games.map(tg => (
+  const gameCardItems = topGamesProps.games.map((tg, i) => (
     <GameCard
       key={tg.game._id}
       game={tg}
@@ -18,10 +18,9 @@ import Alert from '../presentationals/Alert';
       viewers={tg.viewers}
       channels={tg.channels}
       spanChannels={false}
-      cardType={'game-card'}
+      cardType={'game-card col ' + (i === 10 || 11 ? 'col-xl-2' : '')}
       cardCover={'game-cover'}
       logoArt={false}
-      maxWidth={'150px'}
     />
   ));
   const error = topGamesProps.error;

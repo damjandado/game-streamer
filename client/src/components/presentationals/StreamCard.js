@@ -24,7 +24,7 @@ class StreamCard extends Component {
       <div className="stream-card">
         <div className="gs-video-thumbnail">
           <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
-            <Lazy component="a" cushion={200} >
+            <Lazy component="span" cushion={200} >
               <img className="stream-cover" src={streamCover} alt={title} style={{width}}/>
             </Lazy>
           </Link>

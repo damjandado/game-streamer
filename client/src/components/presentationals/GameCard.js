@@ -38,10 +38,10 @@ class GameCard extends Component {
     } = this.props;
     let trunc = this.state.truncated;
     return (
-      <div className={cardType} style={{ maxWidth }}>
+      <div className={cardType}>
         <div className="gs-video-thumbnail">
           <Link to={'/search'} onClick={() => searchGamesApi({ search: name }, history)}>
-            <Lazy component="a" cushion={200}>
+            <Lazy component="span" cushion={200}>
               <img className={cardCover} src={box} alt={name} />
             </Lazy>
           </Link>

@@ -62,6 +62,8 @@ const TopStreamEmbed = props => {
             dangerouslySetInnerHTML={renderText()}
           />
           <div className="col-sm-12">
+            <hr className="mt-0 mb-4" />
+            <h3 className="text-center text-muted">Most Popular Games</h3>
             <FrontGames gprop={props.gprop} />
           </div>
         </div>
