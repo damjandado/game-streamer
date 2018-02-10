@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
-import TopStreamEmbed from "../presentationals/TopStreamEmbed";
-import VideoCard from "../presentationals/VideoCard";
-import Loader from "../presentationals/Loader";
-import Alert from "../presentationals/Alert";
+import TopStreamEmbed from '../presentationals/TopStreamEmbed';
+import VideoCard from '../presentationals/VideoCard';
+import Loader from '../presentationals/Loader';
+import Alert from '../presentationals/Alert';
 
 class AnonDash extends Component {
   componentDidMount() {
-    this.props.fetchStreamAndClips('Twitch', 5);
+    this.props.fetchStreamAndClips('Twitch', 4);
     this.props.topGamesApi(12);
   }
 
@@ -36,19 +36,30 @@ class AnonDash extends Component {
           />
         );
     });
-    console.log("clipCards", clipCards);
+    console.log('clipCards', clipCards);
     const error = anonProps.error;
+    const ds = this.props.dashboard;
     return (
       <div className="row">
-        <div className="gs-col-left">
-          {" "}
-          {status === "loading" ? (
+        <div
+          className="gs-col-left"
+          style={{
+            height:
+              ds.divHeight + ds.frameHeight > document.body.offsetHeight
+                ? ds.divHeight + ds.frameHeight
+                : document.body.offsetHeight
+          }}
+        >
+          {' '}
+          {status === 'loading' ? (
             <Loader />
-          ) : status === "success" ? (
+          ) : status === 'success' ? (
             <div>
-              <div className="stream-cards" style={{marginTop: 0}}>{clipCards}</div>
+              <div className="stream-cards" style={{ marginTop: 0 }}>
+                {clipCards}
+              </div>
             </div>
-          ) : status === "error" ? (
+          ) : status === 'error' ? (
             <div>
               <Alert error={error} />
             </div>
@@ -64,8 +75,8 @@ class AnonDash extends Component {
   }
 }
 
-function mapStateToProps({ clips, featured, topGames }) {
-  return { clips, featured, topGames };
+function mapStateToProps({ clips, featured, topGames, dashboard }) {
+  return { clips, featured, topGames, dashboard };
 }
 
 export default connect(mapStateToProps, actions)(AnonDash);

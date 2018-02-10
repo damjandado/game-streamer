@@ -252,3 +252,17 @@ export const embedStream = ebd => {
     ebd
   };
 };
+
+export const divHeight = height => {
+  return {
+    type: types.DIV_HEIGHT,
+    height
+  }
+}
+
+export const frameHeight = height => {
+  return {
+    type: types.FRAME_HEIGHT,
+    height
+  }
+}

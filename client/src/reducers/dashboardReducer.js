@@ -2,8 +2,12 @@ const initialState = {
   broadcasters: [],
   games: [],
   status: "loading",
-  error: ""
+  error: "",
+  divHeight: 0,
+  frameHeight: 0
 }
+
+window.divh = window.frameh = 0;
 
 export default function(state = initialState, action) {
   switch(action.type) {
@@ -30,6 +34,14 @@ export default function(state = initialState, action) {
         error: action.error
       })
       return failed
+    case 'DIV_HEIGHT':
+      window.specialDivHeight = action.height;
+      window.divh++;
+      return Object.assign({}, state, {divHeight: action.height})
+    case 'FRAME_HEIGHT':
+      window.specialFrameHeight = action.height;
+      window.frameh++;
+      return Object.assign({}, state, {frameHeight: action.height})
     default:
       return state
   }

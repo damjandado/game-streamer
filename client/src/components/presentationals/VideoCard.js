@@ -18,7 +18,7 @@ class VideoCard extends Component {
     let iframeCustom = this.props.iframe.replace('tt_content=embed', 'tt_content=embed&autoplay=false');
     // const srcUrl = /src='(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'/;
     iframeCustom = iframeCustom.replace('width=\'640\' height=\'360\'', 'width=\'100%\' height=\'100%\'');
-    console.log('iframeCustom', iframeCustom);
+    // console.log('iframeCustom', iframeCustom);
     return { __html: iframeCustom }
   }
 

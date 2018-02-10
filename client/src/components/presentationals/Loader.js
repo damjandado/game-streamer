@@ -4,9 +4,6 @@ import React from 'react';
 class Loader extends React.Component {
   render() {
     console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
-    console.log('Loader loaded');
     return (
       <div className="loader">
         <div className="box gs-center">

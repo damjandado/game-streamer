@@ -1,14 +1,24 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 import * as actions from '../../actions';
 
-const TwitchEmbed = (props) => {
-  const { logo, game, name, status, display_name, text, title, views } = props.embed;
-  const { history, searchGamesApi } = props;
+const TwitchEmbed = props => {
+  const {
+    logo,
+    game,
+    name,
+    status,
+    display_name,
+    text,
+    title,
+    views
+  } = props.embed;
+  const { history, searchGamesApi, frameHeight } = props;
   const renderText = () => {
-    return { __html: text }; 
+    return { __html: text };
   };
 
   return (
@@ -34,7 +44,10 @@ const TwitchEmbed = (props) => {
               <div className="stream-details">
                 <span className="text-16">{status}</span>
                 <br />
-                <Link to={`/search`} onClick={() => searchGamesApi({ search: game }, history)}>
+                <Link
+                  to={`/search`}
+                  onClick={() => searchGamesApi({ search: game }, history)}
+                >
                   <span className="gs-game">{game}</span>
                 </Link>
               </div>

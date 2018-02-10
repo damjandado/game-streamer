@@ -42,6 +42,7 @@ nav#gs-header a:hover {
 
 .gs-sidenav {
   background-color: #17141F;
+  /*height: 94.5vh;*/
 }
 
 .gs-sidenav h6 {

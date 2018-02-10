@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 import FrontGames from './FrontGames';
 
@@ -10,7 +11,7 @@ const TopStreamEmbed = props => {
 
   const { text, title, stream } = props.featured.featured[0];
   const { logo, name, display_name, game } = stream.channel;
-  const { history, searchGamesApi } = props;
+  const { history, searchGamesApi, frameHeight, divHeight } = props;
 
   const activeChannel = () => {
     props.embedStream(stream);
@@ -23,7 +24,20 @@ const TopStreamEmbed = props => {
 
   return (
     <div className="twitchWrapper">
-      <div className="topStream">
+      <div
+        className="topStream"
+        ref={elem => {
+          if (elem) {
+            new ResizeSensor(
+              elem,
+              setTimeout(function() {
+                // console.log('content dimension changed', elem.clientHeight);
+                frameHeight(elem.clientHeight);
+              }, 500)
+            );
+          }
+        }}
+      >
         <iframe
           src={`https://player.twitch.tv/?channel=${name}`}
           width="100%"
@@ -33,7 +47,22 @@ const TopStreamEmbed = props => {
           title={title}
         />
         <br />
-        <div id="gs-channel-info" className="row">
+        <div
+          id="gs-channel-info"
+          className="row"
+          ref={elem => {
+            if (elem) {
+              new ResizeSensor(
+                elem,
+                setTimeout(function() {
+                  // console.log('content dimension changed', elem.clientHeight);
+                  divHeight(elem.clientHeight);
+                }),
+                500
+              );
+            }
+          }}
+        >
           <div className="col-sm-10">
             <div className="gs-stream-info">
               <div className="profile-image">
@@ -48,7 +77,10 @@ const TopStreamEmbed = props => {
                   {display_name}
                 </Link>{' '}
                 plays{' '}
-                <Link to={'/search'} onClick={() => searchGamesApi({ search: game }, history)}>
+                <Link
+                  to={'/search'}
+                  onClick={() => searchGamesApi({ search: game }, history)}
+                >
                   {game}
                 </Link>
               </div>
