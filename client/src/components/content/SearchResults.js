@@ -64,7 +64,14 @@ class SearchResults extends Component {
     ) : (
       <div />
     );
+    console.log('*-*-*-*-*-*-*-*-*-*-*-*-*', streamCardGames);
     const error = searchProps.error;
+    if (!streamCardUsers && !streamCardGames)
+      return (
+        <h3 className="text-center text-muted" style={{ marginTop: 50 }}>
+          Nothing found.
+        </h3>
+      );
     return (
       <div className="main">
         {status === 'no_search' ? (
@@ -75,8 +82,7 @@ class SearchResults extends Component {
           <Loader />
         ) : status === 'success' ? (
           <div>
-            {renderSCU}
-            {renderSCG}
+            {renderSCU} {renderSCG}
           </div>
         ) : status === 'error' ? (
           <div>

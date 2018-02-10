@@ -470,3 +470,7 @@ a#gs-logout:hover {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.gs-hidden {
+  visibility: hidden;
+}

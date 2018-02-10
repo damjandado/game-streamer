@@ -22,15 +22,22 @@ export const featuredApi = (limit = 20) => async dispatch => {
   }
 };
 
-export const topGamesApi = (limit = 10) => async dispatch => {
+export const topGamesApi = (limit = 10, offset = 0) => async dispatch => {
   //API request
   const res = await axios.get(
     `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}`
   );
+  let top = res.data.top;
+  if (offset) {
+    const resO = await axios.get(
+      `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}&offset=${offset}`
+    );
+    top = top.concat(resO.data.top);
+  }
   //dispatch FetchRequest, order 1
   dispatch(actions.fetchTopRequest());
   try {
-    const games = res.data.top.map(function(feat) {
+    const games = top.map(function(feat) {
       return feat;
     });
     //dispatch FetchSuccess, order 2

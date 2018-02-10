@@ -103,7 +103,10 @@ const asyncValidate = async values => {
   if (resU.data.valid) {
     throw { username: 'Username already exists!' };
   }
-  if (password !== psw) throw { psw: 'Passwords do not match!' };
+  console.log('*-*-*-*-*-*-*-*-*-*', password);
+  console.log('*-*-*-*-*-*-*-*-*-*', psw);
+  console.log(password===psw);
+  if (password !== psw) {throw { psw: 'Passwords do not match!' }};
 };
 
 SignupForm = connect(null, actions)(SignupForm);
@@ -112,6 +115,6 @@ export default reduxForm({
   form: 'signupForm',
   validate,
   asyncValidate,
-  asyncBlurFields: ['email', 'username'],
+  asyncBlurFields: ['email', 'username', 'password', 'psw'],
   destroyOnUnmount: false
 })(SignupForm);
