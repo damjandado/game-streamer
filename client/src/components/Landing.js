@@ -17,7 +17,6 @@ import Twitch from "./Twitch";
 
 class Landing extends Component {
   render() {
-    console.log("Landing _____");
     return (
       <div className="col container-fluid gs-landing">
         <Switch>

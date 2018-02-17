@@ -57,7 +57,7 @@ export const searchGamesApi = ({ search }, history) => async dispatch => {
   const resGames = await axios.get(
     `https://api.twitch.tv/kraken/streams/?game=${search}&client_id=${twitchId}`
   );
-  const resUsers = await axios({
+  const resUsers = /[: ]/.test(search) ? null : await axios({
     method: 'get',
     url: `https://api.twitch.tv/helix/users?&login=${search}`,
     headers: { 'Client-ID': twitchId }
@@ -66,13 +66,11 @@ export const searchGamesApi = ({ search }, history) => async dispatch => {
     const games = resGames.data.streams.map(function(feat) {
       return feat;
     });
-    const users = resUsers.data.data.map(function(feat) {
+    const users = resUsers ? resUsers.data.data.map(function(feat) {
       return feat;
-    });
-    //dispatch FetchSuccess, order 2
+    }) : [];
     dispatch(actions.fetchSearchSuccess(users, games));
   } catch (e) {
-    //dispatch FetchSuccess, order 3
     dispatch(actions.fetchSearchFailure(e));
   }
 };
@@ -189,5 +187,4 @@ export const fetchStreamByChannelName = name => async dispatch => {
     console.log('404 where do you think you are going...');
     dispatch({ type: types.NOT_FOUND, found: false });
   }
-  console.log('Can it reach here? Yes');
 };
