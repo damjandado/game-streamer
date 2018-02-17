@@ -33,14 +33,6 @@ class Navs extends Component {
             Channel
           </Link>
         </li>
-        <li className="nav-item">
-          <Link
-            className={'nav-link my-2 my-sm-0' + search}
-            to="/search"
-          >
-            Searched
-          </Link>
-        </li>
       </ul>
     );
   }

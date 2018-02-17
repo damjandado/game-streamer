@@ -10,7 +10,6 @@ import * as actions from '../../actions';
 class SearchResults extends Component {
   componentDidMount() {
     console.log('SearchResults Component mounted');
-    // this.props.fetchSearchRequest();
     this.props.toggleActive('search');
   }
 
@@ -66,7 +65,7 @@ class SearchResults extends Component {
     );
     console.log('*-*-*-*-*-*-*-*-*-*-*-*-*', streamCardGames);
     const error = searchProps.error;
-    if (!streamCardUsers && !streamCardGames)
+    if (!streamCardUsers && !streamCardGames && status === 'success')
       return (
         <h3 className="text-center text-muted" style={{ marginTop: 50 }}>
           Nothing found.

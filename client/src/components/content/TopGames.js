@@ -27,7 +27,7 @@ class TopGames extends Component {
         viewers={tg.viewers}
         channels={tg.channels}
         spanChannels={true}
-        cardType={'game-card col' + (i === 119 ? ' gs-hidden' : '')}
+        cardType={'game-card col' + (i > 116 ? ' gs-hidden' : '')}
         cardCover={'stream-cover'}
         logoArt={true}
       />

@@ -10,10 +10,6 @@ import * as actions from '../../actions';
 class GameCard extends Component {
   state = { truncated: false };
 
-  componentWillUpdate() {
-    console.log('this.state.truncated - ?', this.state.truncated);
-  }
-
   showTooltip() {
     // console.log('this.span.offsetWidth - ', this.span.offsetWidth);
     if (this.span.offsetWidth > this.info.offsetWidth) {
