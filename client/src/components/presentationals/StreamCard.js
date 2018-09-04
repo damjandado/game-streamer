@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Lazy } from 'react-lazy';
+import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Lazy } from "react-lazy";
 
-import * as actions from '../../actions';
+import * as actions from "../../actions";
 
 //Presentational React Component
 class StreamCard extends Component {
@@ -18,14 +18,28 @@ class StreamCard extends Component {
   }
 
   render() {
-    const { streamCover, logo, title, name, game, history, searchGamesApi, userLogo } = this.props;
+    const {
+      streamCover,
+      logo,
+      title,
+      name,
+      game,
+      history,
+      searchGamesApi,
+      userLogo
+    } = this.props;
     const width = userLogo ? 200 : "100%";
     return (
       <div className="stream-card">
         <div className="gs-video-thumbnail">
           <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
-            <Lazy component="span" cushion={200} >
-              <img className="stream-cover" src={streamCover} alt={title} style={{width}}/>
+            <Lazy component="span" cushion={200}>
+              <img
+                className="stream-cover"
+                src={streamCover}
+                alt={title}
+                style={{ width }}
+              />
             </Lazy>
           </Link>
         </div>
@@ -40,9 +54,12 @@ class StreamCard extends Component {
             <br />
             <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
               {name}
-            </Link>{' '}
-            plays{' '}
-            <Link to={'/search'} onClick={() => searchGamesApi({ search: game }, history)}>
+            </Link>{" "}
+            plays{" "}
+            <Link
+              to={"/search"}
+              onClick={() => searchGamesApi({ search: game }, history)}
+            >
               {game}
             </Link>
           </div>
@@ -56,4 +73,7 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, actions)(withRouter(StreamCard));
+export default connect(
+  mapStateToProps,
+  actions
+)(withRouter(StreamCard));

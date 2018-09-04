@@ -8,7 +8,9 @@ class TopStream extends Component {
     const { display_name, followers, name } = this.props.embed;
     return (
       <div id="gs-embed">
-        <p className="h4">{display_name} | Followers: {followers}</p>
+        <p className="h4">
+          {display_name} | Followers: {followers}
+        </p>
         <TopStreamEmbed channel={name} />
       </div>
     );

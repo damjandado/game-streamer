@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import LeftBarItem from './LeftBarItem';
+import LeftBarItem from "./LeftBarItem";
 
 class LeftBar extends Component {
   renderItems() {
-    console.log('this.props.featured', this.props.featured);
-    const fts = this.props.featured.slice(0,5);
+    console.log("this.props.featured", this.props.featured);
+    const fts = this.props.featured.slice(0, 5);
     return fts.map(item => {
       return (
         <LeftBarItem

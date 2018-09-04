@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
-import * as actions from "../actions/actions";
 
 import Dashboard from "./content/Dashboard";
 import Featured from "./content/Featured";

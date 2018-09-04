@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
-import Loader from '../presentationals/Loader';
-import StreamCard from '../presentationals/StreamCard';
-import Alert from '../presentationals/Alert';
+import Loader from "../presentationals/Loader";
+import StreamCard from "../presentationals/StreamCard";
+import Alert from "../presentationals/Alert";
 
 class Featured extends Component {
   componentDidMount() {
-    console.log('Featured Component mounted');
+    console.log("Featured Component mounted");
     this.props.fetchRequest();
     this.props.featuredApi(100);
-    this.props.toggleActive('featured');
+    this.props.toggleActive("featured");
   }
 
   componentDidUpdate() {
-    console.log('Featured Component updated');
+    console.log("Featured Component updated");
     // this.props.fetchSuccess();
   }
 
@@ -35,15 +35,15 @@ class Featured extends Component {
       />
     ));
     const error = ftProps.error;
-    console.log('streamCardItems', streamCardItems);
+    console.log("streamCardItems", streamCardItems);
     return (
       <div className="main">
-      <h3 className="text-center text-muted">Featured Streams</h3>
-        {status === 'loading' ? (
+        <h3 className="text-center text-muted">Featured Streams</h3>
+        {status === "loading" ? (
           <Loader />
-        ) : status === 'success' ? (
+        ) : status === "success" ? (
           <div className="stream-cards">{streamCardItems}</div>
-        ) : status === 'error' ? (
+        ) : status === "error" ? (
           <div>
             <Alert error={error} />
           </div>
@@ -59,4 +59,7 @@ function mapStateToProps({ featured }) {
   return { featured };
 }
 
-export default connect(mapStateToProps, actions)(Featured);
+export default connect(
+  mapStateToProps,
+  actions
+)(Featured);

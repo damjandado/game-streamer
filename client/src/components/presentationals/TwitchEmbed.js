@@ -1,22 +1,12 @@
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
-import * as actions from '../../actions';
+import * as actions from "../../actions";
 
 const TwitchEmbed = props => {
-  const {
-    logo,
-    game,
-    name,
-    status,
-    display_name,
-    text,
-    title,
-    views
-  } = props.embed;
-  const { history, searchGamesApi, frameHeight } = props;
+  const { logo, game, name, status, text, title, views } = props.embed;
+  const { history, searchGamesApi } = props;
   const renderText = () => {
     return { __html: text };
   };
@@ -38,7 +28,7 @@ const TwitchEmbed = props => {
             <div className="gs-stream-info">
               <div className="profile-image">
                 <figure className="gs-avatar">
-                  <img src={logo} />
+                  <img src={logo} alt="logo" />
                 </figure>
               </div>
               <div className="stream-details">
@@ -67,6 +57,7 @@ const TwitchEmbed = props => {
           height="150"
           frameBorder="0"
           scrolling="no"
+          title="twitch-chat"
         />
       </div>
     </div>
@@ -77,4 +68,7 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, actions)(withRouter(TwitchEmbed));
+export default connect(
+  mapStateToProps,
+  actions
+)(withRouter(TwitchEmbed));

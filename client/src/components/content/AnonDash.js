@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
-import TopStreamEmbed from '../presentationals/TopStreamEmbed';
-import VideoCard from '../presentationals/VideoCard';
-import Loader from '../presentationals/Loader';
-import Alert from '../presentationals/Alert';
+import TopStreamEmbed from "../presentationals/TopStreamEmbed";
+import VideoCard from "../presentationals/VideoCard";
+import Loader from "../presentationals/Loader";
+import Alert from "../presentationals/Alert";
 
 class AnonDash extends Component {
   componentDidMount() {
-    this.props.fetchStreamAndClips('Twitch', 4);
+    this.props.fetchStreamAndClips("Twitch", 4);
     this.props.topGamesApi(12);
   }
 
@@ -36,7 +35,7 @@ class AnonDash extends Component {
           />
         );
     });
-    console.log('clipCards', clipCards);
+    console.log("clipCards", clipCards);
     const error = anonProps.error;
     const ds = this.props.dashboard;
     return (
@@ -50,16 +49,16 @@ class AnonDash extends Component {
                 : document.body.offsetHeight
           }}
         >
-          {' '}
-          {status === 'loading' ? (
+          {" "}
+          {status === "loading" ? (
             <Loader />
-          ) : status === 'success' ? (
+          ) : status === "success" ? (
             <div>
               <div className="stream-cards" style={{ marginTop: 0 }}>
                 {clipCards}
               </div>
             </div>
-          ) : status === 'error' ? (
+          ) : status === "error" ? (
             <div>
               <Alert error={error} />
             </div>
@@ -79,4 +78,7 @@ function mapStateToProps({ clips, featured, topGames, dashboard }) {
   return { clips, featured, topGames, dashboard };
 }
 
-export default connect(mapStateToProps, actions)(AnonDash);
+export default connect(
+  mapStateToProps,
+  actions
+)(AnonDash);

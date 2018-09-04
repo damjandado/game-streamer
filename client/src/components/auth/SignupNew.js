@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { reduxForm } from 'redux-form';
+import { reduxForm } from "redux-form";
 import SignupForm from "./SignupForm";
 import SignupFormReview from "./SignupFormReview";
 
@@ -16,9 +16,7 @@ class SignupNew extends Component {
     }
 
     return (
-      <SignupForm
-        onNext={() => this.setState({ showFormReview: true })}
-      />
+      <SignupForm onNext={() => this.setState({ showFormReview: true })} />
     );
   }
 
@@ -28,5 +26,5 @@ class SignupNew extends Component {
 }
 
 export default reduxForm({
-  form: 'registrationForm'
+  form: "registrationForm"
 })(SignupNew);

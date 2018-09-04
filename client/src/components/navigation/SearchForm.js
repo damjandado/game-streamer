@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import { withRouter } from 'react-router-dom';
+import _ from "lodash";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { reduxForm, Field } from "redux-form";
+import { withRouter } from "react-router-dom";
 
-import * as actions from '../../actions';
+import * as actions from "../../actions";
 
 class SearchForm extends Component {
   state = {
@@ -13,11 +13,11 @@ class SearchForm extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this.updateDimensions);
+    window.addEventListener("resize", this.updateDimensions);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDimensions);
+    window.removeEventListener("resize", this.updateDimensions);
   }
 
   updateDimensions = _.debounce(() => {
@@ -29,7 +29,7 @@ class SearchForm extends Component {
 
   render() {
     const { handleSubmit, history, searchGamesApi } = this.props;
-    const { width, height } = this.state;
+    const { width } = this.state;
     const full = width > 991 || width < 576;
     return (
       <form
@@ -42,7 +42,7 @@ class SearchForm extends Component {
           name="search"
           placeholder="Search"
           component="input"
-          size={full ? 40 : (width > 767 ? 30 : 20)}
+          size={full ? 40 : width > 767 ? 30 : 20}
         />
 
         {full ? (
@@ -60,8 +60,11 @@ class SearchForm extends Component {
   }
 }
 
-SearchForm = connect(null, actions)(SearchForm);
+SearchForm = connect(
+  null,
+  actions
+)(SearchForm);
 
 export default reduxForm({
-  form: 'searchForm'
+  form: "searchForm"
 })(withRouter(SearchForm));

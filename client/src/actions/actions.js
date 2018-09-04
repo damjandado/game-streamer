@@ -1,13 +1,16 @@
-import axios from 'axios';
-import * as types from './types';
+import axios from "axios";
+import * as types from "./types";
 
 export const onSignup = values => async dispatch => {
   dispatch(beginSignup());
-  console.log('onSignup provided values: ', values);
-  const res = await makeUserRequest('post', values, '/local/signup');
+  console.log("onSignup provided values: ", values);
+  const res = await makeUserRequest("post", values, "/local/signup");
   try {
     if (res.data.success) {
-      const res = await axios.post('/api/send_email', {email: values.email, template: values.template});
+      await axios.post("/api/send_email", {
+        email: values.email,
+        template: values.template
+      });
     } else {
       dispatch(signupError());
       let signupMessage = res.data.message;
@@ -15,23 +18,23 @@ export const onSignup = values => async dispatch => {
     }
   } catch (e) {
     if (e instanceof Error) {
-      console.log('Error on registration:', e.message);
+      console.log("Error on registration:", e.message);
     }
   }
 };
 
 export const onLogin = (values, remember, path, history) => async dispatch => {
-  console.log('values', values);
-  console.log('remember', remember);
-  console.log('path', path);
-  console.log('history', history);
+  console.log("values", values);
+  console.log("remember", remember);
+  console.log("path", path);
+  console.log("history", history);
   dispatch(beginLogin());
   values.remember = remember;
-  const res = await makeUserRequest('post', values, '/local/login');
+  const res = await makeUserRequest("post", values, "/local/login");
   try {
     if (res.data.success) {
       dispatch(loginSuccess(res.data));
-      localStorage.setItem('token', res.data.token);
+      localStorage.setItem("token", res.data.token);
       history.push(path);
     } else {
       dispatch(loginError());
@@ -39,7 +42,7 @@ export const onLogin = (values, remember, path, history) => async dispatch => {
       return loginMessage;
     }
   } catch (e) {
-    console.log('Error', e.message);
+    console.log("Error", e.message);
   }
   // window.location = '/auth/local';
   // history.push('/');
@@ -47,22 +50,22 @@ export const onLogin = (values, remember, path, history) => async dispatch => {
 
 export const onLogout = history => async dispatch => {
   dispatch(beginLogout());
-  const res = await axios.get('/api/logout');
-  console.log('A P I logout', res);
+  const res = await axios.get("/api/logout");
+  console.log("A P I logout", res);
   try {
     if (res.data.success) {
       dispatch(logoutSuccess());
-      localStorage.removeItem('token');
-      history.push('/');
+      localStorage.removeItem("token");
+      history.push("/");
     } else {
       dispatch(logoutError());
     }
   } catch (e) {
-    console.log('Error', res.message);
+    console.log("Error", res.message);
   }
 };
 
-function makeUserRequest(method, data, api = '/local/login') {
+function makeUserRequest(method, data, api = "/local/login") {
   // returns a Promise
   return axios({
     method: method,
@@ -72,25 +75,25 @@ function makeUserRequest(method, data, api = '/local/login') {
 }
 
 export const fetchUser = () => async dispatch => {
-  const res = await axios.get('/api/current_user');
+  const res = await axios.get("/api/current_user");
   dispatch({ type: types.LOGIN_USER });
   dispatch({ type: types.FETCH_USER, payload: res.data });
 };
 
-export const sendMail = (values) => async dispatch => {
-  console.log('sendMail sendMail sendMail');
-  const res = await axios.post('/api/send_email', values);
+export const sendMail = values => async dispatch => {
+  console.log("sendMail sendMail sendMail");
+  const res = await axios.post("/api/send_email", values);
   try {
     if (res.data.success) {
       dispatch({ type: types.SEND_MAIL, userId: res.data.userId });
     }
   } catch (e) {
-    console.log('Email was not sent');
+    console.log("Email was not sent");
   }
 };
 
 export const checkEmail = email => async dispatch => {
-  const res = await makeUserRequest('POST', email, '/api/check_email');
+  const res = await makeUserRequest("POST", email, "/api/check_email");
   if (res.data.valid) {
     dispatch({ type: types.CHECK_MAIL, payload: true });
   } else {
@@ -132,9 +135,9 @@ function beginSignup() {
   return { type: types.SIGNUP_USER };
 }
 
-function signupSuccess() {
-  return { type: types.SIGNUP_SUCCESS_USER };
-}
+// function signupSuccess() {
+//   return { type: types.SIGNUP_SUCCESS_USER };
+// }
 
 function signupError() {
   return { type: types.SIGNUP_ERROR_USER };
@@ -150,14 +153,14 @@ function signupError() {
 export function fetchRequest() {
   return {
     type: types.FETCH_FEATURED_REQUEST,
-    status: 'loading'
+    status: "loading"
   };
 }
 
 export function fetchSuccess(featured) {
   return {
     type: types.FETCH_FEATURED_SUCCESS,
-    status: 'success',
+    status: "success",
     featured
   };
 }
@@ -165,7 +168,7 @@ export function fetchSuccess(featured) {
 export function fetchSuccessLoading(featured) {
   return {
     type: types.FETCH_FEATURED_SUCCESS,
-    status: 'loading',
+    status: "loading",
     featured
   };
 }
@@ -173,7 +176,7 @@ export function fetchSuccessLoading(featured) {
 export function fetchFailure(error) {
   return {
     type: types.FETCH_FEATURED_FAILURE,
-    status: 'error',
+    status: "error",
     error
   };
 }
@@ -181,14 +184,14 @@ export function fetchFailure(error) {
 export function fetchTopRequest() {
   return {
     type: types.FETCH_TOPGAMES_REQUEST,
-    status: 'loading'
+    status: "loading"
   };
 }
 
 export function fetchTopSuccess(streams) {
   return {
     type: types.FETCH_TOPGAMES_SUCCESS,
-    status: 'success',
+    status: "success",
     streams
   };
 }
@@ -196,7 +199,7 @@ export function fetchTopSuccess(streams) {
 export function fetchTopFailure(error) {
   return {
     type: types.FETCH_TOPGAMES_FAILURE,
-    status: 'error',
+    status: "error",
     error
   };
 }
@@ -204,7 +207,7 @@ export function fetchTopFailure(error) {
 export function noSearch() {
   return {
     type: types.NO_SEARCH,
-    status: 'no_search'
+    status: "no_search"
   };
 }
 
@@ -212,14 +215,14 @@ export function fetchSearchRequest(term) {
   return {
     type: types.FETCH_SEARCH_REQUEST,
     term,
-    status: 'loading'
+    status: "loading"
   };
 }
 
 export function fetchSearchSuccess(users, games) {
   return {
     type: types.FETCH_SEARCH_SUCCESS,
-    status: 'success',
+    status: "success",
     users,
     games
   };
@@ -228,13 +231,13 @@ export function fetchSearchSuccess(users, games) {
 export function fetchSearchFailure(error) {
   return {
     type: types.FETCH_SEARCH_FAILURE,
-    status: 'error',
+    status: "error",
     error
   };
 }
 
 export const saveActivity = entity => async dispatch => {
-  const res = await axios.post('/api/twitch/users', entity);
+  const res = await axios.post("/api/twitch/users", entity);
 
   dispatch({ type: types.SAVE_ACTIVITY, payload: res.data });
 };
@@ -257,12 +260,12 @@ export const divHeight = height => {
   return {
     type: types.DIV_HEIGHT,
     height
-  }
-}
+  };
+};
 
 export const frameHeight = height => {
   return {
     type: types.FRAME_HEIGHT,
     height
-  }
-}
+  };
+};

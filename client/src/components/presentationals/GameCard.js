@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import ReactTooltip from 'react-tooltip';
-import { Lazy } from 'react-lazy';
+import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import ReactTooltip from "react-tooltip";
+import { Lazy } from "react-lazy";
 
-import * as actions from '../../actions';
+import * as actions from "../../actions";
 
 //Presentational React Component
 class GameCard extends Component {
@@ -28,7 +28,6 @@ class GameCard extends Component {
       spanChannels,
       cardType,
       cardCover,
-      maxWidth,
       history,
       searchGamesApi
     } = this.props;
@@ -36,7 +35,10 @@ class GameCard extends Component {
     return (
       <div className={cardType}>
         <div className="gs-video-thumbnail">
-          <Link to={'/search'} onClick={() => searchGamesApi({ search: name }, history)}>
+          <Link
+            to={"/search"}
+            onClick={() => searchGamesApi({ search: name }, history)}
+          >
             <Lazy component="span" cushion={200}>
               <img className={cardCover} src={box} alt={name} />
             </Lazy>
@@ -47,7 +49,10 @@ class GameCard extends Component {
             className="game-details iffyTip"
             onMouseOver={this.showTooltip.bind(this)}
           >
-            <Link to={'/search'} onClick={() => searchGamesApi({ search: name }, history)}>
+            <Link
+              to={"/search"}
+              onClick={() => searchGamesApi({ search: name }, history)}
+            >
               {trunc}
               <span
                 className="font-weight-bold"
@@ -66,7 +71,7 @@ class GameCard extends Component {
                   offset={{ bottom: 20, right: 50 }}
                 />
               ) : (
-                ''
+                ""
               )}
             </Link>
             <div>
@@ -89,4 +94,7 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, actions)(withRouter(GameCard));
+export default connect(
+  mapStateToProps,
+  actions
+)(withRouter(GameCard));

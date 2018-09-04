@@ -1,34 +1,36 @@
-import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form';
-import axios from 'axios';
+import React, { Component } from "react";
+import { reduxForm, Field } from "redux-form";
+import axios from "axios";
 
-import AuthField from './AuthField';
-import NotFound from '../presentationals/NotFound';
+import AuthField from "./AuthField";
+import NotFound from "../presentationals/NotFound";
 
 class RecoveryEnterNew extends Component {
-  state = { validLink: false, success: false, errorPage: false, email: '' };
+  state = { validLink: false, success: false, errorPage: false, email: "" };
 
   async componentDidMount() {
-    const { match: { params } } = this.props;
-    console.log('params? ? ? ?', params);
+    const {
+      match: { params }
+    } = this.props;
+    console.log("params? ? ? ?", params);
     const res = await axios({
-      method: 'POST',
-      url: '/api/users/userid',
+      method: "POST",
+      url: "/api/users/userid",
       data: params.userId
     });
     if (res.data.success) {
       this.setState({ validLink: true, email: res.data.email });
     } else {
       this.setState({ errorPage: true });
-      console.log('Error:', res.data.error);
+      console.log("Error:", res.data.error);
     }
   }
 
   async checkPasswords(values) {
     values = { email: this.state.email, ...values };
     const res = await axios({
-      method: 'POST',
-      url: '/api/change_pass',
+      method: "POST",
+      url: "/api/change_pass",
       data: values
     });
     if (res.data.valid) {
@@ -87,14 +89,14 @@ class RecoveryEnterNew extends Component {
 function validate(val) {
   const errors = {};
   if (val.password !== val.passwordConfirm) {
-    errors.password = 'Passwords do not match';
+    errors.password = "Passwords do not match";
   }
 
   return errors;
 }
 
 export default reduxForm({
-  form: 'recoveryForm',
+  form: "recoveryForm",
   validate,
   destroyOnUnmount: false
 })(RecoveryEnterNew);

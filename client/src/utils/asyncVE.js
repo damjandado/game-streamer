@@ -3,14 +3,14 @@ const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export default ({ email: testmail }) => {
-  console.log('Async E', testmail);
+  console.log("Async E", testmail);
   return sleep(1000) // simulate server latency
     .then(() => {
       const invalidEmails = testmail
-        .split(',')
+        .split(",")
         .map(email => email.trim())
         .filter(email => re.test(email) === false);
-      console.log('invalidEmails', invalidEmails);
+      console.log("invalidEmails", invalidEmails);
       if (invalidEmails.length) {
         throw { asynce: `These emails are invalid: ${invalidEmails}` };
       }

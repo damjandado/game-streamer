@@ -1,5 +1,5 @@
 const initialState = {
-  name: 'monstercat',
+  name: "monstercat",
   found: false
 };
 
@@ -7,11 +7,13 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case "EMBED_STREAM":
       let obj = action.ebd.stream || action.ebd;
-      console.log('EMBED_STREAM', action.ebd);
+      console.log("EMBED_STREAM", action.ebd);
       obj = obj.channel || obj;
       const temp_state = {
         channel: obj || "null",
-        logo: obj.logo || "https://static-cdn.jtvnw.net/ttv-static/404_preview-120x72.jpg",
+        logo:
+          obj.logo ||
+          "https://static-cdn.jtvnw.net/ttv-static/404_preview-120x72.jpg",
         game: obj.game || "null",
         name: obj.name || obj.name,
         display_name: obj.display_name || "null",

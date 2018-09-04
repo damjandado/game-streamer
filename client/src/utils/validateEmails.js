@@ -2,9 +2,9 @@ const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0
 
 export default emails => {
   const invalidEmails = emails
-  .split(",")
-  .map(email => email.trim())
-  .filter(email => re.test(email) === false);
+    .split(",")
+    .map(email => email.trim())
+    .filter(email => re.test(email) === false);
 
   if (invalidEmails.length) {
     return `Email is not valid: ${invalidEmails}`;

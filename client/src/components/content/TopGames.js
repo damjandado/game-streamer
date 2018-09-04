@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
-import Loader from '../presentationals/Loader';
-import GameCard from '../presentationals/GameCard';
-import Alert from '../presentationals/Alert';
+import Loader from "../presentationals/Loader";
+import GameCard from "../presentationals/GameCard";
+import Alert from "../presentationals/Alert";
 
 class TopGames extends Component {
   componentDidMount() {
-    console.log('TopGames Component mounted');
+    console.log("TopGames Component mounted");
     this.props.fetchTopRequest();
     this.props.topGamesApi(60, 60);
-    this.props.toggleActive('top');
+    this.props.toggleActive("top");
   }
 
   render() {
@@ -27,8 +27,8 @@ class TopGames extends Component {
         viewers={tg.viewers}
         channels={tg.channels}
         spanChannels={true}
-        cardType={'game-card col' + (i > 116 ? ' gs-hidden' : '')}
-        cardCover={'stream-cover'}
+        cardType={"game-card col" + (i > 116 ? " gs-hidden" : "")}
+        cardCover={"stream-cover"}
         logoArt={true}
       />
     ));
@@ -36,11 +36,11 @@ class TopGames extends Component {
     return (
       <div className="main">
         <h3 className="text-center text-muted">Top Games on Twitch</h3>
-        {status === 'loading' ? (
+        {status === "loading" ? (
           <Loader />
-        ) : status === 'success' ? (
+        ) : status === "success" ? (
           <div className="stream-cards">{gameCardItems}</div>
-        ) : status === 'error' ? (
+        ) : status === "error" ? (
           <div>
             <Alert error={error} />
           </div>
@@ -56,4 +56,7 @@ function mapStateToProps({ topGames }) {
   return { topGames };
 }
 
-export default connect(mapStateToProps, actions)(TopGames);
+export default connect(
+  mapStateToProps,
+  actions
+)(TopGames);

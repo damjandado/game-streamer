@@ -1,6 +1,6 @@
-const keys = require('../../config/keys');
+const keys = require("../../config/keys");
 
-module.exports = (user) => {
+module.exports = user => {
   return `
     <html>
      <body>
@@ -9,10 +9,12 @@ module.exports = (user) => {
         <p>Click on a link below to confirm your registration: </p>
         <p><br /></p>
         <div>
-          <a href="${keys.redirectDomain}/users/confirmation/${user.id}">Confirm</a>
+          <a href="${keys.redirectDomain}/users/confirmation/${
+    user.id
+  }">Confirm</a>
         </div>
       </div>
      </body>
     </html>
   `;
-}
+};

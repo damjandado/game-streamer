@@ -1,10 +1,10 @@
-const axios = require('axios');
-const twitchClientID = require('../config/keys').twitchClientID;
+const axios = require("axios");
+const twitchClientID = require("../config/keys").twitchClientID;
 
 exports.makeid = num => {
-  var text = '';
+  var text = "";
   var possible =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   for (var i = 0; i < num; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -47,16 +47,16 @@ exports.fetchBroadcasters = async list => {
     broadcasters.map(async item => {
       try {
         const fetched = await axios({
-          method: 'get',
+          method: "get",
           url: `https://api.twitch.tv/helix/streams?user_login=${item}`,
-          headers: { 'Client-ID': twitchClientID }
+          headers: { "Client-ID": twitchClientID }
         });
         if (fetched.data.data.length) {
           let user = fetched.data.data[0];
-          console.log('user -> api.twitch.tv/helix/streams?user_login=');
-          console.log('***------------***');
+          console.log("user -> api.twitch.tv/helix/streams?user_login=");
+          console.log("***------------***");
           // console.log(user);
-          let thumb = user.thumbnail_url.replace('{width}x{height}', '320x180');
+          let thumb = user.thumbnail_url.replace("{width}x{height}", "320x180");
           try {
             // const findGamebyID = await axios({
             //   method: 'get',
@@ -64,14 +64,14 @@ exports.fetchBroadcasters = async list => {
             //   headers: { 'Client-ID': twitchClientID }
             // });
             const streamInfo = await axios({
-              method: 'get',
+              method: "get",
               url: `https://api.twitch.tv/kraken/streams/${user.user_id}`,
               headers: {
-                'Client-ID': twitchClientID,
-                'Accept': 'application/vnd.twitchtv.v5+json'
+                "Client-ID": twitchClientID,
+                Accept: "application/vnd.twitchtv.v5+json"
               }
             });
-            console.log('streamInfo.data ->');
+            console.log("streamInfo.data ->");
             // console.log(streamInfo.data.stream);
             return streamInfo.data.stream;
           } catch (e) {
@@ -84,8 +84,8 @@ exports.fetchBroadcasters = async list => {
       }
     })
   ).then(result => {
-    console.log('outputBroadcasters');
-    console.log('***------------***');
+    console.log("outputBroadcasters");
+    console.log("***------------***");
     // console.log(result);
     outputBroadcasters = [].concat(result);
   });
@@ -117,9 +117,9 @@ exports.fetchGames = async list => {
     games.map(async item => {
       try {
         const fetched = await axios({
-          method: 'get',
+          method: "get",
           url: `https://api.twitch.tv/helix/games?name=${item}`,
-          headers: { 'Client-ID': twitchClientID }
+          headers: { "Client-ID": twitchClientID }
         });
         let game = fetched.data.data[0];
         return game;

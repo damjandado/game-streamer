@@ -1,7 +1,7 @@
 const initialState = {
-  status: '',
+  status: "",
   clips: [],
-  error: ''
+  error: ""
 };
 
 export default function(state = initialState, action) {
@@ -11,11 +11,11 @@ export default function(state = initialState, action) {
     //     status: action.status
     //   });
     //   return requested;
-    case 'FETCH_CLIPS':
+    case "FETCH_CLIPS":
       const success = Object.assign({}, state, {
         status: action.status,
         clips: action.clips
-      })
+      });
       return success;
     // case 'FETCH_DASHBOARD_FAILURE':
     //   const failed = Object.assign({}, state, {

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import Loader from '../presentationals/Loader';
-import StreamCard from '../presentationals/StreamCard';
-import Alert from '../presentationals/Alert';
+import Loader from "../presentationals/Loader";
+import StreamCard from "../presentationals/StreamCard";
+import Alert from "../presentationals/Alert";
 
-import * as actions from '../../actions';
+import * as actions from "../../actions";
 
 class SearchResults extends Component {
   componentDidMount() {
-    console.log('SearchResults Component mounted');
-    this.props.toggleActive('search');
+    console.log("SearchResults Component mounted");
+    this.props.toggleActive("search");
   }
 
   render() {
@@ -63,9 +63,9 @@ class SearchResults extends Component {
     ) : (
       <div />
     );
-    console.log('*-*-*-*-*-*-*-*-*-*-*-*-*', streamCardGames);
+    console.log("*-*-*-*-*-*-*-*-*-*-*-*-*", streamCardGames);
     const error = searchProps.error;
-    if (!streamCardUsers && !streamCardGames && status === 'success')
+    if (!streamCardUsers && !streamCardGames && status === "success")
       return (
         <h3 className="text-center text-muted" style={{ marginTop: 50 }}>
           Nothing found.
@@ -73,17 +73,17 @@ class SearchResults extends Component {
       );
     return (
       <div className="main">
-        {status === 'no_search' ? (
+        {status === "no_search" ? (
           <h3 className="text-center text-muted" style={{ marginTop: 50 }}>
             No search yet.
           </h3>
-        ) : status === 'loading' ? (
+        ) : status === "loading" ? (
           <Loader />
-        ) : status === 'success' ? (
+        ) : status === "success" ? (
           <div>
             {renderSCU} {renderSCG}
           </div>
-        ) : status === 'error' ? (
+        ) : status === "error" ? (
           <div>
             <Alert error={error} />
           </div>
@@ -99,4 +99,7 @@ function mapStateToProps({ search }) {
   return { search };
 }
 
-export default connect(mapStateToProps, actions)(SearchResults);
+export default connect(
+  mapStateToProps,
+  actions
+)(SearchResults);

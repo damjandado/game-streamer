@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const channelSchema = new Schema({
@@ -22,4 +22,4 @@ const channelSchema = new Schema({
   _links: [String]
 });
 
-mongoose.model('channels', channelSchema);
+mongoose.model("channels", channelSchema);

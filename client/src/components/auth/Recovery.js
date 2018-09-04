@@ -1,35 +1,38 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { reduxForm, Field } from 'redux-form';
-import axios from 'axios';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { reduxForm, Field } from "redux-form";
+import axios from "axios";
 
-import AuthField from './AuthField';
-import validateEmails from '../../utils/validateEmails';
-import * as actions from '../../actions';
+import AuthField from "./AuthField";
+import validateEmails from "../../utils/validateEmails";
+import * as actions from "../../actions";
 
 class Recovery extends Component {
-  state = { showSuccess: false, invalid: '' };
+  state = { showSuccess: false, invalid: "" };
 
   async checkEmail(email, history) {
     await this.props.checkEmail(email);
     if (this.props.auth.emailExists) {
-      const mail = await axios.post('/api/send_email', {email, template: 'r'});
+      const mail = await axios.post("/api/send_email", {
+        email,
+        template: "r"
+      });
       if (mail.data.success) {
         console.log(history);
         this.setState({ showSuccess: true });
       } else {
-        this.setState({ invalid: 'Error: Email not sent' });
+        this.setState({ invalid: "Error: Email not sent" });
       }
     } else {
-      this.setState({ invalid: 'Email not found' });
+      this.setState({ invalid: "Email not found" });
     }
   }
 
   renderView() {
     const { handleSubmit, history } = this.props;
-    console.log('Recovery P R O P S', this.props);
-    console.log('Recovery S T A T E', this.state);
+    console.log("Recovery P R O P S", this.props);
+    console.log("Recovery S T A T E", this.state);
     if (!this.state.showSuccess) {
       return (
         <div>
@@ -73,12 +76,14 @@ class Recovery extends Component {
 
 function validate(values) {
   const errors = {};
-  let err = validateEmails(values.email || '');
-  console.log('err', err);
-  if (err) { errors.email = err; }
-  console.log('validateEmails', errors);
+  let err = validateEmails(values.email || "");
+  console.log("err", err);
+  if (err) {
+    errors.email = err;
+  }
+  console.log("validateEmails", errors);
   if (!values.email) {
-    errors.email = 'You must provide a value';
+    errors.email = "You must provide a value";
   }
 
   return errors;
@@ -88,11 +93,14 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-const RecoveryHOC = connect(mapStateToProps, actions)(Recovery);
+const RecoveryHOC = connect(
+  mapStateToProps,
+  actions
+)(Recovery);
 
 export default reduxForm({
-  form: 'recoveryForm',
+  form: "recoveryForm",
   validate,
-  asyncBlurFields: ['email'],
+  asyncBlurFields: ["email"],
   destroyOnUnmount: false
 })(withRouter(RecoveryHOC));

@@ -1,33 +1,35 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import axios from "axios";
 
-import NotFound from '../presentationals/NotFound';
+import NotFound from "../presentationals/NotFound";
 
 class ConfirmRegistration extends Component {
-  state = { success: false, errorPage: false, email: '' };
+  state = { success: false, errorPage: false, email: "" };
 
   async componentDidMount() {
-    const { match: { params }, history } = this.props;
-    console.log('ConfirmRegistration params:', params);
+    const {
+      match: { params },
+      history
+    } = this.props;
+    console.log("ConfirmRegistration params:", params);
     const res = await axios({
-      method: 'POST',
-      url: '/api/users/userid',
-      data: {userId: params.userId, user: false}
+      method: "POST",
+      url: "/api/users/userid",
+      data: { userId: params.userId, user: false }
     });
     if (res.data.success) {
       this.setState({ success: true });
       setTimeout(() => {
-        history.push('/');
+        history.push("/");
       }, 3000);
     } else {
-      console.log('Error:', res.data.error);
+      console.log("Error:", res.data.error);
       this.setState({ errorPage: true });
     }
   }
 
   render() {
-    const { handleSubmit } = this.props;
     if (this.state.success) {
       return (
         <div>
@@ -36,9 +38,7 @@ class ConfirmRegistration extends Component {
         </div>
       );
     } else if (this.state.errorPage) {
-      return (
-        <NotFound />
-      );
+      return <NotFound />;
     }
     return <div />;
   }

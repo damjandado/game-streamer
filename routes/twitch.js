@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const requireLogin = require('../middlewares/requireLogin');
-const localFuncs = require('./localFuncs');
+const requireLogin = require("../middlewares/requireLogin");
+const localFuncs = require("./localFuncs");
 
-const User = mongoose.model('users');
-const Game = mongoose.model('games');
+const User = mongoose.model("users");
+const Game = mongoose.model("games");
 
 const {
   featuredApi,
@@ -17,7 +17,7 @@ const {
   count_items,
   sortProperties,
   makeid
-} = require('./func.js');
+} = require("./func.js");
 
 exports.games = async (req, res) => {
   const userInDB = await User.find({ _id: req.user.id });
@@ -27,7 +27,7 @@ exports.games = async (req, res) => {
   const games = g.map(item => encodeURI(item));
   const twGames = await fetchGames(games);
   console.log(twGames);
-  console.log('TYPEOF twGames', typeof twGames);
+  console.log("TYPEOF twGames", typeof twGames);
   const listGames = new Game({
     games: twGames
   });
@@ -39,7 +39,7 @@ exports.games = async (req, res) => {
     res.status(422).send(err);
   }
 
-  console.log('req: ', req.user);
+  console.log("req: ", req.user);
 };
 
 exports.users = async (req, res) => {
@@ -51,7 +51,7 @@ exports.users = async (req, res) => {
   userdata.visits.games.push(game);
   userdata.visits.users.push(broadcaster);
 
-  console.log('BODY', req.body);
+  console.log("BODY", req.body);
   res.send(req.body);
 
   User.updateOne(
@@ -68,33 +68,33 @@ exports.users = async (req, res) => {
 };
 
 exports.dashboard = async (req, res) => {
-  console.log('Backend responds');
+  console.log("Backend responds");
   let outputBroadcasters, outputGames;
   const user = await User.find({ _id: req.user.id });
   const vis = user[0].visits;
   if (vis) {
     if (vis.users.length && vis.users.length < 4) {
-      const broadcasters = processQuery(user, 'users', vis.users.length);
+      const broadcasters = processQuery(user, "users", vis.users.length);
       outputBroadcasters = await fetchBroadcasters(broadcasters);
     } else if (vis.users.length >= 4) {
-      const broadcasters = processQuery(user, 'users', 4);
+      const broadcasters = processQuery(user, "users", 4);
       outputBroadcasters = await fetchBroadcasters(broadcasters);
     } else {
       const broadcasters = await featuredApi();
       outputBroadcasters = await fetchBroadcasters(broadcasters);
     }
     if (vis.games.length && vis.games.length == 1) {
-      const games = processQuery(user, 'games', 1);
+      const games = processQuery(user, "games", 1);
       outputGames = await fetchGameStreams(games);
-      console.log('FIRST GAMES IF');
+      console.log("FIRST GAMES IF");
     } else if (vis.games.length >= 2) {
-      const games = processQuery(user, 'games', 2);
+      const games = processQuery(user, "games", 2);
       outputGames = await fetchGameStreams(games);
-      console.log('SECOND GAMES IF');
+      console.log("SECOND GAMES IF");
     } else {
       const games = await topGamesApi();
       outputGames = await fetchGameStreams(games);
-      console.log('THIRD GAMES IF');
+      console.log("THIRD GAMES IF");
     }
     const obj = {
       broadcasters: outputBroadcasters,

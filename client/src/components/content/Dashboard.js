@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
-import AnonDash from './AnonDash';
+import AnonDash from "./AnonDash";
 
-import Loader from '../presentationals/Loader';
-import StreamCard from '../presentationals/StreamCard';
+import Loader from "../presentationals/Loader";
+import StreamCard from "../presentationals/StreamCard";
 // import GameCard from "../presentationals/GameCard";
-import Alert from '../presentationals/Alert';
+import Alert from "../presentationals/Alert";
 
 class Dashboard extends Component {
   componentDidMount() {
-    this.props.statusDashboard('loading');
+    this.props.statusDashboard("loading");
     this.props.populateDashboard();
   }
 
   renderDash() {
     const dash = this.props.dashboard;
     const status = dash.status;
-    console.log('C H A N N E L S', dash.broadcasters);
+    console.log("C H A N N E L S", dash.broadcasters);
     const streamCardBroadcasters = dash.broadcasters.map(bc => {
       if (bc !== null)
         return (
@@ -50,9 +50,9 @@ class Dashboard extends Component {
     const error = dash.error;
     return (
       <div className="main">
-        {status === 'loading' ? (
+        {status === "loading" ? (
           <Loader />
-        ) : status === 'success' ? (
+        ) : status === "success" ? (
           <div>
             <h3 className="text-center text-muted">Recommended Channels</h3>
             <div className="stream-cards">{streamCardBroadcasters}</div>
@@ -60,7 +60,7 @@ class Dashboard extends Component {
             <h3 className="text-center text-muted">Recommended Games</h3>
             <div className="stream-cards">{streamCardGames}</div>
           </div>
-        ) : status === 'error' ? (
+        ) : status === "error" ? (
           <div>
             <Alert error={error} />
           </div>
@@ -95,4 +95,7 @@ function mapStateToProps({ auth, dashboard }) {
   return { auth, dashboard };
 }
 
-export default connect(mapStateToProps, actions)(Dashboard);
+export default connect(
+  mapStateToProps,
+  actions
+)(Dashboard);

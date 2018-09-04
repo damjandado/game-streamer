@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "../../actions/actions";
 
 class LeftBarItem extends Component {
   activeChannel() {
@@ -16,7 +16,11 @@ class LeftBarItem extends Component {
         <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
           <div className="video-list media">
             <div className="media-left">
-              <img className="media-object" src={profileImage} alt="profileImage" />
+              <img
+                className="media-object"
+                src={profileImage}
+                alt="profileImage"
+              />
             </div>
             <div className="media-body">
               <div className="media-heading">{name}</div>
@@ -33,7 +37,10 @@ function mapStateToProps({ embed }) {
   return { embed };
 }
 
-export default connect(mapStateToProps, {
-  embedStream: actions.embedStream,
-  saveActivity: actions.saveActivity
-})(LeftBarItem);
+export default connect(
+  mapStateToProps,
+  {
+    embedStream: actions.embedStream,
+    saveActivity: actions.saveActivity
+  }
+)(LeftBarItem);

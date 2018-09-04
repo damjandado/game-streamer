@@ -10,9 +10,8 @@ import {
   LOGOUT_SUCCESS_USER,
   LOGOUT_ERROR_USER,
   SEND_MAIL,
-  CHECK_MAIL,
-  AUTH_FORM
-} from '../actions/types';
+  CHECK_MAIL
+} from "../actions/types";
 
 const initialState = {
   isWaiting: false,
@@ -24,7 +23,7 @@ export default (state = initialState, action) => {
     case FETCH_USER:
       // const token = localStorage.getItem('token');
       const user = action.payload;
-      console.log('u s e r ', user);
+      console.log("u s e r ", user);
       return user
         ? Object.assign(
             {},
@@ -74,7 +73,7 @@ export default (state = initialState, action) => {
     case CHECK_MAIL:
       return Object.assign({}, state, { emailExists: action.payload });
     case SEND_MAIL:
-      return Object.assign({}, state, { userId: action.userId || '' });
+      return Object.assign({}, state, { userId: action.userId || "" });
     default:
       return state;
   }

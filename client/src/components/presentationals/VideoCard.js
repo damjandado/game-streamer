@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
 
 //Presentational React Component
 class VideoCard extends Component {
@@ -15,11 +15,17 @@ class VideoCard extends Component {
   }
 
   iframe() {
-    let iframeCustom = this.props.iframe.replace('tt_content=embed', 'tt_content=embed&autoplay=false');
+    let iframeCustom = this.props.iframe.replace(
+      "tt_content=embed",
+      "tt_content=embed&autoplay=false"
+    );
     // const srcUrl = /src='(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'/;
-    iframeCustom = iframeCustom.replace('width=\'640\' height=\'360\'', 'width=\'100%\' height=\'100%\'');
+    iframeCustom = iframeCustom.replace(
+      "width='640' height='360'",
+      "width='100%' height='100%'"
+    );
     // console.log('iframeCustom', iframeCustom);
-    return { __html: iframeCustom }
+    return { __html: iframeCustom };
   }
 
   render() {
@@ -36,11 +42,11 @@ class VideoCard extends Component {
           <div className="gs-stream-details">
             <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
               {name}
-            </Link>{' '}
+            </Link>{" "}
             <br />
             <span className="font-weight-bold">{title}</span>
             <br />
-            <Link to={'/search'} onClick={this.searchGame.bind(this)}>
+            <Link to={"/search"} onClick={this.searchGame.bind(this)}>
               {game}
             </Link>
           </div>
@@ -50,4 +56,7 @@ class VideoCard extends Component {
   }
 }
 
-export default connect(null, actions)(VideoCard);
+export default connect(
+  null,
+  actions
+)(VideoCard);

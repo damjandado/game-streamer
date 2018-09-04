@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const userSchema = new Schema({
   name: String,
@@ -56,7 +56,7 @@ userSchema.statics.authenticate = function(email, password, callback) {
     if (err) {
       return callback(err);
     } else if (!user) {
-      var err = new Error('User not found.');
+      var err = new Error("User not found.");
       err.status = 401;
       return callback(err);
     }
@@ -71,16 +71,16 @@ userSchema.statics.authenticate = function(email, password, callback) {
 };
 
 //hashing a password before saving it to the database
-userSchema.pre('save', function(next) {
+userSchema.pre("save", function(next) {
   const user = this;
-  if (!user.isModified('password')) return next();
-  if (user.get('egg')) return next();
+  if (!user.isModified("password")) return next();
+  if (user.get("egg")) return next();
   bcrypt.hash(user.password, 10, function(err, hash) {
     if (err) {
       return next(err);
     }
     user.password = hash;
-    console.log('USER pass', user.password);
+    console.log("USER pass", user.password);
     next();
   });
 });
@@ -98,9 +98,9 @@ userSchema.methods = {
 };
 
 /**
-* Statics
-*/
+ * Statics
+ */
 // UserSchema.statics = {}
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model("users", userSchema);
 module.exports = User;

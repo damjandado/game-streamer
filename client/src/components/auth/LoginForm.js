@@ -99,7 +99,7 @@ class LoginForm extends Component {
 
 function validate(values) {
   console.log("validate synchronously");
-  console.log('sync validate | values obj:', values);
+  console.log("sync validate | values obj:", values);
   const errors = {};
 
   const loginFields = [];
@@ -107,12 +107,12 @@ function validate(values) {
 
   errors.email = validateEmails(values.email || "");
 
-  console.log('Errors from the sync validate:', errors);
+  console.log("Errors from the sync validate:", errors);
 
   const keys = _.keys(values);
 
-  console.log('validate | keys[[_.keys(values)]:', keys);
-  _.each(loginFields, ({name}) => {
+  console.log("validate | keys[[_.keys(values)]:", keys);
+  _.each(loginFields, ({ name }) => {
     if (!values[name]) {
       console.log("values", values);
       console.log("values[name] in validate function", values[name]);
@@ -124,7 +124,7 @@ function validate(values) {
 }
 
 const asyncValidate = async values => {
-  console.log('asyncValidate | values obj:', values);
+  console.log("asyncValidate | values obj:", values);
   if (values.email !== "") {
     const res = await axios({
       method: "POST",
@@ -146,7 +146,10 @@ const asyncValidate = async values => {
   }
 };
 
-LoginForm = connect(null, { onLogin })(LoginForm);
+LoginForm = connect(
+  null,
+  { onLogin }
+)(LoginForm);
 
 export default reduxForm({
   form: "loginForm",

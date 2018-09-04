@@ -1,19 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import LoginForm from './LoginForm';
-import SocialButton from './SocialButton';
+import React from "react";
+import { Link } from "react-router-dom";
+import LoginForm from "./LoginForm";
+import SocialButton from "./SocialButton";
 
 export default () => {
   return (
     <div className="container">
       <div className="kpx_login">
         <h3 className="kpx_authTitle">
-          Login or{' '}
+          Login or{" "}
           <Link to="/signup" className="red btn-flat white-text gs-orange">
             Signup
           </Link>
         </h3>
-        
+
         <div className="row kpx_row-sm-offset-3 kpx_socialButtons">
           <SocialButton title="Twitch" postfix="twitch" route="twitch" />
           <SocialButton title="Google+" postfix="google-plus" route="google" />
@@ -26,7 +26,7 @@ export default () => {
             <span className="kpx_spanOr">or</span>
           </div>
         </div>
-        
+
         <LoginForm />
       </div>
     </div>

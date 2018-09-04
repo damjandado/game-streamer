@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
-import ResizeSensor from 'css-element-queries/src/ResizeSensor';
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
+import ResizeSensor from "css-element-queries/src/ResizeSensor";
 
-import FrontGames from './FrontGames';
+import FrontGames from "./FrontGames";
 
 const TopStreamEmbed = props => {
   if (!props.featured.featured[0]) return <div>Loading...</div>;
@@ -75,10 +75,10 @@ const TopStreamEmbed = props => {
                 <br />
                 <Link to={`/${name}`} onClick={activeChannel.bind(this)}>
                   {display_name}
-                </Link>{' '}
-                plays{' '}
+                </Link>{" "}
+                plays{" "}
                 <Link
-                  to={'/search'}
+                  to={"/search"}
                   onClick={() => searchGamesApi({ search: game }, history)}
                 >
                   {game}
@@ -108,4 +108,7 @@ function mapStateToProps({ embed, featured }) {
   return { embed, featured };
 }
 
-export default connect(mapStateToProps, actions)(withRouter(TopStreamEmbed));
+export default connect(
+  mapStateToProps,
+  actions
+)(withRouter(TopStreamEmbed));

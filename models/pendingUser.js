@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const pendingUserSchema = new Schema({
   email: {
@@ -28,15 +28,15 @@ const pendingUserSchema = new Schema({
 });
 
 //hashing a password before saving it to the database
-pendingUserSchema.pre('save', function(next) {
+pendingUserSchema.pre("save", function(next) {
   const user = this;
-  if (!user.isModified('password')) return next();
+  if (!user.isModified("password")) return next();
   bcrypt.hash(user.password, 10, function(err, hash) {
     if (err) {
       return next(err);
     }
     user.password = hash;
-    console.log('USER pass', user.password);
+    console.log("USER pass", user.password);
     next();
   });
 });
@@ -54,9 +54,9 @@ pendingUserSchema.methods = {
 };
 
 /**
-* Statics
-*/
+ * Statics
+ */
 // UserSchema.statics = {}
 
-const pendingUser = mongoose.model('pendingUsers', pendingUserSchema);
+const pendingUser = mongoose.model("pendingUsers", pendingUserSchema);
 module.exports = pendingUser;

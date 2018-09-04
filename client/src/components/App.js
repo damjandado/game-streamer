@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import * as actions from '../actions';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { connect } from "react-redux";
+import * as actions from "../actions";
 
-import Header from './navigation/Header';
-import LeftBar from './navigation/LeftBar';
-import Landing from './Landing';
+import Header from "./navigation/Header";
+import LeftBar from "./navigation/LeftBar";
+import Landing from "./Landing";
 
 //top level of React component hierarchy
 class App extends Component {
   componentWillMount() {
-    console.log('App PROPS are...', this.props);
+    console.log("App PROPS are...", this.props);
     this.props.fetchUser();
     this.props.featuredApi(5);
     this.props.noSearch();
@@ -33,4 +33,7 @@ class App extends Component {
   }
 }
 
-export default connect(null, actions)(App);
+export default connect(
+  null,
+  actions
+)(App);

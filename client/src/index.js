@@ -1,18 +1,18 @@
-import 'font-awesome/css/font-awesome.min.css';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import "font-awesome/css/font-awesome.min.css";
+import React from "react";
+import ReactDOM from "react-dom";
 
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
 // import Raven from 'raven-js';
 // import createRavenMiddleware from 'raven-for-redux';
-import reducers from './reducers';
+import reducers from "./reducers";
 // import { SIGNIN_SUCCESS_USER } from './actions/types';
 
-import App from './components/App';
-import axios from 'axios';
+import App from "./components/App";
+import axios from "axios";
 window.axios = axios;
 
 /*Raven.config(
@@ -38,5 +38,5 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.querySelector('#root')
+  document.querySelector("#root")
 );

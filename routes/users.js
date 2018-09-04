@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
-const User = mongoose.model('users');
+const User = mongoose.model("users");
 
 exports.currentUser = (req, res) => {
   const currentTime = new Date().getTime();
   if (req.user) {
     if (req.user.tokenExp < currentTime) {
       req.logout();
-      console.log('U S E R after req.logout()', req.user);
+      console.log("U S E R after req.logout()", req.user);
       return res.send(req.user);
     }
   }
@@ -17,14 +17,14 @@ exports.currentUser = (req, res) => {
 
 exports.currentUserDb = async (req, res) => {
   const user = await User.findOne({ _id: req.user.id });
-  console.log('req.user: ', req.user);
+  console.log("req.user: ", req.user);
   res.send(user);
 };
 
 exports.checkEmail = async (req, res) => {
-  console.log('CHECK-MAIL');
+  console.log("CHECK-MAIL");
   const user = await User.findOne({ email: req.body.email });
-  console.log('user', user);
+  console.log("user", user);
   if (user) {
     return res.send({ valid: true });
   }
@@ -32,9 +32,9 @@ exports.checkEmail = async (req, res) => {
 };
 
 exports.checkUsername = async (req, res) => {
-  console.log('CHECK-USERNAME');
+  console.log("CHECK-USERNAME");
   const user = await User.findOne({ username: req.body.username });
-  console.log('user', user);
+  console.log("user", user);
   if (user) {
     return res.send({ valid: true });
   }
@@ -42,10 +42,10 @@ exports.checkUsername = async (req, res) => {
 };
 
 exports.changePass = async (req, res) => {
-  console.log('changepass', req.body);
+  console.log("changepass", req.body);
   const user = await User.findOne({ email: req.body.email });
   if (!req.body.email) {
-    console.log('Return here');
+    console.log("Return here");
     return;
   }
   const tempRemoved = await User.findOneAndRemove({ email: req.body.email });
@@ -53,10 +53,10 @@ exports.changePass = async (req, res) => {
   user.psw = req.body.psw;
   const { email, username, visits, password, psw } = user;
   const userAgain = { email, username, visits, password, psw };
-  console.log('User found in DB:', user);
-  console.log('-------------------');
-  console.log('User to save in DB:', userAgain);
-  console.log('-------------------');
+  console.log("User found in DB:", user);
+  console.log("-------------------");
+  console.log("User to save in DB:", userAgain);
+  console.log("-------------------");
   // console.log('user %s and removed %s', user, tempRemoved);
   await User.create(userAgain, (err, user) => {
     if (err) {
@@ -74,4 +74,3 @@ exports.comparePass = async (req, res) => {
     res.send({ isMatch });
   });
 };
-

@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import SearchForm from './SearchForm';
-import AuthButton from './AuthButton';
-import Navs from './Navs';
-import { onLogout } from '../../actions/actions';
+import SearchForm from "./SearchForm";
+import AuthButton from "./AuthButton";
+import Navs from "./Navs";
+import { onLogout } from "../../actions/actions";
 
-import logo from '../../images/logo_ticc_b.png';
+import logo from "../../images/logo_ticc_b.png";
 
 class Header extends Component {
   state = { dropdownActive: false };
@@ -19,11 +18,11 @@ class Header extends Component {
         return;
       case false:
         return [
-          <li key={'login'} className="nav-item">
-            <AuthButton link={'/login'}>Log in</AuthButton>
+          <li key={"login"} className="nav-item">
+            <AuthButton link={"/login"}>Log in</AuthButton>
           </li>,
-          <li key={'signup'} className="nav-item">
-            <AuthButton link={'/signup'}>Sign up</AuthButton>
+          <li key={"signup"} className="nav-item">
+            <AuthButton link={"/signup"}>Sign up</AuthButton>
           </li>
         ];
       default:
@@ -31,7 +30,8 @@ class Header extends Component {
           <li className="nav-item">
             <div className="dropdown">
               <button className="dropbtn">
-                {user.name || user.username}{'  '}
+                {user.name || user.username}
+                {"  "}
                 <i className="fa fa-caret-down" />
               </button>
               <div className="dropdown-content bg">
@@ -73,6 +73,7 @@ class Header extends Component {
                 src={logo}
                 id="gs-logo"
                 className="d-inline-block align-top"
+                alt="logo"
               />
             </a>
           </div>
@@ -91,4 +92,7 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps, { onLogout })(Header);
+export default connect(
+  mapStateToProps,
+  { onLogout }
+)(Header);

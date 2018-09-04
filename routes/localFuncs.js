@@ -205,10 +205,10 @@ exports.findByUserId = async (req, res) => {
         if (err) return res.send({ success: false });
         pendingUser.findOneAndRemove({ email }, (err, user) => {
           if (err) {
-            console.log('pending user should\'ve been removed but...', err);
+            console.log("pending user should've been removed but...", err);
             return res.send({ success: false });
           } else {
-            console.log('*user* was just saved in db:');
+            console.log("*user* was just saved in db:");
             return res.send({ success: true, email: pending.email });
           }
         });
