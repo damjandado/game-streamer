@@ -5,7 +5,6 @@ import LeftBarItem from "./LeftBarItem";
 
 class LeftBar extends Component {
   renderItems() {
-    console.log("this.props.featured", this.props.featured);
     const fts = this.props.featured.slice(0, 5);
     return fts.map(item => {
       return (

@@ -10,7 +10,6 @@ import Landing from "./Landing";
 //top level of React component hierarchy
 class App extends Component {
   componentWillMount() {
-    console.log("App PROPS are...", this.props);
     this.props.fetchUser();
     this.props.featuredApi(5);
     this.props.noSearch();

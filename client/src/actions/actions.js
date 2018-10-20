@@ -24,10 +24,6 @@ export const onSignup = values => async dispatch => {
 };
 
 export const onLogin = (values, remember, path, history) => async dispatch => {
-  console.log("values", values);
-  console.log("remember", remember);
-  console.log("path", path);
-  console.log("history", history);
   dispatch(beginLogin());
   values.remember = remember;
   const res = await makeUserRequest("post", values, "/local/login");
@@ -66,7 +62,6 @@ export const onLogout = history => async dispatch => {
 };
 
 function makeUserRequest(method, data, api = "/local/login") {
-  // returns a Promise
   return axios({
     method: method,
     url: api,
@@ -142,13 +137,6 @@ function beginSignup() {
 function signupError() {
   return { type: types.SIGNUP_ERROR_USER };
 }
-
-// export function authError(error) {
-//   return {
-//     type: AUTH_ERROR,
-//     payload: error
-//   };
-// }
 
 export function fetchRequest() {
   return {
@@ -253,19 +241,5 @@ export const embedStream = ebd => {
   return {
     type: types.EMBED_STREAM,
     ebd
-  };
-};
-
-export const divHeight = height => {
-  return {
-    type: types.DIV_HEIGHT,
-    height
-  };
-};
-
-export const frameHeight = height => {
-  return {
-    type: types.FRAME_HEIGHT,
-    height
   };
 };

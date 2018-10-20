@@ -42,7 +42,6 @@ nav#gs-header a:hover {
 
 .gs-sidenav {
   background-color: #17141F;
-  height: 200vh;
   overflow-y: hidden;
 }
 
@@ -230,45 +229,14 @@ img.media-object {
   }
 }
 
-.gs-col-left {
-  /*width: 37.5%;*/
-  width: 600px;
-  margin: 10px 10px 0 0;
-  float: left;
-}
-
 .gs-col-right {
   margin: 10px 0 0 10px;
   flex: 1 0 20%;
-  /*width: 62.5%;*/
-  /*float: left;*/
 }
 
-.gs-video-card {
-  width: 100%;
-  height: auto;
-  margin-bottom: 10px;
-}
-
-@media only screen and (max-width: 1240px) {
+@media only screen and (max-width: 1200px) {
   .gs-col-left {
-    width: 400px;
-  }
-
-  .gs-video-card {
-    width: 100%;
-    /*height: 225px;*/
-  }
-}
-
-@media only screen and (max-width: 1024px) {
-  .gs-col-left, .gs-col-right {
-    width: 100%;
-  }
-
-  .gs-video-card {
-    width: 100%;
-    height: auto;
+    display: none;
   }
 }
 
@@ -390,7 +358,6 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 
 .game-card {
   padding: 0 .5rem 1rem;
-  width: calc(100% * (1/4));
   min-width: 140px;
 }
 

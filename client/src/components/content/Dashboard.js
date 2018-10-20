@@ -18,7 +18,6 @@ class Dashboard extends Component {
   renderDash() {
     const dash = this.props.dashboard;
     const status = dash.status;
-    console.log("C H A N N E L S", dash.broadcasters);
     const streamCardBroadcasters = dash.broadcasters.map(bc => {
       if (bc !== null)
         return (
