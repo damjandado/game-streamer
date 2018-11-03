@@ -1,10 +1,9 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
-import { withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
+import { withRouter } from 'react-router-dom';
 
-import * as actions from "../../actions";
+import * as actions from '../../actions';
 
 class SearchForm extends Component {
   state = {
@@ -13,19 +12,20 @@ class SearchForm extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener("resize", this.updateDimensions);
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
-  updateDimensions = _.debounce(() => {
-    this.setState({
-      height: window.innerHeight,
-      width: window.innerWidth
-    });
-  }, 100);
+  updateDimensions = () =>
+    setTimeout(() => {
+      this.setState({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
+    }, 100);
 
   render() {
     const { handleSubmit, history, searchGamesApi } = this.props;
@@ -66,5 +66,5 @@ SearchForm = connect(
 )(SearchForm);
 
 export default reduxForm({
-  form: "searchForm"
+  form: 'searchForm'
 })(withRouter(SearchForm));

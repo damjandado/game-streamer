@@ -49,7 +49,6 @@ export const topGamesApi = (limit = 10, offset = 0) => async dispatch => {
 };
 
 export const searchGamesApi = ({ search }, history) => async dispatch => {
-  console.log("SEARCH term is", search);
   //dispatch FetchRequest, order 1
   dispatch(actions.fetchSearchRequest(search));
   history.push("/search");
@@ -82,7 +81,6 @@ export const searchGamesApi = ({ search }, history) => async dispatch => {
 export const populateDashboard = () => async dispatch => {
   const res = await axios.get("/api/twitch/dashboard");
   dispatch({ type: types.FETCH_DASHBOARD, status: "loading" });
-  console.log("DASHBOARD res.data", res.data);
   try {
     dispatch({
       type: types.FETCH_BROADCASTERS,

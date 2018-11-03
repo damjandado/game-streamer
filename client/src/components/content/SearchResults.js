@@ -9,7 +9,6 @@ import * as actions from "../../actions";
 
 class SearchResults extends Component {
   componentDidMount() {
-    console.log("SearchResults Component mounted");
     this.props.toggleActive("search");
   }
 

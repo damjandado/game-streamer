@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "8.11.4",
+    "node": "10.13.0",
     "npm": "6.4.1"
   },
   "scripts": {
@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.17.1",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "connect-mongo": "^2.0.1",
     "cookie-session": "^2.0.0-beta.3",
@@ -27,7 +27,7 @@
     "express-session": "^1.15.6",
     "forever": "^0.15.3",
     "jwt-simple": "^0.5.1",
-    "localtunnel": "^1.9.0",
+    "localtunnel": "^1.9.1",
     "mongoose": "^4.13.17",
     "nodemon": "^1.18.4",
     "passport": "^0.4.0",

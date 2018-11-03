@@ -1,15 +1,14 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import { reduxForm, Field } from "redux-form";
-import { connect } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
-import formFields from "./formFields";
-import AuthField from "./AuthField";
+import React, { Component } from 'react';
+import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import formFields from './formFields';
+import AuthField from './AuthField';
 
-import validateEmails from "../../utils/validateEmails";
-import { onLogin } from "../../actions/actions";
+import validateEmails from '../../utils/validateEmails';
+import { onLogin } from '../../actions/actions';
 
-import axios from "axios";
+import axios from 'axios';
 
 class LoginForm extends Component {
   state = { remember: false };
@@ -18,13 +17,13 @@ class LoginForm extends Component {
     this.setState(prevState => {
       return { remember: !prevState.remember };
     });
-    console.log("5th of Novembah");
+    console.log('5th of Novembah');
   }
 
   renderFields() {
     const loginFields = [];
     loginFields.push(formFields[0], formFields[2]);
-    return _.map(loginFields, ({ name, type, placeholder, icon }) => {
+    return loginFields.map(({ name, type, placeholder, icon }) => {
       return (
         <Field
           key={name}
@@ -41,10 +40,8 @@ class LoginForm extends Component {
   }
 
   render() {
-    console.log("LoginForm this.props", this.props);
     const { handleSubmit, onLogin, history } = this.props;
     const { remember } = this.state;
-    console.log("S T A T E", this.state);
     return (
       <div>
         <div className="row kpx_row-sm-offset-3">
@@ -52,7 +49,7 @@ class LoginForm extends Component {
             <form
               className="kpx_loginForm"
               onSubmit={handleSubmit(val =>
-                onLogin(val, remember, "/", history)
+                onLogin(val, remember, '/', history)
               )}
               autoComplete="off"
               method="GET"
@@ -98,25 +95,16 @@ class LoginForm extends Component {
 }
 
 function validate(values) {
-  console.log("validate synchronously");
-  console.log("sync validate | values obj:", values);
   const errors = {};
 
   const loginFields = [];
   loginFields.push(formFields[0], formFields[2]);
 
-  errors.email = validateEmails(values.email || "");
+  errors.email = validateEmails(values.email || '');
 
-  console.log("Errors from the sync validate:", errors);
-
-  const keys = _.keys(values);
-
-  console.log("validate | keys[[_.keys(values)]:", keys);
-  _.each(loginFields, ({ name }) => {
+  loginFields.forEach(({ name }) => {
     if (!values[name]) {
-      console.log("values", values);
-      console.log("values[name] in validate function", values[name]);
-      errors[name] = "You must provide a value";
+      errors[name] = 'You must provide a value';
     }
   });
 
@@ -124,23 +112,22 @@ function validate(values) {
 }
 
 const asyncValidate = async values => {
-  console.log("asyncValidate | values obj:", values);
-  if (values.email !== "") {
+  if (values.email !== '') {
     const res = await axios({
-      method: "POST",
-      url: "/api/check_email",
+      method: 'POST',
+      url: '/api/check_email',
       data: { email: values.email }
     });
     if (!res.data.valid) {
-      throw { email: "That email does not exists" };
+      throw { email: 'That email does not exists' };
     } else {
       let resP = await axios({
-        method: "POST",
-        url: "/api/compare_pass",
+        method: 'POST',
+        url: '/api/compare_pass',
         data: values
       });
       if (!resP.data.isMatch) {
-        throw { password: "Wrong password" };
+        throw { password: 'Wrong password' };
       }
     }
   }
@@ -152,9 +139,9 @@ LoginForm = connect(
 )(LoginForm);
 
 export default reduxForm({
-  form: "loginForm",
+  form: 'loginForm',
   // initialValues: { email: 'damjandado@ymail.com', password: 'b' },
   validate,
   asyncValidate,
-  asyncBlurFields: ["email"]
+  asyncBlurFields: ['email']
 })(withRouter(LoginForm));

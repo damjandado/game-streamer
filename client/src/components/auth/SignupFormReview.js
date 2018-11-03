@@ -1,9 +1,8 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import * as actions from "../../actions/actions";
-import formFields from "./formFields";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import * as actions from '../../actions/actions';
+import formFields from './formFields';
 
 class SignupFormReview extends Component {
   state = { success: false };
@@ -11,22 +10,19 @@ class SignupFormReview extends Component {
   render() {
     const { onBack, formValues, onSignup } = this.props;
     const values = formValues;
-    values.template = "signup";
-    const reviewFields = _.map(
-      formFields.slice(0, 2),
-      ({ name, placeholder }) => {
-        return (
-          <div key={name}>
-            <h6 className="text-muted">{placeholder}</h6>
-            <div>{formValues[name]}</div>
-            <br />
-          </div>
-        );
-      }
-    );
+    values.template = 'signup';
+    const reviewFields = formFields.slice(0, 2).map(({ name, placeholder }) => {
+      return (
+        <div key={name}>
+          <h6 className="text-muted">{placeholder}</h6>
+          <div>{formValues[name]}</div>
+          <br />
+        </div>
+      );
+    });
 
     return !this.state.success ? (
-      <div className="col-md-5 gs-center" style={{ marginTop: "5%" }}>
+      <div className="col-md-5 gs-center" style={{ marginTop: '5%' }}>
         <h4>Please confirm your entries</h4>
         <br />
         {reviewFields}
@@ -50,8 +46,8 @@ class SignupFormReview extends Component {
           </div>
         </div>
         <p className="text-right">
-          <small style={{ marginTop: "12px" }}>
-            {" "}
+          <small style={{ marginTop: '12px' }}>
+            {' '}
             By clicking confirm, I agree to your terms
           </small>
         </p>

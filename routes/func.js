@@ -53,9 +53,6 @@ exports.fetchBroadcasters = async list => {
         });
         if (fetched.data.data.length) {
           let user = fetched.data.data[0];
-          console.log("user -> api.twitch.tv/helix/streams?user_login=");
-          console.log("***------------***");
-          // console.log(user);
           let thumb = user.thumbnail_url.replace("{width}x{height}", "320x180");
           try {
             // const findGamebyID = await axios({
@@ -71,8 +68,6 @@ exports.fetchBroadcasters = async list => {
                 Accept: "application/vnd.twitchtv.v5+json"
               }
             });
-            console.log("streamInfo.data ->");
-            // console.log(streamInfo.data.stream);
             return streamInfo.data.stream;
           } catch (e) {
             console.log(e);
@@ -84,9 +79,6 @@ exports.fetchBroadcasters = async list => {
       }
     })
   ).then(result => {
-    console.log("outputBroadcasters");
-    console.log("***------------***");
-    // console.log(result);
     outputBroadcasters = [].concat(result);
   });
   return outputBroadcasters;

@@ -31,8 +31,6 @@ class Recovery extends Component {
 
   renderView() {
     const { handleSubmit, history } = this.props;
-    console.log("Recovery P R O P S", this.props);
-    console.log("Recovery S T A T E", this.state);
     if (!this.state.showSuccess) {
       return (
         <div>

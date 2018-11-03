@@ -10,7 +10,6 @@ class Channel extends Component {
   state = { active: false, errorPage: false };
 
   async componentDidMount() {
-    console.log("Channel mounted", this.props);
     this.setState({ active: false });
     this.props.toggleActive("channel");
     const {

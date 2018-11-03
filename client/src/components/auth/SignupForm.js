@@ -1,18 +1,17 @@
-import _ from "lodash";
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
-import axios from "axios";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
+import axios from 'axios';
 
-import AuthField from "./AuthField";
-import validateEmails from "../../utils/validateEmails";
+import AuthField from './AuthField';
+import validateEmails from '../../utils/validateEmails';
 
-import * as actions from "../../actions";
-import formFields from "./formFields";
+import * as actions from '../../actions';
+import formFields from './formFields';
 
 class SignupForm extends Component {
   renderFields() {
-    return _.map(formFields, ({ name, type, placeholder, icon }) => {
+    return formFields.map(({ name, type, placeholder, icon }) => {
       return [
         <div className="form-group row">
           <label
@@ -45,7 +44,7 @@ class SignupForm extends Component {
     return (
       <div
         className="signin-form profile col-lg-7 gs-center"
-        style={{ marginTop: "5%" }}
+        style={{ marginTop: '5%' }}
       >
         <h3 className="col-md-4">Sign up</h3>
         <br />
@@ -58,8 +57,8 @@ class SignupForm extends Component {
           </form>
         </div>
         <p className="text-right pr-0 col-sm-10">
-          <small style={{ marginTop: "12px" }}>
-            {" "}
+          <small style={{ marginTop: '12px' }}>
+            {' '}
             Click next for the final step
           </small>
         </p>
@@ -71,11 +70,11 @@ class SignupForm extends Component {
 function validate(values) {
   const errors = {};
 
-  errors.email = validateEmails(values.email || "");
+  errors.email = validateEmails(values.email || '');
 
-  _.each(formFields, ({ name }) => {
+  formFields.forEach(({ name }) => {
     if (!values[name]) {
-      errors[name] = "You must provide a value";
+      errors[name] = 'You must provide a value';
     }
   });
 
@@ -85,26 +84,23 @@ function validate(values) {
 const asyncValidate = async values => {
   const { email, username, password, psw } = values;
   const res = await axios({
-    method: "POST",
-    url: "/api/check_email",
+    method: 'POST',
+    url: '/api/check_email',
     data: { email }
   });
   if (res.data.valid) {
-    throw { email: "Email already exists!" };
+    throw { email: 'Email already exists!' };
   }
   const resU = await axios({
-    method: "POST",
-    url: "/api/check_username",
+    method: 'POST',
+    url: '/api/check_username',
     data: { username }
   });
   if (resU.data.valid) {
-    throw { username: "Username already exists!" };
+    throw { username: 'Username already exists!' };
   }
-  console.log("*-*-*-*-*-*-*-*-*-*", password);
-  console.log("*-*-*-*-*-*-*-*-*-*", psw);
-  console.log(password === psw);
   if (password !== psw) {
-    throw { psw: "Passwords do not match!" };
+    throw { psw: 'Passwords do not match!' };
   }
 };
 
@@ -114,9 +110,9 @@ SignupForm = connect(
 )(SignupForm);
 
 export default reduxForm({
-  form: "signupForm",
+  form: 'signupForm',
   validate,
   asyncValidate,
-  asyncBlurFields: ["email", "username", "password", "psw"],
+  asyncBlurFields: ['email', 'username', 'password', 'psw'],
   destroyOnUnmount: false
 })(SignupForm);

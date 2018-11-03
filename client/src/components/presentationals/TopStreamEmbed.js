@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 
 import FrontGames from './FrontGames';
 import VideoCard from '../presentationals/VideoCard';

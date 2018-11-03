@@ -8,7 +8,6 @@ import Alert from "../presentationals/Alert";
 
 class TopGames extends Component {
   componentDidMount() {
-    console.log("TopGames Component mounted");
     this.props.fetchTopRequest();
     this.props.topGamesApi(60, 60);
     this.props.toggleActive("top");

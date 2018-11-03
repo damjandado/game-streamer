@@ -12,7 +12,6 @@ class RecoveryEnterNew extends Component {
     const {
       match: { params }
     } = this.props;
-    console.log("params? ? ? ?", params);
     const res = await axios({
       method: "POST",
       url: "/api/users/userid",
@@ -22,7 +21,6 @@ class RecoveryEnterNew extends Component {
       this.setState({ validLink: true, email: res.data.email });
     } else {
       this.setState({ errorPage: true });
-      console.log("Error:", res.data.error);
     }
   }
 

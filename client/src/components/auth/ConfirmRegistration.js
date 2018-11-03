@@ -12,7 +12,6 @@ class ConfirmRegistration extends Component {
       match: { params },
       history
     } = this.props;
-    console.log("ConfirmRegistration params:", params);
     const res = await axios({
       method: "POST",
       url: "/api/users/userid",
@@ -24,7 +23,6 @@ class ConfirmRegistration extends Component {
         history.push("/");
       }, 3000);
     } else {
-      console.log("Error:", res.data.error);
       this.setState({ errorPage: true });
     }
   }

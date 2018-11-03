@@ -3,7 +3,6 @@ import * as types from "./types";
 
 export const onSignup = values => async dispatch => {
   dispatch(beginSignup());
-  console.log("onSignup provided values: ", values);
   const res = await makeUserRequest("post", values, "/local/signup");
   try {
     if (res.data.success) {
@@ -18,7 +17,6 @@ export const onSignup = values => async dispatch => {
     }
   } catch (e) {
     if (e instanceof Error) {
-      console.log("Error on registration:", e.message);
     }
   }
 };
@@ -38,16 +36,12 @@ export const onLogin = (values, remember, path, history) => async dispatch => {
       return loginMessage;
     }
   } catch (e) {
-    console.log("Error", e.message);
   }
-  // window.location = '/auth/local';
-  // history.push('/');
 };
 
 export const onLogout = history => async dispatch => {
   dispatch(beginLogout());
   const res = await axios.get("/api/logout");
-  console.log("A P I logout", res);
   try {
     if (res.data.success) {
       dispatch(logoutSuccess());
@@ -76,14 +70,12 @@ export const fetchUser = () => async dispatch => {
 };
 
 export const sendMail = values => async dispatch => {
-  console.log("sendMail sendMail sendMail");
   const res = await axios.post("/api/send_email", values);
   try {
     if (res.data.success) {
       dispatch({ type: types.SEND_MAIL, userId: res.data.userId });
     }
   } catch (e) {
-    console.log("Email was not sent");
   }
 };
 
