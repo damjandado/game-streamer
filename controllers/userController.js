@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const requireLogin = require("../middlewares/requireLogin");
-const localFuncs = require("./localFuncs");
 
 const User = mongoose.model("users");
 const Game = mongoose.model("games");
@@ -9,15 +8,19 @@ const Game = mongoose.model("games");
 const {
   featuredApi,
   topGamesApi,
+  fetchGames,
   fetchBroadcasters,
   fetchGameStreams,
   processQuery,
+} = require("./twitchApiController.js");
+
+const {
   flatten,
   remove_duplicates_es6,
   count_items,
   sortProperties,
-  makeid
-} = require("./func.js");
+  makeid,
+} = require('./helpers.js');
 
 exports.games = async (req, res) => {
   const userInDB = await User.find({ _id: req.user.id });

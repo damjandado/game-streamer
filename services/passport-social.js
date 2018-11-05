@@ -27,11 +27,9 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log("Twitch user authing...");
-      console.log("[[-------------------]]");
-      console.log("accessToken is ", accessToken);
-      console.log("-----------------------");
+      console.log("[[-------------------]]\n");
       console.log(profile);
-      console.log("-----------------------");
+      console.log("-----------------------\n");
       const { id, displayName, email, _json } = profile;
       const existingUser = await User.findOne({ "twitch.id": profile.id });
       if (existingUser) {
@@ -63,12 +61,9 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       console.log("Google+ user authing...");
-      console.log("[[-------------------]]");
-      console.log("accessToken is ", accessToken);
-      console.log("-----------------------");
+      console.log("[[-------------------]]\n");
       console.log(profile);
-      console.log("-----------------------");
-      console.log("**-------------------**");
+      console.log("**-------------------**\n");
       const { id, displayName, photos, emails, gender, _json } = profile;
 
       const existingUser = await User.findOne({ "google.id": profile.id });

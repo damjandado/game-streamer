@@ -195,7 +195,7 @@ img.media-object {
 
 .topStream, .gs-clip {
   position: relative;
-  width: 100%;
+  max-width: 900px;
 }
 
 .twitchStream:before, .topStream:before, .gs-clip:before {

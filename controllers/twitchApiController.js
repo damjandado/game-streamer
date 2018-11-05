@@ -1,16 +1,6 @@
 const axios = require("axios");
 const twitchClientID = require("../config/keys").twitchClientID;
-
-exports.makeid = num => {
-  var text = "";
-  var possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (var i = 0; i < num; i++)
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  return text;
-};
+const { flatten } = require("./helpers.js");
 
 exports.featuredApi = async (limit = 8) => {
   const res = await axios.get(
@@ -138,39 +128,3 @@ exports.processQuery = (user, prop, count) => {
   let joined = mostVisited.concat(recent);
   return remove_duplicates_es6(joined);
 };
-
-function flatten(arr) {
-  return [].concat(...arr);
-}
-
-function remove_duplicates_es6(arr) {
-  let s = new Set(arr);
-  let it = s.values();
-  return Array.from(it);
-}
-
-function count_items(arr) {
-  return arr.reduce(function(prev, cur) {
-    prev[cur] = (prev[cur] || 0) + 1;
-    return prev;
-  }, {});
-}
-
-function sortProperties(obj) {
-  // convert object into array
-  let sortable = [];
-  for (let key in obj)
-    if (obj.hasOwnProperty(key)) sortable.push([key, obj[key]]); // each item is an array in format [key, value]
-
-  // sort items by value
-  sortable.sort(function(a, b) {
-    return b[1] - a[1]; // compare numbers
-  });
-  sortable = sortable.map(item => item[0]);
-  return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
-}
-
-exports.flatten = flatten;
-exports.remove_duplicates_es6 = remove_duplicates_es6;
-exports.count_items = count_items;
-exports.sortProperties = sortProperties;

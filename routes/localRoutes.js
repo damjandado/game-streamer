@@ -1,54 +1,30 @@
-// const Path = require('path-parser');
-const axios = require("axios");
 const { URL } = require("url");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const requireLogin = require("../middlewares/requireLogin");
-const localFuncs = require("./localFuncs");
-const twitch = require("./twitch");
-const users = require("./users");
-const Mailer = require("../services/Mailer");
-const userConfirmTemplate = require("../services/emailTemplates/userConfirmTemplate");
-const passRecoveryTemplate = require("../services/emailTemplates/passRecoveryTemplate");
-
-const User = mongoose.model("users");
-const Game = mongoose.model("games");
-const twitchClientID = require("../config/keys").twitchClientID;
-
-const {
-  featuredApi,
-  topGamesApi,
-  fetchBroadcasters,
-  fetchGameStreams,
-  processQuery,
-  flatten,
-  remove_duplicates_es6,
-  count_items,
-  sortProperties,
-  makeid
-} = require("./func.js");
+const localAuthController = require("../controllers/localAuthController");
+const userController = require("../controllers/userController");
+const userSettingsController = require("../controllers/userSettingsController");
 
 module.exports = app => {
-  app.post("/local/login", localFuncs.login);
-  app.post("/local/signup", localFuncs.signup);
-  app.get("/api/current_user", users.currentUser);
-  app.get("/api/current_user_db", requireLogin, users.currentUserDb);
-  app.get("/api/logout", localFuncs.logout);
+  app.post("/local/login", localAuthController.login);
+  app.post("/local/signup", localAuthController.signup);
+  app.get("/api/logout", localAuthController.logout);
+  app.post("/api/users/webhooks", localAuthController.sgWebhooks);
+  app.post("/api/users/userid", localAuthController.findByUserId);
+  app.post("/api/send_email", localAuthController.sendgrid);
+  app.get("/api/password_recovery/:formId", localAuthController.sgLink);
 
-  app.post("/api/users/webhooks", localFuncs.sgWebhooks);
-  app.post("/api/users/userid", localFuncs.findByUserId);
-  app.post("/api/send_email", localFuncs.sendgrid);
-  app.get("/api/password_recovery/:formId", localFuncs.sgLink);
+  app.post("/api/check_email", userSettingsController.checkEmail);
+  app.post("/api/check_username", userSettingsController.checkUsername);
+  app.post("/api/change_pass", userSettingsController.changePass);
+  app.post("/api/compare_pass", userSettingsController.comparePass);
+  app.get("/api/current_user", userSettingsController.currentUser);
+  app.get("/api/current_user_db", requireLogin, userSettingsController.currentUserDb);
 
-  app.post("/api/check_email", users.checkEmail);
-  app.post("/api/check_username", users.checkUsername);
-  app.post("/api/change_pass", users.changePass);
-  app.post("/api/compare_pass", users.comparePass);
-
-  app.get("/api/twitch/games", requireLogin, twitch.games);
-  app.post("/api/twitch/users", requireLogin, twitch.users);
-  app.get("/api/twitch/dashboard", requireLogin, twitch.dashboard);
+  app.get("/api/twitch/games", requireLogin, userController.games);
+  app.post("/api/twitch/users", requireLogin, userController.users);
+  app.get("/api/twitch/dashboard", requireLogin, userController.dashboard);
 
   // app.post('/api/registration', async (req, res) => {
   //   if (req.body.logemail && req.body.logpassword) {
