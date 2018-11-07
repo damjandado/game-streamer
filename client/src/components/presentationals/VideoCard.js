@@ -18,7 +18,7 @@ class VideoCard extends Component {
 
   render() {
     return (
-    	<div className="col-lg-6 p-2">
+    	<div className="col-12 p-2">
         	<div className="gs-clip" dangerouslySetInnerHTML={this.iframe()} />
         </div>
     );

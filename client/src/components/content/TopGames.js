@@ -26,7 +26,7 @@ class TopGames extends Component {
         viewers={tg.viewers}
         channels={tg.channels}
         spanChannels={true}
-        cardType={"game-card col" + (i > 116 ? " gs-hidden" : "")}
+        cardType={"game-card col col-xs-6 col-md-2 col-xl-1"}
         cardCover={"stream-cover"}
         logoArt={true}
       />
@@ -38,7 +38,7 @@ class TopGames extends Component {
         {status === "loading" ? (
           <Loader />
         ) : status === "success" ? (
-          <div className="stream-cards">{gameCardItems}</div>
+          <div className="row">{gameCardItems}</div>
         ) : status === "error" ? (
           <div>
             <Alert error={error} />

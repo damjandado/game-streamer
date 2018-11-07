@@ -3,9 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
-import FrontGames from './FrontGames';
-import VideoCard from '../presentationals/VideoCard';
-
 const TopStreamEmbed = props => {
 	if (!props.featured.featured[0]) return <div>Loading...</div>;
 
@@ -21,11 +18,6 @@ const TopStreamEmbed = props => {
 	const renderText = () => {
 		return { __html: text };
 	};
-
-	const clipCards = clips.clips.map(cl => {
-		if (cl !== null)
-			return <VideoCard key={cl.slug} iframe={cl.embed_html} />;
-	});
 
 	return (
 		<div className="twitchWrapper">
@@ -77,19 +69,9 @@ const TopStreamEmbed = props => {
 						<br />
 					</div>
 					<div
-						className="col-sm-12 text-12"
+						className="col-sm-12 text-12 d-none d-sm-block"
 						dangerouslySetInnerHTML={renderText()}
 					/>
-					<div className="col-sm-12">
-						<hr className="mt-0 mb-4" />
-						<h3 className="text-center text-muted">
-							Most Popular Games
-						</h3>
-						<FrontGames gprop={props.gprop} />
-						<div className="stream-cards">
-							{clipCards}
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>

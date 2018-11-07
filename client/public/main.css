@@ -195,13 +195,19 @@ img.media-object {
 
 .topStream, .gs-clip {
   position: relative;
-  max-width: 900px;
+  max-width: 100rem;
 }
 
 .twitchStream:before, .topStream:before, .gs-clip:before {
   content: "";
   display: block;
   padding-top: 56.25%; /* 16:9 */
+}
+
+.twitchWrapper:after {
+  content: "";
+  display: block;
+  padding-top: 10rem; /* 16:9 */
 }
 
 .twitchChat {
@@ -332,17 +338,6 @@ clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   100%{
     top: -10%;
   }
-}
-
-.stream-cards {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  -webkit-align-items: center;
-  align-items: stretch;
-  -webkit-justify-content: space-evenly;
-  justify-content: space-evenly;
-  margin-top: 1.5rem;
 }
 
 .stream-card {

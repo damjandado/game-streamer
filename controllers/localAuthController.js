@@ -19,11 +19,11 @@ exports.login = function(req, res, next) {
   passport.authenticate("local", function(err, user, info) {
     if (err) return next(err);
     if (!user) {
-      return res.json({ success: false, info });
+      return res.send({ success: false, info });
     }
     req.logIn(user, async loginErr => {
       if (loginErr) {
-        return res.json({ success: false, info: loginErr });
+        return res.send({ success: false, info: loginErr });
       }
       const { token, tokenIAT, timestamp } = tokenForUser(user);
       let tokenExp = req.body.remember
@@ -34,7 +34,7 @@ exports.login = function(req, res, next) {
         { email: user.email },
         { token, tokenIAT, tokenExp }
       ).exec();
-      return res.json({
+      return res.send({
         success: true,
         name: user.username,
         email: user.email,
@@ -50,7 +50,7 @@ exports.login = function(req, res, next) {
 
 exports.logout = function(req, res, next) {
   req.logout();
-  return res.json({ success: true });
+  return res.send({ success: true });
 };
 
 // -------------------------------------------
@@ -66,7 +66,7 @@ exports.signup = function(req, res, next) {
   let { template, ...pending } = req.body;
   pendingUser.create(pending, (err, user) => {
     if (user) {
-      res.json({ success: true });
+      res.send({ success: true });
       return;
     }
   });

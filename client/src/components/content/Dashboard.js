@@ -54,10 +54,10 @@ class Dashboard extends Component {
         ) : status === "success" ? (
           <div>
             <h3 className="text-center text-muted">Recommended Channels</h3>
-            <div className="stream-cards">{streamCardBroadcasters}</div>
+            <div className="row">{streamCardBroadcasters}</div>
             <hr className="mt-0 mb-4" />
             <h3 className="text-center text-muted">Recommended Games</h3>
-            <div className="stream-cards">{streamCardGames}</div>
+            <div className="row">{streamCardGames}</div>
           </div>
         ) : status === "error" ? (
           <div>

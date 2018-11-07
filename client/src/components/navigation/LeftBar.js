@@ -21,7 +21,7 @@ class LeftBar extends Component {
 
   render() {
     return (
-      <div className="col-sm-3 col-md-auto sidenav gs-sidenav">
+      <div className="d-none d-sm-block col-sm-3 col-md-auto sidenav gs-sidenav">
         <div>
           <h6>Featured Broadcasters</h6>
           <hr className="gs-hr" />

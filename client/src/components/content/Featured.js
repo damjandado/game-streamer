@@ -35,7 +35,7 @@ class Featured extends Component {
         {status === "loading" ? (
           <Loader />
         ) : status === "success" ? (
-          <div className="stream-cards">{streamCardItems}</div>
+          <div className="row">{streamCardItems}</div>
         ) : status === "error" ? (
           <div>
             <Alert error={error} />

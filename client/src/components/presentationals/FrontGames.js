@@ -8,7 +8,7 @@ import Alert from "../presentationals/Alert";
 const FrontGames = props => {
   const topGamesProps = props.topGames;
   const status = topGamesProps.status;
-  const gameCardItems = topGamesProps.games.map((tg, i) => (
+  const gameCardItems = topGamesProps.games.map((tg) => (
     <GameCard
       key={tg.game._id}
       game={tg}
@@ -18,18 +18,18 @@ const FrontGames = props => {
       viewers={tg.viewers}
       channels={tg.channels}
       spanChannels={false}
-      cardType={"game-card col " + (i === 10 || 11 ? "col-xl-2" : "")}
+      cardType={"game-card col col-xs-6 col-sm-3 col-lg-2"}
       cardCover={"game-cover"}
       logoArt={false}
     />
   ));
   const error = topGamesProps.error;
   return (
-    <div className="gs-dashboard-games">
+    <div className="col-12">
       {status === "loading" ? (
         <Loader />
       ) : status === "success" ? (
-        <div className="stream-cards">{gameCardItems}</div>
+        <div className="row">{gameCardItems}</div>
       ) : status === "error" ? (
         <div>
           <Alert error={error} />

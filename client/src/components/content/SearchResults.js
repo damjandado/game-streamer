@@ -46,7 +46,7 @@ class SearchResults extends Component {
           {`Users found for term `}
           {termX}
         </h3>
-        <div className="stream-cards">{streamCardUsers}</div>
+        <div className="row">{streamCardUsers}</div>
       </div>
     ) : (
       <div />
@@ -57,7 +57,7 @@ class SearchResults extends Component {
           {`Streams found for term `}
           {termX}
         </h3>
-        <div className="stream-cards">{streamCardGames}</div>
+        <div className="row">{streamCardGames}</div>
       </div>
     ) : (
       <div />
