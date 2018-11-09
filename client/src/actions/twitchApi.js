@@ -1,29 +1,28 @@
-import axios from "axios";
-import twitchId from "../config/keys";
-import * as actions from "./actions";
-import * as types from "./types";
+import axios from 'axios';
+import twitchId from '../config/keys';
+import * as actions from './actions';
+import * as types from './types';
 
 export const featuredApi = (limit = 20) => async dispatch => {
-  //API request
   const res = await axios.get(
     `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchId}`
   );
-  //dispatch FetchRequest, order 1
   dispatch(actions.fetchRequest());
   try {
     const streams = res.data.featured.map(function(feat) {
       return feat;
     });
-    //dispatch FetchSuccess, order 2
     dispatch(actions.fetchSuccess(streams));
   } catch (e) {
-    //dispatch FetchSuccess, order 3
     dispatch(actions.fetchFailure(e));
   }
 };
 
-export const topGamesApi = (limit = 10, offset = 0) => async dispatch => {
-  //API request
+export const topGamesApi = (
+  limit = 10,
+  offset = 0,
+  searchTerm
+) => async dispatch => {
   const res = await axios.get(
     `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}`
   );
@@ -34,34 +33,36 @@ export const topGamesApi = (limit = 10, offset = 0) => async dispatch => {
     );
     top = top.concat(resO.data.top);
   }
-  //dispatch FetchRequest, order 1
   dispatch(actions.fetchTopRequest());
   try {
-    const games = top.map(function(feat) {
-      return feat;
-    });
-    //dispatch FetchSuccess, order 2
-    dispatch(actions.fetchTopSuccess(games));
+    const games = top.map(feat => feat);
+    if (!searchTerm) {
+      dispatch(actions.fetchTopSuccess(games));
+    } else {
+      const term = searchTerm.toLowerCase();
+      const foundGames = games.filter(item => {
+        const { name } = item.game;
+        return name.toLowerCase().split(' ').includes(term);
+      });
+      dispatch({ type: 'SEARCH_GAMES', payload: foundGames });
+    }
   } catch (e) {
-    //dispatch FetchSuccess, order 3
     dispatch(actions.fetchTopFailure(e));
   }
 };
 
 export const searchGamesApi = ({ search }, history) => async dispatch => {
-  //dispatch FetchRequest, order 1
   dispatch(actions.fetchSearchRequest(search));
-  history.push("/search");
-  //API request
+  history.push('/search');
   const resGames = await axios.get(
     `https://api.twitch.tv/kraken/streams/?game=${search}&client_id=${twitchId}`
   );
   const resUsers = /[: ]/.test(search)
     ? null
     : await axios({
-        method: "get",
+        method: 'get',
         url: `https://api.twitch.tv/helix/users?&login=${search}`,
-        headers: { "Client-ID": twitchId }
+        headers: { 'Client-ID': twitchId }
       });
   try {
     const games = resGames.data.streams.map(function(feat) {
@@ -79,24 +80,24 @@ export const searchGamesApi = ({ search }, history) => async dispatch => {
 };
 
 export const populateDashboard = () => async dispatch => {
-  const res = await axios.get("/api/twitch/dashboard");
-  dispatch({ type: types.FETCH_DASHBOARD, status: "loading" });
+  const res = await axios.get('/api/twitch/dashboard');
+  dispatch({ type: types.FETCH_DASHBOARD, status: 'loading' });
   try {
     dispatch({
       type: types.FETCH_BROADCASTERS,
-      status: "success",
+      status: 'success',
       payload: res.data.broadcasters
     });
     dispatch({
       type: types.FETCH_GAMES,
-      status: "success",
+      status: 'success',
       payload: res.data.games
     });
-    dispatch(statusDashboard("success"));
+    dispatch(statusDashboard('success'));
   } catch (e) {
     dispatch({
       type: types.FETCH_DASHBOARD_FAILURE,
-      status: "error",
+      status: 'error',
       error: e
     });
   }
@@ -110,60 +111,60 @@ export const statusDashboard = status => {
 };
 
 export const fetchClips = (
-  channel = "Twitch",
+  channel = 'Twitch',
   limit = 10
 ) => async dispatch => {
   const res = await axios({
-    method: "get",
+    method: 'get',
     url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
     headers: {
-      "Client-ID": twitchId,
-      Accept: "application/vnd.twitchtv.v5+json"
+      'Client-ID': twitchId,
+      Accept: 'application/vnd.twitchtv.v5+json'
     }
   });
 
   dispatch({
     type: types.FETCH_CLIPS,
-    status: "success",
+    status: 'success',
     clips: res.data.clips
   });
 };
 
 export const fetchStreamAndClips = (
-  channel = "Twitch",
+  channel = 'Twitch',
   limit = 2
 ) => async dispatch => {
   const stream = await axios.get(
     `https://api.twitch.tv/kraken/streams/featured?&limit=5&client_id=${twitchId}`
   );
   const clips = await axios({
-    method: "get",
+    method: 'get',
     url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
     headers: {
-      "Client-ID": twitchId,
-      Accept: "application/vnd.twitchtv.v5+json"
+      'Client-ID': twitchId,
+      Accept: 'application/vnd.twitchtv.v5+json'
     }
   });
 
   dispatch({
     type: types.FETCH_FEATURED_SUCCESS,
-    status: "success",
+    status: 'success',
     featured: stream.data.featured
   });
   dispatch({
     type: types.FETCH_CLIPS,
-    status: "success",
+    status: 'success',
     clips: clips.data.clips
   });
 };
 
 export const fetchChannelStream = id => async dispatch => {
   const res = await axios({
-    method: "get",
+    method: 'get',
     url: `https://api.twitch.tv/kraken/channels/${id}`,
     headers: {
-      "Client-ID": `${twitchId}`,
-      Accept: "application/vnd.twitchtv.v5+json"
+      'Client-ID': `${twitchId}`,
+      Accept: 'application/vnd.twitchtv.v5+json'
     }
   });
   try {
@@ -177,16 +178,15 @@ export const fetchChannelStream = id => async dispatch => {
 export const fetchStreamByChannelName = name => async dispatch => {
   try {
     const res = await axios({
-      method: "get",
+      method: 'get',
       url: `https://api.twitch.tv/kraken/channels/${name}`,
       headers: {
-        "Client-ID": `${twitchId}`
+        'Client-ID': `${twitchId}`
       }
     });
     const stream = res.data;
     dispatch(actions.embedStream(stream));
   } catch (e) {
-    console.log("404 where do you think you are going...");
     dispatch({ type: types.NOT_FOUND, found: false });
   }
 };

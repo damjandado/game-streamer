@@ -2,7 +2,8 @@ const initialState = {
   status: "",
   users: [],
   games: [],
-  error: ""
+  error: "",
+  foundGames: [],
 };
 
 //define a reducer with an intitalized state and logic to handle action
@@ -31,6 +32,8 @@ function searchReducer(state = initialState, action) {
       return Object.assign({}, state, { status: action.status });
     default:
       return state;
+    case "SEARCH_GAMES":
+      return { ...state, foundGames: action.payload, status: 'success' }
   }
 }
 

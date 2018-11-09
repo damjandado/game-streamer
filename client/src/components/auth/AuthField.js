@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 const AuthField = values => {
   const { input, meta, type, placeholder, required, icon } = values;
   const { formProp, formName } = values;
-  console.log('values', values);
   const cs = formProp[formName]
     ? formProp[formName].asyncErrors
       ? formProp[formName].asyncErrors[input.name]

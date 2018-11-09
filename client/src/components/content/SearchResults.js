@@ -1,33 +1,22 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import Loader from "../presentationals/Loader";
-import StreamCard from "../presentationals/StreamCard";
-import Alert from "../presentationals/Alert";
+import Loader from '../presentationals/Loader';
+import StreamCard from '../presentationals/StreamCard';
+import GameCard from '../presentationals/GameCard';
+import Alert from '../presentationals/Alert';
 
-import * as actions from "../../actions";
+import * as actions from '../../actions';
 
 class SearchResults extends Component {
   componentDidMount() {
-    this.props.toggleActive("search");
+    this.props.toggleActive('search');
   }
 
   render() {
     const searchProps = this.props.search;
-    const { games, users, status, term } = searchProps;
+    const { games, users, status, foundGames, term } = searchProps;
     const termX = <i className="text-info">{term}</i>;
-    const streamCardUsers = users.length
-      ? searchProps.users.map(user => (
-          <StreamCard
-            key={user.id}
-            ebdStream={user}
-            streamCover={user.profile_image_url}
-            logo={user.profile_image_url}
-            name={user.login}
-            userLogo={true}
-          />
-        ))
-      : null;
     const streamCardGames = games.length
       ? searchProps.games.map(game => (
           <StreamCard
@@ -40,17 +29,21 @@ class SearchResults extends Component {
           />
         ))
       : null;
-    const renderSCU = streamCardUsers ? (
-      <div>
-        <h3 className="text-center text-muted">
-          {`Users found for term `}
-          {termX}
-        </h3>
-        <div className="row">{streamCardUsers}</div>
-      </div>
-    ) : (
-      <div />
-    );
+    const listFoundGames = foundGames.map(item => (
+      <GameCard
+        key={item.game._id}
+        game={item}
+        name={item.game.name}
+        box={item.game.box.large}
+        logo={item.game.logo.medium}
+        viewers={item.viewers}
+        channels={item.channels}
+        spanChannels={true}
+        cardType={'game-card col col-xs-6 col-md-2 col-xl-1'}
+        cardCover={'stream-cover'}
+        logoArt={true}
+      />
+    ));
     const renderSCG = streamCardGames ? (
       <div>
         <h3 className="text-center text-muted">
@@ -62,9 +55,16 @@ class SearchResults extends Component {
     ) : (
       <div />
     );
-    console.log("*-*-*-*-*-*-*-*-*-*-*-*-*", streamCardGames);
+    const renderFoundGames = (
+      <div>
+        <h3 className="text-center text-muted">
+          {termX} and similar games:  
+        </h3>
+        <div className="row">{listFoundGames}</div>
+      </div>
+    );
     const error = searchProps.error;
-    if (!streamCardUsers && !streamCardGames && status === "success")
+    if (!streamCardGames && !listFoundGames && status === 'success')
       return (
         <h3 className="text-center text-muted" style={{ marginTop: 50 }}>
           Nothing found.
@@ -72,17 +72,20 @@ class SearchResults extends Component {
       );
     return (
       <div className="main">
-        {status === "no_search" ? (
+        {status === 'no_search' ? (
           <h3 className="text-center text-muted" style={{ marginTop: 50 }}>
             No search yet.
           </h3>
-        ) : status === "loading" ? (
+        ) : status === 'loading' ? (
           <Loader />
-        ) : status === "success" ? (
+        ) : status === 'success' ? (
           <div>
-            {renderSCU} {renderSCG}
+            <div>{renderFoundGames}</div>
+            <div>
+              {renderSCG}
+            </div>
           </div>
-        ) : status === "error" ? (
+        ) : status === 'error' ? (
           <div>
             <Alert error={error} />
           </div>

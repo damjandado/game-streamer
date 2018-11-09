@@ -27,14 +27,19 @@ class SearchForm extends Component {
       });
     }, 100);
 
+  onSearch = ({ search }) => {
+    const { topGamesApi, history } = this.props;
+    topGamesApi(100, 0, search);
+  }
+
   render() {
-    const { handleSubmit, history, searchGamesApi } = this.props;
+    const { handleSubmit } = this.props;
     const { width } = this.state;
     const full = width > 991 || width < 576;
     return (
       <form
         className="form-inline my-2 my-lg-0"
-        onSubmit={handleSubmit(value => searchGamesApi(value, history))}
+        onSubmit={handleSubmit(this.onSearch)}
       >
         <Field
           className="form-control-sm mr-sm-2"

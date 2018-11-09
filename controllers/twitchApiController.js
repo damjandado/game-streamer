@@ -1,6 +1,11 @@
 const axios = require("axios");
 const twitchClientID = require("../config/keys").twitchClientID;
-const { flatten } = require("./helpers.js");
+const {
+  flatten,
+  count_items,
+  sortProperties,
+  remove_duplicates_es6
+} = require("./helpers.js");
 
 exports.featuredApi = async (limit = 8) => {
   const res = await axios.get(

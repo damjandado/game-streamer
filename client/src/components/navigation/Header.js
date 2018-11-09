@@ -37,7 +37,7 @@ class Header extends Component {
               <div className="dropdown-content bg">
                 <a
                   id="gs-logout"
-                  className="nav-link text-center"
+                  className="nav-link text-center text-white"
                   onClick={this.props.onLogout}
                 >
                   Log out
