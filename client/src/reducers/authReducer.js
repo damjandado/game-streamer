@@ -21,9 +21,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_USER:
-      // const token = localStorage.getItem('token');
       const user = action.payload;
-      console.log("u s e r ", user);
       return user
         ? Object.assign(
             {},

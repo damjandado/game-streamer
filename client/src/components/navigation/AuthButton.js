@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default ({ children, link }) => {
   return (
-    <Link to={link} className="nav-link">
+    <Link to={link} className="nav-link text-white">
       {children}
     </Link>
   );

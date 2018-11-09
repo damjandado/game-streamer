@@ -7,7 +7,6 @@ import Header from "./navigation/Header";
 import LeftBar from "./navigation/LeftBar";
 import Landing from "./Landing";
 
-//top level of React component hierarchy
 class App extends Component {
   componentWillMount() {
     this.props.fetchUser();

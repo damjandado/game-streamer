@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
 
 import Dashboard from "./content/Dashboard";
 import Featured from "./content/Featured";
@@ -14,10 +13,9 @@ import RecoveryEnterNew from "./auth/RecoveryEnterNew";
 import ConfirmRegistration from "./auth/ConfirmRegistration";
 import Twitch from "./Twitch";
 
-class Landing extends Component {
-  render() {
+export default () => {
     return (
-      <div className="col container-fluid gs-landing">
+      <div className="col container-fluid p-4">
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/login" component={LoginNew} />
@@ -39,11 +37,4 @@ class Landing extends Component {
         </Switch>
       </div>
     );
-  }
 }
-
-function mapStateToProps({ embed, activeTab, auth }) {
-  return { embed, activeTab };
-}
-
-export default connect(mapStateToProps)(Landing);

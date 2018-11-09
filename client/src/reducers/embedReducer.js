@@ -7,7 +7,6 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case "EMBED_STREAM":
       let obj = action.ebd.stream || action.ebd;
-      console.log("EMBED_STREAM", action.ebd);
       obj = obj.channel || obj;
       const temp_state = {
         channel: obj || "null",

@@ -1,23 +1,25 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
 const AuthField = values => {
   const { input, meta, type, placeholder, required, icon } = values;
   const { formProp, formName } = values;
-  console.log("values", values);
+  console.log('values', values);
   const cs = formProp[formName]
     ? formProp[formName].asyncErrors
       ? formProp[formName].asyncErrors[input.name]
-        ? "is-invalid"
-        : ""
-      : ""
-    : "";
+        ? 'is-invalid'
+        : ''
+      : ''
+    : '';
   return (
     <div>
       <div className={`input-group`}>
-        <span className="input-group-addon">
-          <span className={`fa fa-${icon}`} />
-        </span>
+        <div className="input-group-prepend">
+          <span className="input-group-text">
+            <span className={`fa fa-${icon}`} />
+          </span>
+        </div>
         <input
           {...input}
           type={type}

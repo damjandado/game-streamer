@@ -20,7 +20,7 @@ class AnonDash extends Component {
     });
     return (
       <div className="row">
-        <div className="gs-col-right col-xl-8">
+        <div className="col-xl-8">
           <TopStreamEmbed gprop={this.props.topGames} />
           <div className="col-sm-12 most-pop-games">
             <hr className="mt-0 mb-4" />

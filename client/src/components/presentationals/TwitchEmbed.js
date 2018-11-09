@@ -50,16 +50,6 @@ const TwitchEmbed = props => {
           <div className="col-sm-12" dangerouslySetInnerHTML={renderText()} />
         </div>
       </div>
-      <div className="twitchChat">
-        <iframe
-          src={`https://www.twitch.tv/${name}/chat`}
-          width="300"
-          height="150"
-          frameBorder="0"
-          scrolling="no"
-          title="twitch-chat"
-        />
-      </div>
     </div>
   );
 };
