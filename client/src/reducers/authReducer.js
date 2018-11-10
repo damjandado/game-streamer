@@ -1,7 +1,6 @@
 import {
   FETCH_USER,
   LOGIN_USER,
-  LOGIN_SUCCESS_USER,
   LOGIN_ERROR_USER,
   SIGNUP_USER,
   SIGNUP_SUCCESS_USER,
@@ -32,13 +31,6 @@ export default (state = initialState, action) => {
         : Object.assign({}, state, { authenticated: false, isWaiting: false });
     case LOGIN_USER:
       return Object.assign({}, state, { isWaiting: true });
-    case LOGIN_SUCCESS_USER:
-      const { name, email } = action.data;
-      return Object.assign({}, state, {
-        isWaiting: false,
-        authenticated: true,
-        user: { name, email }
-      });
     case LOGIN_ERROR_USER:
       return Object.assign({}, state, {
         isWaiting: false,

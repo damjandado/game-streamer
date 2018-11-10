@@ -30,17 +30,10 @@ exports.login = function(req, res, next) {
         ? 14 * 24 * 60 * 60 * 1000
         : 24 * 60 * 60 * 1000;
       tokenExp += timestamp;
-      await User.updateOne(
-        { email: user.email },
-        { token, tokenIAT, tokenExp }
-      ).exec();
       return res.send({
         success: true,
-        name: user.username,
-        email: user.email,
         token,
-        tokenExp: new Date(tokenExp),
-        info: "authentication succeeded"
+        tokenExp: new Date(tokenExp)
       });
     });
   })(req, res, next);

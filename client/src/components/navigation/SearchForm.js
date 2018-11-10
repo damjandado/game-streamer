@@ -30,6 +30,7 @@ class SearchForm extends Component {
   onSearch = ({ search }) => {
     const { topGamesApi, history } = this.props;
     topGamesApi(100, 0, search);
+    history.push('/search');
   }
 
   render() {

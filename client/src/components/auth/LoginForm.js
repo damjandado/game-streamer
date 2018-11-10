@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import formFields from './formFields';
 import AuthField from './AuthField';
 
 import validateEmails from '../../utils/validateEmails';
-import { onLogin } from '../../actions/actions';
 
 import axios from 'axios';
 
@@ -17,7 +15,6 @@ class LoginForm extends Component {
     this.setState(prevState => {
       return { remember: !prevState.remember };
     });
-    console.log('5th of Novembah');
   }
 
   renderFields() {
@@ -39,6 +36,16 @@ class LoginForm extends Component {
     });
   }
 
+  onLogin = async (values) => {
+    const { remember } = this.state;
+    values.remember = remember;
+    const res = await axios.post("/local/login", values);
+    if (res.data.success) {
+      localStorage.setItem("jwtToken", res.data.token);
+      window.location.reload();
+    }
+  }
+
   render() {
     const { handleSubmit, onLogin, history } = this.props;
     const { remember } = this.state;
@@ -48,9 +55,7 @@ class LoginForm extends Component {
           <div className="col-xs-12 col-sm-6">
             <form
               className="kpx_loginForm"
-              onSubmit={handleSubmit(val =>
-                onLogin(val, remember, '/', history)
-              )}
+              onSubmit={handleSubmit(this.onLogin)}
               autoComplete="off"
               method="GET"
             >
@@ -132,11 +137,6 @@ const asyncValidate = async values => {
     }
   }
 };
-
-LoginForm = connect(
-  null,
-  { onLogin }
-)(LoginForm);
 
 export default reduxForm({
   form: 'loginForm',

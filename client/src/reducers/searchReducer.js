@@ -12,7 +12,8 @@ function searchReducer(state = initialState, action) {
     case "FETCH_SEARCH_REQUEST":
       const requested = Object.assign({}, state, {
         term: action.term,
-        status: action.status
+        status: action.status,
+        foundGames: [],
       });
       return requested;
     case "FETCH_SEARCH_SUCCESS":
@@ -33,7 +34,8 @@ function searchReducer(state = initialState, action) {
     default:
       return state;
     case "SEARCH_GAMES":
-      return { ...state, foundGames: action.payload, status: 'success' }
+      const { foundGames, status } = action.payload;
+      return { ...state, foundGames, status }
   }
 }
 

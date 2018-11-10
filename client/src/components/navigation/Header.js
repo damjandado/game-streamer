@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 
 import SearchForm from "./SearchForm";
@@ -10,6 +11,12 @@ import logo from "../../images/logo_ticc_b.png";
 
 class Header extends Component {
   state = { dropdownActive: false };
+
+  onLogout = () => {
+    const { history } = this.props;
+    this.props.onLogout();
+    history.push("/");
+  }
 
   renderContent() {
     const { authenticated, user } = this.props.auth;
@@ -38,7 +45,7 @@ class Header extends Component {
                 <a
                   id="gs-logout"
                   className="nav-link text-center text-white"
-                  onClick={this.props.onLogout}
+                  onClick={this.onLogout}
                 >
                   Log out
                 </a>
@@ -95,4 +102,4 @@ function mapStateToProps({ auth }) {
 export default connect(
   mapStateToProps,
   { onLogout }
-)(Header);
+)(withRouter(Header));

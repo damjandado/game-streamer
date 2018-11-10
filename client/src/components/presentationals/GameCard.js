@@ -6,12 +6,10 @@ import { Lazy } from "react-lazy";
 
 import * as actions from "../../actions";
 
-//Presentational React Component
 class GameCard extends Component {
   state = { truncated: false };
 
   showTooltip() {
-    // console.log('this.span.offsetWidth - ', this.span.offsetWidth);
     if (this.span.offsetWidth > this.info.offsetWidth) {
       this.setState({ truncated: true });
     } else {

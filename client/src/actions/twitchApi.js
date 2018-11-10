@@ -44,7 +44,8 @@ export const topGamesApi = (
         const { name } = item.game;
         return name.toLowerCase().split(' ').includes(term);
       });
-      dispatch({ type: 'SEARCH_GAMES', payload: foundGames });
+      const status = foundGames.length ? "found" : "";
+      dispatch({ type: 'SEARCH_GAMES', payload: { foundGames, status } });
     }
   } catch (e) {
     dispatch(actions.fetchTopFailure(e));

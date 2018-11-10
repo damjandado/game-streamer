@@ -3,7 +3,7 @@ import * as types from "./types";
 
 export const onSignup = values => async dispatch => {
   dispatch(beginSignup());
-  const res = await makeUserRequest("post", values, "/local/signup");
+  const res = await axios.post("/local/signup", values);
   try {
     if (res.data.success) {
       await axios.post("/api/send_email", {
@@ -21,52 +21,24 @@ export const onSignup = values => async dispatch => {
   }
 };
 
-export const onLogin = (values, remember, path, history) => async dispatch => {
-  dispatch(beginLogin());
-  values.remember = remember;
-  const res = await makeUserRequest("post", values, "/local/login");
-  try {
-    if (res.data.success) {
-      dispatch(loginSuccess(res.data));
-      localStorage.setItem("token", res.data.token);
-      history.push(path);
-    } else {
-      dispatch(loginError());
-      let loginMessage = res.data.message;
-      return loginMessage;
-    }
-  } catch (e) {
-  }
+export const fetchUser = () => async dispatch => {
+  axios.defaults.headers.common.Authorization = localStorage.getItem(
+    'jwtToken'
+  );
+  const res = await axios.get('/api/current_user');
+  dispatch({ type: types.LOGIN_USER });
+  dispatch({ type: types.FETCH_USER, payload: res.data });
 };
 
-export const onLogout = history => async dispatch => {
-  dispatch(beginLogout());
+export const onLogout = () => async dispatch => {
   const res = await axios.get("/api/logout");
   try {
     if (res.data.success) {
-      dispatch(logoutSuccess());
-      localStorage.removeItem("token");
-      history.push("/");
-    } else {
-      dispatch(logoutError());
+      localStorage.removeItem("jwtToken");
     }
   } catch (e) {
     console.log("Error", res.message);
   }
-};
-
-function makeUserRequest(method, data, api = "/local/login") {
-  return axios({
-    method: method,
-    url: api,
-    data: data
-  });
-}
-
-export const fetchUser = () => async dispatch => {
-  const res = await axios.get("/api/current_user");
-  dispatch({ type: types.LOGIN_USER });
-  dispatch({ type: types.FETCH_USER, payload: res.data });
 };
 
 export const sendMail = values => async dispatch => {
@@ -80,7 +52,7 @@ export const sendMail = values => async dispatch => {
 };
 
 export const checkEmail = email => async dispatch => {
-  const res = await makeUserRequest("POST", email, "/api/check_email");
+  const res = await axios.post("/api/check_email", email);
   if (res.data.valid) {
     dispatch({ type: types.CHECK_MAIL, payload: true });
   } else {
@@ -88,43 +60,10 @@ export const checkEmail = email => async dispatch => {
   }
 };
 
-// "Login" action creators
-function beginLogin() {
-  return { type: types.LOGIN_USER };
-}
-
-function loginSuccess(data) {
-  return {
-    type: types.LOGIN_SUCCESS_USER,
-    data
-  };
-}
-
-function loginError() {
-  return { type: types.LOGIN_ERROR_USER };
-}
-
-// "Logout" action creators
-function beginLogout() {
-  return { type: types.LOGOUT_USER };
-}
-
-function logoutSuccess() {
-  return { type: types.LOGOUT_SUCCESS_USER };
-}
-
-function logoutError() {
-  return { type: types.LOGOUT_ERROR_USER };
-}
-
 // "Signup" action creators
 function beginSignup() {
   return { type: types.SIGNUP_USER };
 }
-
-// function signupSuccess() {
-//   return { type: types.SIGNUP_SUCCESS_USER };
-// }
 
 function signupError() {
   return { type: types.SIGNUP_ERROR_USER };
