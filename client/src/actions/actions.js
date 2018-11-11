@@ -2,7 +2,6 @@ import axios from "axios";
 import * as types from "./types";
 
 export const onSignup = values => async dispatch => {
-  dispatch(beginSignup());
   const res = await axios.post("/local/signup", values);
   try {
     if (res.data.success) {
@@ -10,10 +9,6 @@ export const onSignup = values => async dispatch => {
         email: values.email,
         template: values.template
       });
-    } else {
-      dispatch(signupError());
-      let signupMessage = res.data.message;
-      return signupMessage;
     }
   } catch (e) {
     if (e instanceof Error) {
@@ -59,15 +54,6 @@ export const checkEmail = email => async dispatch => {
     dispatch({ type: types.CHECK_MAIL, payload: false });
   }
 };
-
-// "Signup" action creators
-function beginSignup() {
-  return { type: types.SIGNUP_USER };
-}
-
-function signupError() {
-  return { type: types.SIGNUP_ERROR_USER };
-}
 
 export function fetchRequest() {
   return {
@@ -127,31 +113,6 @@ export function noSearch() {
   return {
     type: types.NO_SEARCH,
     status: "no_search"
-  };
-}
-
-export function fetchSearchRequest(term) {
-  return {
-    type: types.FETCH_SEARCH_REQUEST,
-    term,
-    status: "loading"
-  };
-}
-
-export function fetchSearchSuccess(users, games) {
-  return {
-    type: types.FETCH_SEARCH_SUCCESS,
-    status: "success",
-    users,
-    games
-  };
-}
-
-export function fetchSearchFailure(error) {
-  return {
-    type: types.FETCH_SEARCH_FAILURE,
-    status: "error",
-    error
   };
 }
 

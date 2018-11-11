@@ -1,12 +1,10 @@
 const initialState = {
   status: "",
-  users: [],
   games: [],
   error: "",
   foundGames: [],
 };
 
-//define a reducer with an intitalized state and logic to handle action
 function searchReducer(state = initialState, action) {
   switch (action.type) {
     case "FETCH_SEARCH_REQUEST":
@@ -19,7 +17,6 @@ function searchReducer(state = initialState, action) {
     case "FETCH_SEARCH_SUCCESS":
       const successful = Object.assign({}, state, {
         status: action.status,
-        users: action.users,
         games: action.games
       });
       return successful;

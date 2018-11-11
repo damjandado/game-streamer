@@ -1,9 +1,7 @@
 import React from "react";
 
-//Presentational React Component
 class Loader extends React.Component {
   render() {
-    console.log("Loader loaded");
     return (
       <div className="loader">
         <div className="box gs-center">

@@ -1,23 +1,27 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
-import AnonDash from "./AnonDash";
-
-import Loader from "../presentationals/Loader";
-import StreamCard from "../presentationals/StreamCard";
-// import GameCard from "../presentationals/GameCard";
-import Alert from "../presentationals/Alert";
+import AnonDash from './AnonDash';
+import Loader from '../presentationals/Loader';
+import StreamCard from '../presentationals/StreamCard';
+import Featured from './Featured';
+import Alert from '../presentationals/Alert';
 
 class Dashboard extends Component {
   componentDidMount() {
-    this.props.statusDashboard("loading");
-    this.props.populateDashboard();
+    const { authenticated } = this.props.auth;
+    if (authenticated) {
+      this.props.populateDashboard();
+    } else {
+      this.props.fetchStreamAndClips('Twitch', 2);
+      this.props.topGamesApi(12);
+    }
   }
 
   renderDash() {
     const dash = this.props.dashboard;
-    const status = dash.status;
+    const { status } = dash;
     const streamCardBroadcasters = dash.broadcasters.map(bc => {
       if (bc !== null)
         return (
@@ -46,44 +50,37 @@ class Dashboard extends Component {
         );
       return;
     });
+    const Dashboard = (
+      <div>
+        <h3 className="text-center text-muted">Recommended Channels</h3>
+        <div className="row">{streamCardBroadcasters}</div>
+        <hr className="mt-0 mb-4" />
+        <h3 className="text-center text-muted">Recommended Games</h3>
+        <div className="row">{streamCardGames}</div>
+      </div>
+    );
     const error = dash.error;
     return (
       <div className="main">
-        {status === "loading" ? (
-          <Loader />
-        ) : status === "success" ? (
-          <div>
-            <h3 className="text-center text-muted">Recommended Channels</h3>
-            <div className="row">{streamCardBroadcasters}</div>
-            <hr className="mt-0 mb-4" />
-            <h3 className="text-center text-muted">Recommended Games</h3>
-            <div className="row">{streamCardGames}</div>
-          </div>
-        ) : status === "error" ? (
-          <div>
-            <Alert error={error} />
-          </div>
-        ) : (
-          <div />
-        )}
+        {
+          {
+            loading: <Loader />,
+            success: Dashboard,
+            error: <Alert />
+          }[status]
+        }
       </div>
     );
-  }
-
-  renderAnonDash() {
-    return <AnonDash />;
   }
 
   render() {
     const { authenticated, isWaiting } = this.props.auth;
     return (
       <div>
-        {isWaiting ? (
-          <Loader />
-        ) : authenticated ? (
+        {authenticated ? (
           this.renderDash()
         ) : (
-          this.renderAnonDash()
+          <AnonDash />
         )}
       </div>
     );

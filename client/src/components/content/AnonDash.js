@@ -7,11 +7,6 @@ import TopStreamEmbed from '../presentationals/TopStreamEmbed';
 import FrontGames from '../presentationals/FrontGames';
 
 class AnonDash extends Component {
-  componentDidMount() {
-    this.props.fetchStreamAndClips('Twitch', 2);
-    this.props.topGamesApi(12);
-  }
-
   render() {
     const { clips } = this.props;
     const clipCards = clips.clips.map(cl => {

@@ -5,13 +5,11 @@ import * as types from './types';
 
 export const featuredApi = (limit = 20) => async dispatch => {
   const res = await axios.get(
-    `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchId}`
+    `https://api.twitch.tv/kraken/streams/featured?limit=${limit}&client_id=${twitchId}`
   );
   dispatch(actions.fetchRequest());
   try {
-    const streams = res.data.featured.map(function(feat) {
-      return feat;
-    });
+    const streams = res.data.featured.map(feat => feat);
     dispatch(actions.fetchSuccess(streams));
   } catch (e) {
     dispatch(actions.fetchFailure(e));
@@ -24,15 +22,9 @@ export const topGamesApi = (
   searchTerm
 ) => async dispatch => {
   const res = await axios.get(
-    `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}`
+    `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}&offset=${offset}`
   );
-  let top = res.data.top;
-  if (offset) {
-    const resO = await axios.get(
-      `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}&offset=${offset}`
-    );
-    top = top.concat(resO.data.top);
-  }
+  const { top } = res.data;
   dispatch(actions.fetchTopRequest());
   try {
     const games = top.map(feat => feat);
@@ -42,9 +34,10 @@ export const topGamesApi = (
       const term = searchTerm.toLowerCase();
       const foundGames = games.filter(item => {
         const { name } = item.game;
-        return name.toLowerCase().split(' ').includes(term);
+        const arr = name.toLowerCase().split(' ');
+        return arr.includes(term);
       });
-      const status = foundGames.length ? "found" : "";
+      const status = foundGames.length ? 'found' : '';
       dispatch({ type: 'SEARCH_GAMES', payload: { foundGames, status } });
     }
   } catch (e) {
@@ -53,30 +46,16 @@ export const topGamesApi = (
 };
 
 export const searchGamesApi = ({ search }, history) => async dispatch => {
-  dispatch(actions.fetchSearchRequest(search));
+  dispatch({ type: types.FETCH_SEARCH_REQUEST, term: search, status: 'loading' });
   history.push('/search');
-  const resGames = await axios.get(
+  const res = await axios.get(
     `https://api.twitch.tv/kraken/streams/?game=${search}&client_id=${twitchId}`
   );
-  const resUsers = /[: ]/.test(search)
-    ? null
-    : await axios({
-        method: 'get',
-        url: `https://api.twitch.tv/helix/users?&login=${search}`,
-        headers: { 'Client-ID': twitchId }
-      });
   try {
-    const games = resGames.data.streams.map(function(feat) {
-      return feat;
-    });
-    const users = resUsers
-      ? resUsers.data.data.map(function(feat) {
-          return feat;
-        })
-      : [];
-    dispatch(actions.fetchSearchSuccess(users, games));
+    const games = res.data.streams.map(feat => feat);
+    dispatch({ type: types.FETCH_SEARCH_SUCCESS, status: 'success', games });
   } catch (e) {
-    dispatch(actions.fetchSearchFailure(e));
+    dispatch({ type: types.FETCH_SEARCH_FAILURE, status: 'error', error: e });
   }
 };
 
@@ -94,7 +73,7 @@ export const populateDashboard = () => async dispatch => {
       status: 'success',
       payload: res.data.games
     });
-    dispatch(statusDashboard('success'));
+    dispatch({ type: types.FETCH_DASHBOARD, status: 'success'});
   } catch (e) {
     dispatch({
       type: types.FETCH_DASHBOARD_FAILURE,
@@ -102,13 +81,6 @@ export const populateDashboard = () => async dispatch => {
       error: e
     });
   }
-};
-
-export const statusDashboard = status => {
-  return {
-    type: types.FETCH_DASHBOARD,
-    status
-  };
 };
 
 export const fetchClips = (
@@ -123,7 +95,6 @@ export const fetchClips = (
       Accept: 'application/vnd.twitchtv.v5+json'
     }
   });
-
   dispatch({
     type: types.FETCH_CLIPS,
     status: 'success',
@@ -138,25 +109,12 @@ export const fetchStreamAndClips = (
   const stream = await axios.get(
     `https://api.twitch.tv/kraken/streams/featured?&limit=5&client_id=${twitchId}`
   );
-  const clips = await axios({
-    method: 'get',
-    url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
-    headers: {
-      'Client-ID': twitchId,
-      Accept: 'application/vnd.twitchtv.v5+json'
-    }
-  });
-
   dispatch({
     type: types.FETCH_FEATURED_SUCCESS,
     status: 'success',
     featured: stream.data.featured
   });
-  dispatch({
-    type: types.FETCH_CLIPS,
-    status: 'success',
-    clips: clips.data.clips
-  });
+  fetchClips(channel, limit);
 };
 
 export const fetchChannelStream = id => async dispatch => {
