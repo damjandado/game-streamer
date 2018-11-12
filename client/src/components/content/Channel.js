@@ -1,45 +1,46 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import * as actions from "../../actions";
-import TwitchEmbed from "../presentationals/TwitchEmbed";
-import Loader from "../presentationals/Loader";
-import NotFound from "../presentationals/NotFound";
+import * as actions from '../../actions';
+import TwitchEmbed from '../presentationals/TwitchEmbed';
+import Loader from '../presentationals/Loader';
+import NotFound from '../presentationals/NotFound';
 
 class Channel extends Component {
-  state = { active: false, errorPage: false };
+  state = { info: 'loading' };
 
   async componentDidMount() {
-    this.setState({ active: false });
-    this.props.toggleActive("channel");
+    this.setState({ info: 'loading' });
+    this.props.toggleActive('channel');
     const {
       match: { params },
       fetchStreamByChannelName
     } = this.props;
-    console.log("params?", params);
-    if (params.channelName !== "undefined") {
+    console.log('params?', params);
+    if (params.channelName !== 'undefined') {
       await fetchStreamByChannelName(params.channelName);
       if (this.props.embed.found) {
-        this.setState({ active: true });
+        this.setState({ info: 'found' });
       } else {
-        this.setState({ errorPage: true });
+        this.setState({ info: 'notFound' });
       }
     } else {
-      await fetchStreamByChannelName("monstercat");
-      this.setState({ active: true });
+      await fetchStreamByChannelName('monstercat');
+      this.setState({ info: 'found' });
     }
   }
 
   render() {
     const { display_name, followers, name } = this.props.embed;
-    return this.state.active ? (
+    const { info } = this.state;
+    const ChannelDiv = (
       <div id="gs-embed">
         <h3 className="text-center text-muted mb-4">
-          You are watching{" "}
+          You are watching{' '}
           <i className="text-info">
             {display_name}
             's
-          </i>{" "}
+          </i>{' '}
           channel
         </h3>
         <p className="h4">
@@ -47,10 +48,17 @@ class Channel extends Component {
         </p>
         <TwitchEmbed channel={name} />
       </div>
-    ) : this.state.errorPage ? (
-      <NotFound />
-    ) : (
-      <Loader />
+    );
+    return (
+      <div>
+        {
+          {
+            loading: <Loader />,
+            notFound: <NotFound />,
+            found: ChannelDiv,
+          }[info]
+        }
+      </div>
     );
   }
 }

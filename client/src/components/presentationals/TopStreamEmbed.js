@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
 const TopStreamEmbed = props => {
-	if (!props.featured.featured[0]) return <div>Loading...</div>;
+	if (!props.channel) return <div>Loading...</div>;
 
-	const { text, title, stream } = props.featured.featured[0];
+	const { text, title, stream } = props.channel;
 	const { logo, name, display_name, game } = stream.channel;
-	const { history, searchGamesApi, clips } = props;
+	const { history, searchGamesApi } = props;
 
 	const activeChannel = () => {
 		props.embedStream(stream);
@@ -78,11 +78,4 @@ const TopStreamEmbed = props => {
 	);
 };
 
-function mapStateToProps({ embed, featured, clips }) {
-	return { embed, featured, clips };
-}
-
-export default connect(
-	mapStateToProps,
-	actions
-)(withRouter(TopStreamEmbed));
+export default connect(null, actions)(withRouter(TopStreamEmbed));

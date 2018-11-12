@@ -14,9 +14,9 @@ class TopGames extends Component {
   }
 
   render() {
-    const topGamesProps = this.props.topGames;
-    const status = topGamesProps.status;
-    const gameCardItems = topGamesProps.games.map((tg, i) => (
+    const { games } = this.props;
+    const status = games.status;
+    const gameCardItems = games.list.map((tg, i) => (
       <GameCard
         key={tg.game._id}
         game={tg}
@@ -31,7 +31,7 @@ class TopGames extends Component {
         logoArt={true}
       />
     ));
-    const error = topGamesProps.error;
+    const error = games.error;
     return (
       <div className="main">
         <h3 className="text-center text-muted">Top Games on Twitch</h3>
@@ -52,7 +52,7 @@ class TopGames extends Component {
 }
 
 function mapStateToProps({ topGames }) {
-  return { topGames };
+  return { games: topGames };
 }
 
 export default connect(

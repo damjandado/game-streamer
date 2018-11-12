@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
 
 class VideoCard extends Component {
-
   iframe() {
     let iframeCustom = this.props.iframe.replace(
       "tt_content=embed",
@@ -25,7 +22,4 @@ class VideoCard extends Component {
   }
 }
 
-export default connect(
-  null,
-  actions
-)(VideoCard);
+export default VideoCard;

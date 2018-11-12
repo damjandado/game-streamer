@@ -62,14 +62,6 @@ export function fetchRequest() {
   };
 }
 
-export function fetchSuccess(featured) {
-  return {
-    type: types.FETCH_FEATURED_SUCCESS,
-    status: "success",
-    featured
-  };
-}
-
 export function fetchSuccessLoading(featured) {
   return {
     type: types.FETCH_FEATURED_SUCCESS,

@@ -1,10 +1,9 @@
 const initialState = {
   status: "",
-  games: [],
-  error: ""
+  list: [],
+  error: "",
 };
 
-//define a reducer with an intitalized state and logic to handle action
 function topGamesReducer(state = initialState, action) {
   switch (action.type) {
     case "FETCH_TOPGAMES_REQUEST":
@@ -15,7 +14,7 @@ function topGamesReducer(state = initialState, action) {
     case "FETCH_TOPGAMES_SUCCESS":
       const successful = Object.assign({}, state, {
         status: action.status,
-        games: action.streams
+        list: action.streams
       });
       return successful;
     case "FETCH_TOPGAMES_FAILURE":

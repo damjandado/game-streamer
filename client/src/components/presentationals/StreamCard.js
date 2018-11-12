@@ -5,7 +5,6 @@ import { Lazy } from "react-lazy";
 
 import * as actions from "../../actions";
 
-//Presentational React Component
 class StreamCard extends Component {
   activeChannel() {
     this.props.embedStream(this.props.ebdStream);
@@ -69,11 +68,4 @@ class StreamCard extends Component {
   }
 }
 
-function mapStateToProps({ embed }) {
-  return { embed };
-}
-
-export default connect(
-  mapStateToProps,
-  actions
-)(withRouter(StreamCard));
+export default connect(null, actions)(withRouter(StreamCard));

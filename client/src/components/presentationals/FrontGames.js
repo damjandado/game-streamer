@@ -5,10 +5,9 @@ import GameCard from "../presentationals/GameCard";
 import Loader from "../presentationals/Loader";
 import Alert from "../presentationals/Alert";
 
-const FrontGames = props => {
-  const topGamesProps = props.topGames;
-  const status = topGamesProps.status;
-  const gameCardItems = topGamesProps.games.map((tg) => (
+export default ({ games }) => {
+  const { status, error } = games;
+  const gameCardItems = games.list.map((tg) => (
     <GameCard
       key={tg.game._id}
       game={tg}
@@ -23,26 +22,11 @@ const FrontGames = props => {
       logoArt={false}
     />
   ));
-  const error = topGamesProps.error;
   return (
-    <div className="col-12">
-      {status === "loading" ? (
-        <Loader />
-      ) : status === "success" ? (
-        <div className="row">{gameCardItems}</div>
-      ) : status === "error" ? (
-        <div>
-          <Alert error={error} />
-        </div>
-      ) : (
-        <div />
-      )}
+    <div className="row">
+      {{loading: <Loader />,
+        success: gameCardItems,
+      }[status]}
     </div>
   );
 };
-
-function mapStateToProps({ topGames }) {
-  return { topGames };
-}
-
-export default connect(mapStateToProps)(FrontGames);

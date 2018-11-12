@@ -14,7 +14,6 @@ class Dashboard extends Component {
     if (authenticated) {
       this.props.populateDashboard();
     } else {
-      this.props.fetchStreamAndClips('Twitch', 2);
       this.props.topGamesApi(12);
     }
   }

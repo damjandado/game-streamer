@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import ReactTooltip from "react-tooltip";
-import { Lazy } from "react-lazy";
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
+import { Lazy } from 'react-lazy';
 
-import * as actions from "../../actions";
+import * as actions from '../../actions';
 
 class GameCard extends Component {
   state = { truncated: false };
@@ -34,7 +34,7 @@ class GameCard extends Component {
       <div className={cardType}>
         <div className="gs-video-thumbnail">
           <Link
-            to={"/search"}
+            to={'/search'}
             onClick={() => searchGamesApi({ search: name }, history)}
           >
             <Lazy component="span" cushion={200}>
@@ -48,7 +48,7 @@ class GameCard extends Component {
             onMouseOver={this.showTooltip.bind(this)}
           >
             <Link
-              to={"/search"}
+              to={'/search'}
               onClick={() => searchGamesApi({ search: name }, history)}
             >
               {trunc}
@@ -61,24 +61,20 @@ class GameCard extends Component {
               >
                 {name}
               </span>
-              {trunc ? (
+              {trunc && (
                 <ReactTooltip
                   place="bottom"
                   type="dark"
                   effect="solid"
                   offset={{ bottom: 20, right: 50 }}
                 />
-              ) : (
-                ""
               )}
             </Link>
             <div>
               <span className=".gs-views">viewers: {viewers}</span>
               <br />
-              {spanChannels ? (
+              {spanChannels && (
                 <span className=".gs-views">channels: {channels}</span>
-              ) : (
-                <span />
               )}
             </div>
           </div>
@@ -88,11 +84,7 @@ class GameCard extends Component {
   }
 }
 
-function mapStateToProps({ embed }) {
-  return { embed };
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   actions
 )(withRouter(GameCard));
