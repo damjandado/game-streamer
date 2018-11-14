@@ -9,7 +9,7 @@ import Alert from "../presentationals/Alert";
 class TopGames extends Component {
   componentDidMount() {
     this.props.fetchTopRequest();
-    this.props.topGamesApi(60, 60);
+    this.props.topGamesApi(60, 0);
     this.props.toggleActive("top");
   }
 
