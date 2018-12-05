@@ -4,99 +4,98 @@ const {
   flatten,
   count_items,
   sortProperties,
-  remove_duplicates_es6
+  remove_duplicates,
 } = require("./helpers.js");
 
-exports.featuredApi = async (limit = 8) => {
-  const res = await axios.get(
-    `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchClientID}`
-  );
+const featuredApi = async (limit = 8) => {
   try {
-    return res.data.featured.map(({ stream }) => stream.channel.name);
+    const { data } = await axios.get(
+      `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchClientID}`
+    );
+    return data.featured.map(({ stream }) => stream);
   } catch (e) {
-    console.log(e);
+    return null;
   }
 };
 
 exports.topGamesApi = async (limit = 8) => {
-  const res = await axios.get(
-    `https://api.twitch.tv/kraken/games/top?client_id=${twitchClientID}&limit=${limit}`
-  );
   try {
-    return res.data.top.map(({ game }) => game.name);
+    const { data } = await axios.get(
+      `https://api.twitch.tv/kraken/games/top?client_id=${twitchClientID}&limit=${limit}`
+    );
+    return data.top.map(({ game }) => game.name);
   } catch (e) {
-    console.log(e);
+    return null;
   }
 };
 
-exports.fetchBroadcasters = async list => {
-  let broadcasters;
+exports.fetchStreamInfo = async ({ user_id }) => {
+  try {
+    const { data } = await axios.get({
+      url: `https://api.twitch.tv/kraken/streams/${user_id}`,
+      headers: {
+        "Client-ID": twitchClientID,
+        "Accept": "application/vnd.twitchtv.v5+json",
+      },
+    });
+    return data.stream;
+  } catch (e) {
+    return null;
+  }
+}
+
+exports.fetchStreamsByUsers = async list => {
+  let streamsByUsers;
   await Promise.all(
     list.map(async item => {
       try {
-        const fetched = await axios({
-          method: "get",
+        const fetched = await axios.get({
           url: `https://api.twitch.tv/helix/streams?user_login=${item}`,
-          headers: { "Client-ID": twitchClientID }
+          headers: { "Client-ID": twitchClientID },
         });
         if (fetched.data.data.length) {
           let user = fetched.data.data[0];
-          try {
-            const streamInfo = await axios({
-              method: "get",
-              url: `https://api.twitch.tv/kraken/streams/${user.user_id}`,
-              headers: {
-                "Client-ID": twitchClientID,
-                "Accept": "application/vnd.twitchtv.v5+json",
-              }
-            });
-            return streamInfo.data.stream;
-          } catch (e) {
-            console.log(e);
-            return null;
-          }
+          return await fetchStreamInfo(user);
         }
       } catch (e) {
-        console.log(e);
         return null;
       }  
     })
   ).then(result => {
-    broadcasters = [].concat(result);
+    streamsByUsers = [].concat(result);
   });
-  return broadcasters;
+  streamsByUsers = streamsByUsers.filter(item => item !== null);
+  if (!streamsByUsers.length) return featuredApi();
+  return streamsByUsers;
 };
 
-exports.fetchGameStreams = async list => {
-  let outputGames;
+exports.fetchStreamsByGames = async list => {
+  let streamsByGames;
   await Promise.all(
     list.map(async item => {
       const fetched = await axios.get(
         `https://api.twitch.tv/kraken/streams/?game=${item}&client_id=${twitchClientID}`
       );
-      let streams = fetched.data.streams;
+      let { streams } = fetched.data;
       return [streams[0], streams[1]];
     })
   ).then(result => {
     const flattened = flatten(result);
-    outputGames = [].concat(flattened);
+    streamsByGames = [].concat(flattened);
   });
-  return outputGames;
+  return streamsByGames;
 };
 
 exports.fetchGames = async list => {
-  const games = list;
   let outputGames;
   await Promise.all(
-    games.map(async item => {
+    list.map(async item => {
       try {
-        const fetched = await axios({
-          method: "get",
+        const fetched = await axios.get({
           url: `https://api.twitch.tv/helix/games?name=${item}`,
           headers: { "Client-ID": twitchClientID }
         });
-        let game = fetched.data.data[0];
-        return game;
+        return fetched.data.data[0];
       } catch (e) {
         console.log(e);
       }
@@ -114,9 +113,9 @@ exports.processQuery = (user, prop, count) => {
   let mostVisited = sortProperties(countObj);
   mostVisited = mostVisited.slice(0, count);
 
-  let recent = remove_duplicates_es6(select);
+  let recent = remove_duplicates(select);
   recent = recent.slice(recent.length - count);
 
   let joined = mostVisited.concat(recent);
-  return remove_duplicates_es6(joined);
+  return remove_duplicates(joined);
 };

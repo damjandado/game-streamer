@@ -84,7 +84,4 @@ class GameCard extends Component {
   }
 }
 
-export default connect(
-  null,
-  actions
-)(withRouter(GameCard));
+export default connect(null, actions)(withRouter(GameCard));

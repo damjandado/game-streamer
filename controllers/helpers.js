@@ -13,10 +13,8 @@ exports.flatten = (arr) => {
   return [].concat(...arr);
 }
 
-exports.remove_duplicates_es6 = (arr) => {
-  let s = new Set(arr);
-  let it = s.values();
-  return Array.from(it);
+exports.remove_duplicates = (arr) => {
+  return [...new Set(arr)];
 }
 
 exports.count_items = (arr) => {
