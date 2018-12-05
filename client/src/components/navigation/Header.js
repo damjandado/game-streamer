@@ -12,11 +12,10 @@ class Header extends Component {
   state = { dropdownActive: false };
 
   onLogout = async () => {
-    const { history } = this.props;
     const res = await axios.get("/api/logout");
     if (res.data.success) {
       localStorage.removeItem("jwtToken");
-      history.push("/");
+      window.location.reload();
     }
   }
 

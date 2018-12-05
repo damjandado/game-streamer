@@ -5,15 +5,12 @@ import * as actions from '../../actions';
 import AnonDash from './AnonDash';
 import Loader from '../presentationals/Loader';
 import StreamCard from '../presentationals/StreamCard';
-import Featured from './Featured';
 import Alert from '../presentationals/Alert';
 
 class Dashboard extends Component {
   componentDidMount() {
     const { authenticated } = this.props.auth;
-    if (authenticated) {
-      this.props.populateDashboard();
-    } else {
+    if (!authenticated) {
       this.props.topGamesApi(12);
     }
   }

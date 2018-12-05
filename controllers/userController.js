@@ -66,42 +66,29 @@ exports.users = async (req, res) => {
 };
 
 exports.dashboard = async (req, res) => {
-  let outputBroadcasters, outputGames;
-  const user = await User.find({ _id: req.user.id });
-  const vis = user[0].visits;
-  if (vis) {
-    if (vis.users.length && vis.users.length < 4) {
-      const broadcasters = processQuery(user, "users", vis.users.length);
-      outputBroadcasters = await fetchBroadcasters(broadcasters);
-    } else if (vis.users.length >= 4) {
-      const broadcasters = processQuery(user, "users", 4);
-      outputBroadcasters = await fetchBroadcasters(broadcasters);
+  let usersToFind, gamesToFind, users, games;
+  const appUser = await User.find({ _id: req.user.id });
+  const { visits } = appUser[0];
+  if (visits) {
+    if (visits.users.length && visits.users.length < 4) {
+      usersToFind = processQuery(appUser, "users", visits.users.length);
+    } else if (visits.users.length >= 4) {
+      usersToFind = processQuery(appUser, "users", 4);
     } else {
-      const broadcasters = await featuredApi();
-      outputBroadcasters = await fetchBroadcasters(broadcasters);
+      usersToFind = await featuredApi();
     }
-    if (vis.games.length && vis.games.length == 1) {
-      const games = processQuery(user, "games", 1);
-      outputGames = await fetchGameStreams(games);
-    } else if (vis.games.length >= 2) {
-      const games = processQuery(user, "games", 2);
-      outputGames = await fetchGameStreams(games);
+    if (visits.games.length && visits.games.length == 1) {
+      gamesToFind = processQuery(appUser, "games", 1);
+    } else if (visits.games.length >= 2) {
+      gamesToFind = processQuery(appUser, "games", 2);
     } else {
-      const games = await topGamesApi();
-      outputGames = await fetchGameStreams(games);
+      gamesToFind = await topGamesApi();
     }
-    const obj = {
-      broadcasters: outputBroadcasters,
-      games: outputGames
-    };
-    res.send(obj);
+    users = fetchBroadcasters(usersToFind);
+    games = fetchGameStreams(gamesToFind);
   } else {
-    outputBroadcasters = await featuredApi();
-    outputGames = await topGamesApi();
-    const obj = {
-      broadcasters: outputBroadcasters,
-      games: outputGames
-    };
-    res.send(obj);
+    users = featuredApi();
+    games = topGamesApi();
   }
+  res.send({ broadcasters: await users, games: await games });
 };

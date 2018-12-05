@@ -24,6 +24,29 @@ export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user');
   dispatch({ type: LOGIN_USER });
   dispatch({ type: FETCH_USER, payload: res.data });
+  if (res.data) {
+    const res = await axios.get('/api/twitch/dashboard');
+    dispatch({ type: FETCH_DASHBOARD, status: 'loading' });
+    try {
+      dispatch({
+        type: FETCH_BROADCASTERS,
+        status: 'success',
+        payload: res.data.broadcasters
+      });
+      dispatch({
+        type: FETCH_GAMES,
+        status: 'success',
+        payload: res.data.games
+      });
+      dispatch({ type: FETCH_DASHBOARD, status: 'success' });
+    } catch (e) {
+      dispatch({
+        type: FETCH_DASHBOARD,
+        status: 'error',
+        error: e
+      });
+    }
+  }
 };
 
 export const sendMail = values => async dispatch => {
@@ -124,30 +147,6 @@ export const searchGamesApi = ({ search }, history) => async dispatch => {
   } catch (e) {
     payload = { status: 'error', error: e };
     dispatch({ type: FETCH_SEARCH, payload });
-  }
-};
-
-export const populateDashboard = () => async dispatch => {
-  const res = await axios.get('/api/twitch/dashboard');
-  dispatch({ type: FETCH_DASHBOARD, status: 'loading' });
-  try {
-    dispatch({
-      type: FETCH_BROADCASTERS,
-      status: 'success',
-      payload: res.data.broadcasters
-    });
-    dispatch({
-      type: FETCH_GAMES,
-      status: 'success',
-      payload: res.data.games
-    });
-    dispatch({ type: FETCH_DASHBOARD, status: 'success' });
-  } catch (e) {
-    dispatch({
-      type: FETCH_DASHBOARD,
-      status: 'error',
-      error: e
-    });
   }
 };
 
