@@ -1,6 +1,6 @@
 const initialState = {
-  status: "",
-  featured: [],
+  status: "not_found",
+  list: [],
   error: ""
 };
 
@@ -13,11 +13,7 @@ function twitchReducer(state = initialState, action) {
       });
       return requested;
     case "FETCH_FEATURED_SUCCESS":
-      const successful = Object.assign({}, state, {
-        status: action.status,
-        featured: action.featured
-      });
-      return successful;
+      return { ...state, ...action.payload };
     case "FETCH_FEATURED_FAILURE":
       const failed = Object.assign({}, state, {
         status: action.status,

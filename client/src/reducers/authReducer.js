@@ -1,7 +1,6 @@
 import {
   FETCH_USER,
   LOGIN_USER,
-  LOGOUT_USER,
   SEND_MAIL,
   CHECK_MAIL,
 } from "../actions/types";
@@ -24,8 +23,6 @@ export default (state = initialState, action) => {
           )
         : Object.assign({}, state, { authenticated: false, isWaiting: false });
     case LOGIN_USER:
-      return Object.assign({}, state, { isWaiting: true });
-    case LOGOUT_USER:
       return Object.assign({}, state, { isWaiting: true });
     case CHECK_MAIL:
       return Object.assign({}, state, { emailExists: action.payload });

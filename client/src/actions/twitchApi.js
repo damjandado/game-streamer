@@ -9,12 +9,10 @@ export const featuredApi = (limit = 20) => async dispatch => {
   );
   dispatch(actions.fetchRequest());
   try {
-    const streams = res.data.featured.map(feat => feat);
-    dispatch({
-      type: types.FETCH_FEATURED_SUCCESS,
-      status: 'success',
-      featured: streams,
-    });
+    const { featured } = res.data;
+    const status = featured.length ? 'found_streams' : 'not_found';
+    const payload = { status, list: featured };
+    dispatch({ type: types.FETCH_FEATURED_SUCCESS, payload });
   } catch (e) {
     dispatch(actions.fetchFailure(e));
   }
@@ -25,24 +23,23 @@ export const topGamesApi = (
   offset = 0,
   searchTerm
 ) => async dispatch => {
-  const res = await axios.get(
-    `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}&offset=${offset}`
-  );
-  const { top } = res.data;
   dispatch(actions.fetchTopRequest());
   try {
-    const games = top.map(feat => feat);
+    const res = await axios.get(
+      `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}&offset=${offset}`
+    );
+    const { top } = res.data;
     if (!searchTerm) {
-      dispatch(actions.fetchTopSuccess(games));
+      dispatch(actions.fetchTopSuccess(top));
     } else {
       const term = searchTerm.toLowerCase();
-      const foundGames = games.filter(item => {
+      const games = top.filter(item => {
         const { name } = item.game;
         const arr = name.toLowerCase().split(' ');
         return arr.includes(term);
       });
-      const status = foundGames.length ? 'found' : '';
-      dispatch({ type: 'SEARCH_GAMES', payload: { foundGames, status } });
+      const status = games.length ? 'found_games' : 'not_found';
+      dispatch({ type: 'SEARCH_GAMES', payload: { games, status } });
     }
   } catch (e) {
     dispatch(actions.fetchTopFailure(e));
@@ -50,20 +47,19 @@ export const topGamesApi = (
 };
 
 export const searchGamesApi = ({ search }, history) => async dispatch => {
-  dispatch({
-    type: types.FETCH_SEARCH_REQUEST,
-    term: search,
-    status: 'loading'
-  });
+  let payload = { term: search, status: 'loading', streams: [] };
+  dispatch({ type: types.FETCH_SEARCH_REQUEST, payload }); 
   history.push('/search');
-  const res = await axios.get(
-    `https://api.twitch.tv/kraken/streams/?game=${search}&client_id=${twitchId}`
-  );
+  const url = `https://api.twitch.tv/kraken/streams/?game=${search}&client_id=${twitchId}`;
   try {
-    const games = res.data.streams.map(feat => feat);
-    dispatch({ type: types.FETCH_SEARCH_SUCCESS, status: 'success', games });
+    const res = await axios.get(url);
+    const { streams } = res.data;
+    const status = streams.length ? 'found_streams' : 'not_found';
+    payload = { status, streams };
+    dispatch({ type: types.FETCH_SEARCH_SUCCESS, payload });
   } catch (e) {
-    dispatch({ type: types.FETCH_SEARCH_FAILURE, status: 'error', error: e });
+    payload = { status: 'error', error: e };
+    dispatch({ type: types.FETCH_SEARCH_FAILURE, payload });
   }
 };
 

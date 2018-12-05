@@ -1,21 +1,6 @@
 import axios from "axios";
 import * as types from "./types";
 
-export const onSignup = values => async dispatch => {
-  const res = await axios.post("/local/signup", values);
-  try {
-    if (res.data.success) {
-      await axios.post("/api/send_email", {
-        email: values.email,
-        template: values.template
-      });
-    }
-  } catch (e) {
-    if (e instanceof Error) {
-    }
-  }
-};
-
 export const fetchUser = () => async dispatch => {
   axios.defaults.headers.common.Authorization = localStorage.getItem(
     'jwtToken'
@@ -23,17 +8,6 @@ export const fetchUser = () => async dispatch => {
   const res = await axios.get('/api/current_user');
   dispatch({ type: types.LOGIN_USER });
   dispatch({ type: types.FETCH_USER, payload: res.data });
-};
-
-export const onLogout = () => async dispatch => {
-  const res = await axios.get("/api/logout");
-  try {
-    if (res.data.success) {
-      localStorage.removeItem("jwtToken");
-    }
-  } catch (e) {
-    console.log("Error", res.message);
-  }
 };
 
 export const sendMail = values => async dispatch => {

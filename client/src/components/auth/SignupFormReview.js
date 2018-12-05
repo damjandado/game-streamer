@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 import * as actions from '../../actions/actions';
 import formFields from './formFields';
 
 class SignupFormReview extends Component {
   state = { success: false };
+  
+  onSignup = async (values) => {
+    const res = await axios.post("/local/signup", values);
+    if (res.data.success) {
+      await axios.post("/api/send_email", {
+        email: values.email,
+        template: values.template
+      });
+      this.setState({ success: true });
+    }
+  }
 
   render() {
-    const { onBack, formValues, onSignup } = this.props;
+    const { onBack, formValues } = this.props;
     const values = formValues;
     values.template = 'signup';
     const reviewFields = formFields.slice(0, 2).map(({ name, placeholder }) => {
@@ -35,10 +47,7 @@ class SignupFormReview extends Component {
           </div>
           <div className="col pr-0 text-right">
             <button
-              onClick={() => {
-                onSignup(values);
-                this.setState({ success: true });
-              }}
+              onClick={() => this.onSignup(values)}
               className="btn btn-success"
             >
               Confirm

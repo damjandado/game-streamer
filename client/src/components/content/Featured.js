@@ -16,7 +16,7 @@ class Featured extends Component {
   render() {
     const ftProps = this.props.featured;
     const status = ftProps.status;
-    const streamCardItems = ftProps.featured.map(ft => (
+    const streamCardItems = ftProps.list.map(ft => (
       <StreamCard
         key={ft.stream._id}
         ebdStream={ft}
@@ -34,7 +34,7 @@ class Featured extends Component {
         <h3 className="text-center text-muted">Featured Streams</h3>
         {status === "loading" ? (
           <Loader />
-        ) : status === "success" ? (
+        ) : status === "found_streams" ? (
           <div className="row">{streamCardItems}</div>
         ) : status === "error" ? (
           <div>

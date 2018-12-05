@@ -33,7 +33,7 @@ class LeftBar extends Component {
 }
 
 function mapStateToProps({ featured }) {
-  return { featured: featured.featured };
+  return { featured: featured.list };
 }
 
 export default connect(mapStateToProps)(LeftBar);

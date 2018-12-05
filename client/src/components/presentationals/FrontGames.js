@@ -6,7 +6,7 @@ import Loader from "../presentationals/Loader";
 import Alert from "../presentationals/Alert";
 
 export default ({ games }) => {
-  const { status, error } = games;
+  const { status } = games;
   const gameCardItems = games.list.map((tg) => (
     <GameCard
       key={tg.game._id}

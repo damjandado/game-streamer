@@ -1,21 +1,23 @@
 import React, { Component } from "react";
 import { withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-
+import axios from 'axios';
 import SearchForm from "./SearchForm";
 import AuthButton from "./AuthButton";
 import Navs from "./Navs";
-import { onLogout } from "../../actions/actions";
 
 import logo from "../../images/logo_ticc_b.png";
 
 class Header extends Component {
   state = { dropdownActive: false };
 
-  onLogout = () => {
+  onLogout = async () => {
     const { history } = this.props;
-    this.props.onLogout();
-    history.push("/");
+    const res = await axios.get("/api/logout");
+    if (res.data.success) {
+      localStorage.removeItem("jwtToken");
+      history.push("/");
+    }
   }
 
   renderContent() {
@@ -99,7 +101,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(
-  mapStateToProps,
-  { onLogout }
-)(withRouter(Header));
+export default connect(mapStateToProps)(withRouter(Header));
