@@ -8,14 +8,13 @@ import Alert from "../presentationals/Alert";
 
 class TopGames extends Component {
   componentDidMount() {
-    this.props.fetchTopRequest();
     this.props.topGamesApi(60, 0);
     this.props.toggleActive("top");
   }
 
   render() {
     const { games } = this.props;
-    const status = games.status;
+    const { error, status } = games;
     const gameCardItems = games.list.map((tg, i) => (
       <GameCard
         key={tg.game._id}
@@ -31,28 +30,21 @@ class TopGames extends Component {
         logoArt={true}
       />
     ));
-    const error = games.error;
     return (
       <div className="main">
         <h3 className="text-center text-muted">Top Games on Twitch</h3>
-        {status === "loading" ? (
-          <Loader />
-        ) : status === "success" ? (
-          <div className="row">{gameCardItems}</div>
-        ) : status === "error" ? (
-          <div>
-            <Alert error={error} />
-          </div>
-        ) : (
-          <div />
-        )}
+        {{
+          loading: <Loader />,
+          1: <div className="row">{gameCardItems}</div>,
+          error: <div><Alert error={error} /></div>,
+        }[status]}
       </div>
     );
   }
 }
 
-function mapStateToProps({ topGames }) {
-  return { games: topGames };
+function mapStateToProps({ twitch }) {
+  return { games: twitch.top };
 }
 
 export default connect(

@@ -72,8 +72,8 @@ class SearchResults extends Component {
               <h3 className="text-center text-muted mt-2">No search yet.</h3>
             ),
             loading: <Loader />,
-            found_streams: <div>{renderStreams}</div>,
-            found_games: <div>{renderGames}</div>,
+            1: <div>{renderGames}</div>,
+            2: <div>{renderStreams}</div>,
             error: <Alert error={error} />,
           }[status]
         }

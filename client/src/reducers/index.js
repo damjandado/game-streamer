@@ -3,8 +3,7 @@ import authReducer from "./authReducer";
 import dashboardReducer from "./dashboardReducer";
 import clipsReducer from "./clipsReducer";
 import activityReducer from "./activityReducer";
-import featuredReducer from "./featuredReducer";
-import topGamesReducer from "./topGamesReducer";
+import twitchReducer from "./twitchReducer";
 import searchReducer from "./searchReducer";
 import embedReducer from "./embedReducer";
 import activeTabReducer from "./activeTabReducer";
@@ -15,8 +14,7 @@ export default combineReducers({
   dashboard: dashboardReducer,
   clips: clipsReducer,
   activity: activityReducer,
-  featured: featuredReducer,
-  topGames: topGamesReducer,
+  twitch: twitchReducer,
   search: searchReducer,
   embed: embedReducer,
   activeTab: activeTabReducer,

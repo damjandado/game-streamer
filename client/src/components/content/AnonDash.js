@@ -26,8 +26,8 @@ class AnonDash extends Component {
   }
 }
 
-function mapStateToProps({ featured, topGames }) {
-  return { channel: featured.list[0], games: topGames };
+function mapStateToProps({ twitch: { featured, top } }) {
+  return { channel: featured.list[0], games: top };
 }
 
 export default connect(

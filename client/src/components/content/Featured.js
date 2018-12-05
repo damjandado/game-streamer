@@ -8,15 +8,14 @@ import Alert from "../presentationals/Alert";
 
 class Featured extends Component {
   componentDidMount() {
-    this.props.fetchRequest();
     this.props.featuredApi(100);
     this.props.toggleActive("featured");
   }
 
   render() {
-    const ftProps = this.props.featured;
-    const status = ftProps.status;
-    const streamCardItems = ftProps.list.map(ft => (
+    const { featured } = this.props;
+    const { error, status } = featured;
+    const streamCardItems = featured.list.map(ft => (
       <StreamCard
         key={ft.stream._id}
         ebdStream={ft}
@@ -28,28 +27,21 @@ class Featured extends Component {
         game={ft.stream.game}
       />
     ));
-    const error = ftProps.error;
     return (
       <div className="main">
         <h3 className="text-center text-muted">Featured Streams</h3>
-        {status === "loading" ? (
-          <Loader />
-        ) : status === "found_streams" ? (
-          <div className="row">{streamCardItems}</div>
-        ) : status === "error" ? (
-          <div>
-            <Alert error={error} />
-          </div>
-        ) : (
-          <div />
-        )}
+        {{
+          loading: <Loader />,
+          1: <div className="row">{streamCardItems}</div>,
+          error: <Alert error={error} />,
+        }[status]}
       </div>
     );
   }
 }
 
-function mapStateToProps({ featured }) {
-  return { featured };
+function mapStateToProps({ twitch }) {
+  return { featured: twitch.featured };
 }
 
 export default connect(

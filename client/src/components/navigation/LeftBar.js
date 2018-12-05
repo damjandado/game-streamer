@@ -32,8 +32,8 @@ class LeftBar extends Component {
   }
 }
 
-function mapStateToProps({ featured }) {
-  return { featured: featured.list };
+function mapStateToProps({ twitch }) {
+  return { featured: twitch.featured.list };
 }
 
 export default connect(mapStateToProps)(LeftBar);

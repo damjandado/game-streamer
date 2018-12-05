@@ -11,7 +11,6 @@ class App extends Component {
   componentWillMount() {
     this.props.fetchUser();
     this.props.featuredApi(5);
-    this.props.noSearch();
   }
 
   render() {

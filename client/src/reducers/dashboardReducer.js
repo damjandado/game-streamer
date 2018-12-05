@@ -5,8 +5,6 @@ const initialState = {
   error: "",
 };
 
-window.divh = window.frameh = 0;
-
 export default function(state = initialState, action) {
   switch (action.type) {
     case "FETCH_DASHBOARD":
@@ -26,12 +24,6 @@ export default function(state = initialState, action) {
         games: action.payload
       });
       return games;
-    case "FETCH_DASHBOARD_FAILURE":
-      const failed = Object.assign({}, state, {
-        status: action.status,
-        error: action.error
-      });
-      return failed;
     default:
       return state;
   }

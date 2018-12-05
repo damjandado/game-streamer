@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 
 import GameCard from "../presentationals/GameCard";
 import Loader from "../presentationals/Loader";
-import Alert from "../presentationals/Alert";
 
 export default ({ games }) => {
   const { status } = games;
@@ -25,7 +24,7 @@ export default ({ games }) => {
   return (
     <div className="row">
       {{loading: <Loader />,
-        success: gameCardItems,
+        1: gameCardItems,
       }[status]}
     </div>
   );
