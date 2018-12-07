@@ -14,7 +14,7 @@ class TopGames extends Component {
 
   render() {
     const { games } = this.props;
-    const { error, status } = games;
+    const { status } = games;
     const gameCardItems = games.list.map((tg, i) => (
       <GameCard
         key={tg.game._id}
@@ -36,7 +36,7 @@ class TopGames extends Component {
         {{
           loading: <Loader />,
           1: <div className="row">{gameCardItems}</div>,
-          error: <div><Alert error={error} /></div>,
+          error: <div><Alert error={status} /></div>,
         }[status]}
       </div>
     );

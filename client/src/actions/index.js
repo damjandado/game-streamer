@@ -5,8 +5,6 @@ import {
   FETCH_TOPGAMES,
   FETCH_SEARCH,
   FETCH_DASHBOARD,
-  FETCH_BROADCASTERS,
-  FETCH_GAMES,
   FETCH_CLIPS,
   LOGIN_USER,
   FETCH_USER,
@@ -25,27 +23,16 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: LOGIN_USER });
   dispatch({ type: FETCH_USER, payload: res.data });
   if (res.data) {
-    const res = await axios.get('/api/twitch/dashboard');
-    dispatch({ type: FETCH_DASHBOARD, status: 'loading' });
+    let payload = { status: 'loading' };
+    dispatch({ type: FETCH_DASHBOARD, payload });
     try {
-      dispatch({
-        type: FETCH_BROADCASTERS,
-        status: 'success',
-        payload: res.data.broadcasters
-      });
-      dispatch({
-        type: FETCH_GAMES,
-        status: 'success',
-        payload: res.data.games
-      });
-      dispatch({ type: FETCH_DASHBOARD, status: 'success' });
+      const res = await axios.get('/api/twitch/dashboard');
+      const { broadcasters, games } = res.data;
+      payload = { status: 'success', broadcasters, games };
     } catch (e) {
-      dispatch({
-        type: FETCH_DASHBOARD,
-        status: 'error',
-        error: e
-      });
+      payload = { status: 'error' };
     }
+    dispatch({ type: FETCH_DASHBOARD, payload });
   }
 };
 
@@ -145,7 +132,7 @@ export const searchGamesApi = ({ search }, history) => async dispatch => {
     payload = { ...payload, status, streams };
     dispatch({ type: FETCH_SEARCH, payload });
   } catch (e) {
-    payload = { status: 'error', error: e };
+    payload = { status: 'error' };
     dispatch({ type: FETCH_SEARCH, payload });
   }
 };

@@ -9,8 +9,6 @@ export const FETCH_TOPGAMES = "FETCH_TOPGAMES";
 export const FETCH_SEARCH = "FETCH_SEARCH";
 
 export const FETCH_DASHBOARD = "FETCH_DASHBOARD";
-export const FETCH_BROADCASTERS = "FETCH_BROADCASTERS";
-export const FETCH_GAMES = "FETCH_GAMES";
 export const FETCH_CLIPS = "FETCH_CLIPS";
 
 // AUTH types

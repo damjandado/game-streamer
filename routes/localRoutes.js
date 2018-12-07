@@ -1,6 +1,3 @@
-const { URL } = require("url");
-const mongoose = require("mongoose");
-
 const requireLogin = require("../middlewares/requireLogin");
 const localAuthController = require("../controllers/localAuthController");
 const userController = require("../controllers/userController");

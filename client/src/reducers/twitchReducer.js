@@ -2,23 +2,28 @@ const initialState = {
   featured: {
     status: 0,
     list: [],
-    error: "",
   },
   top: {
     status: 0,
     list: [],
-    error: "",
-  }
+  },
+  dashboard: {
+    broadcasters: [],
+    games: [],
+    status: "loading",
+  },
 };
 
 function twitchReducer(state = initialState, action) {
   switch (action.type) {
-    case "FETCH_FEATURED":
-      return { ...state, featured: { ...action.payload } };
-    case "FETCH_TOPGAMES":
-      return { ...state, top: { ...action.payload } };
-    default:
-      return state;
+  case "FETCH_FEATURED":
+    return { ...state, featured: { ...action.payload } };
+  case "FETCH_TOPGAMES":
+    return { ...state, top: { ...action.payload } };
+  case "FETCH_DASHBOARD":
+    return { ...state, dashboard: { ...state.dashboard, ...action.payload } };
+  default:
+    return state;
   }
 }
 

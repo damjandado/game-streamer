@@ -14,7 +14,7 @@ class Featured extends Component {
 
   render() {
     const { featured } = this.props;
-    const { error, status } = featured;
+    const { status } = featured;
     const streamCardItems = featured.list.map(ft => (
       <StreamCard
         key={ft.stream._id}
@@ -33,7 +33,7 @@ class Featured extends Component {
         {{
           loading: <Loader />,
           1: <div className="row">{streamCardItems}</div>,
-          error: <Alert error={error} />,
+          error: <Alert error={status} />,
         }[status]}
       </div>
     );

@@ -16,36 +16,28 @@ class Dashboard extends Component {
   }
 
   renderDash() {
-    const dash = this.props.dashboard;
-    const { status } = dash;
-    const streamCardBroadcasters = dash.broadcasters.map(bc => {
-      if (bc !== null)
-        return (
-          <StreamCard
-            key={bc._id}
-            ebdStream={bc}
-            streamCover={bc.preview.medium}
-            name={bc.channel.display_name}
-            game={bc.game}
-            logo={bc.channel.logo}
-          />
-        );
-      return;
-    });
-    const streamCardGames = dash.games.map(gm => {
-      if (gm !== null)
-        return (
-          <StreamCard
-            key={gm._id}
-            ebdStream={gm}
-            streamCover={gm.preview.medium}
-            logo={gm.channel.logo}
-            name={gm.channel.name}
-            game={gm.channel.game}
-          />
-        );
-      return;
-    });
+    const { dashboard } = this.props;
+    const { status, broadcasters, games } = dashboard;
+    const streamCardBroadcasters = broadcasters.map(bc =>
+      <StreamCard
+        key={bc._id}
+        ebdStream={bc}
+        streamCover={bc.preview.medium}
+        name={bc.channel.display_name}
+        game={bc.game}
+        logo={bc.channel.logo}
+      />
+    );
+    const streamCardGames = games.map(gm =>
+      <StreamCard
+        key={gm._id}
+        ebdStream={gm}
+        streamCover={gm.preview.medium}
+        logo={gm.channel.logo}
+        name={gm.channel.name}
+        game={gm.channel.game}
+      />
+    );
     const Dashboard = (
       <div>
         <h3 className="text-center text-muted">Recommended Channels</h3>
@@ -55,7 +47,6 @@ class Dashboard extends Component {
         <div className="row">{streamCardGames}</div>
       </div>
     );
-    const error = dash.error;
     return (
       <div className="main">
         {
@@ -70,7 +61,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { authenticated, isWaiting } = this.props.auth;
+    const { authenticated } = this.props.auth;
     return (
       <div>
         {authenticated ? (
@@ -83,7 +74,7 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps({ auth, dashboard }) {
+function mapStateToProps({ auth, twitch: { dashboard } }) {
   return { auth, dashboard };
 }
 

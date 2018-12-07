@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import GameCard from "../presentationals/GameCard";
 import Loader from "../presentationals/Loader";

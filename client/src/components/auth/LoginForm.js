@@ -47,7 +47,7 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { handleSubmit, onLogin, history } = this.props;
+    const { handleSubmit } = this.props;
     const { remember } = this.state;
     return (
       <div>
