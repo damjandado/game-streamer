@@ -1,42 +1,41 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
+import { Link, withRouter } from "react-router-dom";
 
 class Navs extends Component {
+  state = { active: '' }
+
+  componentDidMount() {
+    const { location: { pathname } } = this.props;
+    this.setState({ active: pathname.slice(1) });
+  }
+  
+  onClick = (tab) => {
+    this.setState({ active: tab });
+  }
+
   render() {
-    const { featured, top, channel } = this.props.activeTab;
-    const { name } = this.props.embed;
+    const links = [['featured', 'Featured'], ['topgames', 'Top Games']];
+    const list = links.map(item => {
+      const { active } = this.state;
+      const activeTab = active === item[0] ? 'text-white' : '';
+      return (
+        <li className="nav-item" key={item[0]}>
+          <Link
+            className={`nav-link my-2 my-sm-0 ${activeTab}`}
+            to={`/${item[0]}`}
+            onClick={() => this.onClick(item[0])}
+          >
+            {item[1]}
+          </Link>
+        </li>
+      );
+    });
     return (
       <ul className="navbar-nav mr-sm-4" role="tablist">
-        <li className="nav-item">
-          <Link className={`nav-link my-2 my-sm-0 text-white ${featured}`} to="/featured">
-            Featured
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className={`nav-link my-2 my-sm-0 text-white ${top}`} to="/topgames">
-            Top Games
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link
-            className={`nav-link my-2 my-sm-0 text-white ${channel}`}
-            to={"/" + name || "monstercat"}
-          >
-            Channel
-          </Link>
-        </li>
+        {list}
       </ul>
     );
   }
 }
 
-function mapStateToProps({ embed, activeTab }) {
-  return { embed, activeTab };
-}
-
-export default connect(
-  mapStateToProps,
-  actions
-)(Navs);
+export default withRouter(Navs);

@@ -11,7 +11,6 @@ class Channel extends Component {
 
   async componentDidMount() {
     this.setState({ info: 'loading' });
-    this.props.toggleActive('channel');
     const {
       match: { params },
       fetchStreamByChannelName

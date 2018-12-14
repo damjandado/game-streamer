@@ -5,7 +5,6 @@ import activityReducer from "./activityReducer";
 import twitchReducer from "./twitchReducer";
 import searchReducer from "./searchReducer";
 import embedReducer from "./embedReducer";
-import activeTabReducer from "./activeTabReducer";
 import { reducer as reduxForm } from "redux-form";
 
 export default combineReducers({
@@ -15,6 +14,5 @@ export default combineReducers({
   twitch: twitchReducer,
   search: searchReducer,
   embed: embedReducer,
-  activeTab: activeTabReducer,
   form: reduxForm
 });

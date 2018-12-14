@@ -9,7 +9,6 @@ import Alert from "../presentationals/Alert";
 class Featured extends Component {
   componentDidMount() {
     this.props.featuredApi(100);
-    this.props.toggleActive("featured");
   }
 
   render() {

@@ -9,10 +9,6 @@ import Alert from '../presentationals/Alert';
 import * as actions from '../../actions';
 
 class SearchResults extends Component {
-  componentDidMount() {
-    this.props.toggleActive('search');
-  }
-
   render() {
     const searchProps = this.props.search;
     const { status, term, games, streams } = searchProps;

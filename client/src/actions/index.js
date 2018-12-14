@@ -11,7 +11,6 @@ import {
   SEND_MAIL,
   CHECK_MAIL,
   SAVE_ACTIVITY,
-  TOGGLE_ACTIVE,
   EMBED_STREAM,
 } from './types';
 
@@ -59,13 +58,6 @@ export const saveActivity = entity => async dispatch => {
   const res = await axios.post("/api/twitch/users", entity);
 
   dispatch({ type: SAVE_ACTIVITY, payload: res.data });
-};
-
-export const toggleActive = tab => {
-  return {
-    type: TOGGLE_ACTIVE,
-    tab
-  };
 };
 
 export const embedStream = ebd => {
