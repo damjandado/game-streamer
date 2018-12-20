@@ -53,7 +53,7 @@ class SearchForm extends Component {
 
         {full ? (
           <button
-            className="btn btn-sm btn-outline-success my-2 my-sm-0"
+            className="btn btn-sm text-white gs-button my-2 my-sm-0"
             type="submit"
           >
             {`Search`}

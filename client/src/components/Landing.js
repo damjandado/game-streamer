@@ -11,7 +11,6 @@ import LoginNew from "./auth/LoginNew";
 import Recovery from "./auth/Recovery";
 import RecoveryEnterNew from "./auth/RecoveryEnterNew";
 import ConfirmRegistration from "./auth/ConfirmRegistration";
-import Twitch from "./Twitch";
 
 export default () => {
     return (
@@ -32,7 +31,6 @@ export default () => {
           <Route path="/featured" component={Featured} />
           <Route path="/topgames" component={TopGames} />
           <Route path="/search" component={SearchResults} />
-          <Route path="/loader" component={Twitch} />
           <Route path={"/:channelName"} component={Channel} />
         </Switch>
       </div>
