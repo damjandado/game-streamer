@@ -1,7 +1,7 @@
 const initialState = {
   error: "",
   status: "no_search",
-  term: "",
+  searchTerm: "",
   games: [],
   streams: [],
 };

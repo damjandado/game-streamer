@@ -35,7 +35,7 @@ class GameCard extends Component {
         <div className="gs-video-thumbnail">
           <Link
             to={'/search'}
-            onClick={() => searchGamesApi({ search: name }, history)}
+            onClick={() => searchGamesApi(name)}
           >
             <Lazy component="span" cushion={200}>
               <img className={cardCover} src={box} alt={name} />
@@ -49,7 +49,7 @@ class GameCard extends Component {
           >
             <Link
               to={'/search'}
-              onClick={() => searchGamesApi({ search: name }, history)}
+              onClick={() => searchGamesApi(name)}
             >
               {trunc}
               <span

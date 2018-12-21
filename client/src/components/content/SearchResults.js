@@ -6,13 +6,25 @@ import StreamCard from '../presentationals/StreamCard';
 import GameCard from '../presentationals/GameCard';
 import Alert from '../presentationals/Alert';
 
-import * as actions from '../../actions';
-
 class SearchResults extends Component {
-  render() {
-    const searchProps = this.props.search;
-    const { status, term, games, streams } = searchProps;
-    const termX = <i className="text-info">{term}</i>;
+  renderHeading = () => {
+    const { status, error, searchTerm } = this.props;
+    const term = <i className="text-info">{searchTerm}</i>;
+    return (
+      <h3 className="text-center text-muted">
+      {{
+        no_search: "No search yet.",
+        0: "Nothing found.",
+        1: <span>Games found for term: {term}</span>,
+        2: <span>Streams found for term: {term}</span>,
+        error: <Alert error={error} />,
+      }[status]}
+      </h3>
+    )
+  }
+
+  renderStreams = () => {
+    const { streams } = this.props;
     const listStreams = streams.map(game => (
       <StreamCard
         key={game._id}
@@ -23,6 +35,13 @@ class SearchResults extends Component {
         game={game.channel.game}
       />
     ));
+    return (
+      <div className="row">{listStreams}</div>
+    );
+  };
+  
+  renderGames = () => {
+    const { games } = this.props;
     const listGames = games.map(item => (
       <GameCard
         key={item.game._id}
@@ -38,39 +57,21 @@ class SearchResults extends Component {
         logoArt={true}
       />
     ));
-    const renderStreams = (
-      <div>
-        <h3 className="text-center text-muted">
-          {`Streams found for term `}
-          {termX}
-        </h3>
-        <div className="row">{listStreams}</div>
-      </div>
+    return (
+      <div className="row">{listGames}</div>
     );
-    const renderGames = (
-      <div>
-        <h3 className="text-center text-muted">{termX} and similar games:</h3>
-        <div className="row">{listGames}</div>
-      </div>
-    );
-    const error = searchProps.error;
-    if (!streams.length && !games.length && status === 'not_found')
-      return (
-        <h3 className="text-center text-muted mt-2">
-          Nothing found.
-        </h3>
-      );
+  };
+
+  render() {
+    const { status } = this.props;
+    if (status === "loading") return <Loader />;
     return (
       <div className="main">
+        {this.renderHeading()}
         {
           {
-            no_search: (
-              <h3 className="text-center text-muted mt-2">No search yet.</h3>
-            ),
-            loading: <Loader />,
-            1: <div>{renderGames}</div>,
-            2: <div>{renderStreams}</div>,
-            error: <Alert error={error} />,
+            1: <div>{this.renderGames()}</div>,
+            2: <div>{this.renderStreams()}</div>,
           }[status]
         }
       </div>
@@ -79,10 +80,7 @@ class SearchResults extends Component {
 }
 
 function mapStateToProps({ search }) {
-  return { search };
+  return { ...search };
 }
 
-export default connect(
-  mapStateToProps,
-  actions
-)(SearchResults);
+export default connect(mapStateToProps)(SearchResults);

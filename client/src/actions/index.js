@@ -103,8 +103,8 @@ export const topGamesApi = (
             return arr.includes(term);
         });
         const status = list.length ? 1 : 0;
-        payload = { games: list, status };
-        dispatch({ type: FETCH_SEARCH, payload });
+        payload = { searchTerm, games: list, status };
+        return dispatch({ type: FETCH_SEARCH, payload });
     }
   } catch (e) {
     payload = { ...payload, status: 'error' };
@@ -112,11 +112,10 @@ export const topGamesApi = (
   dispatch({ type: FETCH_TOPGAMES, payload });
 };
 
-export const searchGamesApi = ({ search }, history) => async dispatch => {
-  let payload = { term: search, status: 'loading', streams: [] };
-  dispatch({ type: FETCH_SEARCH, payload }); 
-  history.push('/search');
-  const url = `https://api.twitch.tv/kraken/streams/?game=${search}&client_id=${twitchId}`;
+export const searchGamesApi = searchTerm => async dispatch => {
+  let payload = { searchTerm, status: 'loading', streams: [] };
+  dispatch({ type: FETCH_SEARCH, payload });
+  const url = `https://api.twitch.tv/kraken/streams/?game=${searchTerm}&client_id=${twitchId}`;
   try {
     const res = await axios.get(url);
     const { streams } = res.data;
