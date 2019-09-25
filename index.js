@@ -13,7 +13,7 @@ require("./services/passport-social");
 require("./services/passport-local");
 
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.mongoURI, { useMongoClient: true });
 const db = mongoose.connection;
 
 //handle mongo error

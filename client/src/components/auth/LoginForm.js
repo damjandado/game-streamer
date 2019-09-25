@@ -48,7 +48,6 @@ class LoginForm extends Component {
 
   render() {
     const { handleSubmit } = this.props;
-    const { remember } = this.state;
     return (
       <div>
         <div className="row kpx_row-sm-offset-3">

@@ -26,7 +26,6 @@ class GameCard extends Component {
       spanChannels,
       cardType,
       cardCover,
-      history,
       searchGamesApi
     } = this.props;
     let trunc = this.state.truncated;

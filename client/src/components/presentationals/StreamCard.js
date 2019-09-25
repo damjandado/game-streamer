@@ -13,7 +13,7 @@ class StreamCard extends Component {
   }
 
   searchGame() {
-    this.props.searchGamesApi({ search: this.props.game });
+    this.props.searchGamesApi(this.props.game);
   }
 
   render() {
@@ -23,9 +23,7 @@ class StreamCard extends Component {
       title,
       name,
       game,
-      history,
-      searchGamesApi,
-      userLogo
+      userLogo,
     } = this.props;
     const width = userLogo ? 200 : "100%";
     return (
@@ -57,7 +55,7 @@ class StreamCard extends Component {
             plays{" "}
             <Link
               to={"/search"}
-              onClick={() => searchGamesApi({ search: game }, history)}
+              onClick={() => this.searchGame(game)}
             >
               {game}
             </Link>
