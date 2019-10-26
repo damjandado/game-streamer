@@ -6,13 +6,14 @@ import * as actions from '../../actions';
 const TopStreamEmbed = props => {
 	if (!props.channel) return <div>Loading...</div>;
 
-	const { text, title, stream } = props.channel;
-	const { logo, name, display_name, game } = stream.channel;
+	const { title, user_name, user_id } = props.channel;
+	let { logo, name, display_name, game, text } = {};
 	const { history, searchGamesApi } = props;
+    name = user_name.toLowerCase().replace(' ', '');
 
 	const activeChannel = () => {
-		props.embedStream(stream);
-		props.saveActivity(stream);
+		// props.embedStream(stream);
+		// props.saveActivity(stream);
 	};
 
 	const renderText = () => {

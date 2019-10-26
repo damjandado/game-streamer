@@ -1,18 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { compose } from 'recompose';
+import { withLoading } from '../Hoc';
 
 import LeftBarItem from "./LeftBarItem";
 
 class LeftBar extends Component {
   renderItems() {
-    const fts = this.props.featured.slice(0, 5);
+    let { featured } = this.props;
+    const fts = featured.slice(0, 5);
     return fts.map(item => {
       return (
         <LeftBarItem
-          key={item.stream.channel.display_name}
-          profileImage={item.stream.channel.logo}
-          name={item.stream.channel.display_name}
-          game={item.stream.channel.game}
+          key={item.id}
+          // profileImage={item.stream.channel.logo}
+          name={item.user_name}
+          // game={item.stream.channel.game}
           ebdStream={item}
         />
       );
@@ -36,4 +39,9 @@ function mapStateToProps({ twitch: { featured } }) {
   return { featured: featured.list };
 }
 
-export default connect(mapStateToProps)(LeftBar);
+let loadingCondition = ({ featured }) => !featured;
+
+export default compose(
+    connect(mapStateToProps),
+    withLoading(loadingCondition),
+)(LeftBar);
