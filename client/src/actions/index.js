@@ -68,14 +68,20 @@ export const embedStream = ebd => {
 };
 
 export const featuredApi = (limit = 20) => async dispatch => {
-  const url = `https://api.twitch.tv/kraken/streams/featured?limit=${limit}&client_id=${twitchId}`;
+  // const url = `https://api.twitch.tv/kraken/streams/featured?limit=${limit}&client_id=${twitchId}`;
+  let url = ``;
+  let options = {
+    method: 'get',
+    url: 'https://api.twitch.tv/helix/streams?first=20',
+    headers: { 'Client-ID': twitchId },
+  }
   let payload = { status: 'loading', list: [] };
   dispatch({ type: FETCH_FEATURED, payload });
   try {
-    const res = await axios.get(url);
-    const { featured } = res.data;
-    const status = featured.length ? 1 : 0;
-    payload = { status, list: featured };
+    const res = await axios(options);
+    const { data } = res.data;
+    const status = data.length ? 'success' : 'error';
+    payload = { status, list: data };
   } catch (e) {
     payload = { status: 'error' }
   }
@@ -87,22 +93,27 @@ export const topGamesApi = (
   offset = 0,
   searchTerm
 ) => async dispatch => {
-  const url = `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}&offset=${offset}`;
+  // const url = `https://api.twitch.tv/kraken/games/top?client_id=${twitchId}&limit=${limit}&offset=${offset}`;
+  let options = {
+    method: 'get',
+    url: 'https://api.twitch.tv/helix/games/top',
+    headers: { 'Client-ID': twitchId },
+  }
   let payload = { status: 'loading', list: [] };
   dispatch({ type: FETCH_TOPGAMES, payload });
   try {
-    const res = await axios.get(url);
-    const { top } = res.data;
+    const res = await axios(options);
+    const { data } = res.data;
     if (!searchTerm) {
-      payload = { status: 1, list: top };
+      payload = { status: 'success', list: data };
     } else {
         const term = searchTerm.toLowerCase();
-        const list = top.filter(item => {
+        const list = data.filter(item => {
             const { name } = item.game;
             const arr = name.toLowerCase().split(' ');
             return arr.includes(term);
         });
-        const status = list.length ? 1 : 0;
+        const status = list.length ? 'success' : 'error';
         payload = { searchTerm, games: list, status };
         return dispatch({ type: FETCH_SEARCH, payload });
     }

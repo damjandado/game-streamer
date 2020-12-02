@@ -16,9 +16,15 @@ class Dashboard extends Component {
   }
 
   renderDash() {
-    const { dashboard } = this.props;
-    const { status, broadcasters, games } = dashboard;
-    const streamCardBroadcasters = broadcasters.map(bc =>
+    const { auth, featured, top } = this.props;
+    if (!auth.authenticated)
+        return <AnonDash />
+    const { status: statusFS, list: listFeaturedStreams } = featured;
+    const { status: statusTG, list: listTopGames } = top;
+    let status = 'loading';
+    if (statusFS === statusTG === 'success')
+        status = 'success';
+    const streamCardStreams = listFeaturedStreams.map(bc =>
       <StreamCard
         key={bc._id}
         ebdStream={bc}
@@ -28,7 +34,7 @@ class Dashboard extends Component {
         logo={bc.channel.logo}
       />
     );
-    const streamCardGames = games.map(gm =>
+    const streamCardGames = listTopGames.map(gm =>
       <StreamCard
         key={gm._id}
         ebdStream={gm}
@@ -41,7 +47,7 @@ class Dashboard extends Component {
     const Dashboard = (
       <div>
         <h3 className="text-center text-muted">Recommended Channels</h3>
-        <div className="row">{streamCardBroadcasters}</div>
+        <div className="row">{streamCardStreams}</div>
         <hr className="mt-0 mb-4" />
         <h3 className="text-center text-muted">Recommended Games</h3>
         <div className="row">{streamCardGames}</div>
@@ -61,21 +67,16 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { authenticated } = this.props.auth;
     return (
       <div>
-        {authenticated ? (
-          this.renderDash()
-        ) : (
-          <AnonDash />
-        )}
+        {this.renderDash()}
       </div>
     );
   }
 }
 
-function mapStateToProps({ auth, twitch: { dashboard } }) {
-  return { auth, dashboard };
+function mapStateToProps({ auth, twitch: { featured, top } }) {
+  return { auth, featured, top };
 }
 
 export default connect(

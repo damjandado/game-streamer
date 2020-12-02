@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { withLoading } from '../Hoc';
 
 import * as actions from '../../actions';
 import TopStreamEmbed from '../presentationals/TopStreamEmbed';
@@ -30,7 +32,9 @@ function mapStateToProps({ twitch: { featured, top } }) {
   return { channel: featured.list[0], games: top };
 }
 
-export default connect(
-  mapStateToProps,
-  actions
+let loadingCondition = (props) => false;
+
+export default compose(
+    connect(mapStateToProps, actions),
+    withLoading(loadingCondition),
 )(AnonDash);
