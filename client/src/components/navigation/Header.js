@@ -15,6 +15,7 @@ class Header extends Component {
     const res = await axios.get("/api/logout");
     if (res.data.success) {
       localStorage.removeItem("jwtToken");
+      localStorage.removeItem("twitchAccessToken");
       window.location.reload();
     }
   }

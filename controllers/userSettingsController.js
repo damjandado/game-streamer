@@ -15,9 +15,9 @@ exports.currentUser = (req, res) => {
 };
 
 exports.currentUserDb = async (req, res) => {
-  const user = await User.findOne({ _id: req.user.id });
+  // const user = await User.findOne({ _id: req.user.id });
   console.log("req.user: ", req.user);
-  res.send(user);
+  res.send(req.user);
 };
 
 exports.checkEmail = async (req, res) => {

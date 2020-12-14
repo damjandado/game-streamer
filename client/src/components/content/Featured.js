@@ -16,14 +16,14 @@ class Featured extends Component {
     const { status } = featured;
     const streamCardItems = featured.list.map(ft => (
       <StreamCard
-        key={ft.stream._id}
+        key={ft.id}
         ebdStream={ft}
-        streamCover={ft.stream.preview.medium}
+        streamCover={ft.thumbnail_url.replace(/\{width\}|\{height\}/g, '300')}
         title={ft.title}
         text={ft.text}
-        logo={ft.stream.channel.logo}
-        name={ft.stream.channel.name}
-        game={ft.stream.game}
+        logo={ft.thumbnail_url.replace(/\{width\}|\{height\}/g, '300')}
+        name={ft.user_name}
+        game={ft.game_name}
       />
     ));
     return (
@@ -31,7 +31,7 @@ class Featured extends Component {
         <h3 className="text-center text-muted">Featured Streams</h3>
         {{
           loading: <Loader />,
-          1: <div className="row">{streamCardItems}</div>,
+          success: <div className="row">{streamCardItems}</div>,
           error: <Alert error={status} />,
         }[status]}
       </div>

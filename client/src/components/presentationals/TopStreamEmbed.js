@@ -3,13 +3,13 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
-const TopStreamEmbed = props => {
-	if (!props.channel) return <div>Loading...</div>;
-
-	const { title, user_name, user_id } = props.channel;
-	let { logo, name, display_name, game, text } = {};
+const TopStreamEmbed = ({ channel, ...props }) => {
+	console.log('props.channel', props);
+	if (!channel.name) return <div>Loading...</div>;
+	const { name, title, user_name, user_id } = channel;
+	let logo, display_name, game, text;
 	const { history, searchGamesApi } = props;
-    name = user_name.toLowerCase().replace(' ', '');
+    // name = user_name.toLowerCase().replace(' ', '');
 
 	const activeChannel = () => {
 		// props.embedStream(stream);
@@ -24,7 +24,7 @@ const TopStreamEmbed = props => {
 		<div className="twitchWrapper">
 			<div className="topStream">
 				<iframe
-					src={`https://player.twitch.tv/?channel=${name}`}
+					src={`https://player.twitch.tv/?channel=${name}&parent=${encodeURIComponent('localhost')}`}
 					width="100%"
 					height="auto"
 					frameBorder="0"
@@ -32,7 +32,7 @@ const TopStreamEmbed = props => {
 					title={title}
 				/>
 				<br />
-				<div id="gs-channel-info" className="row">
+				{user_id && <div id="gs-channel-info" className="row">
 					<div className="col-sm-10">
 						<div className="gs-stream-info">
 							<div className="profile-image">
@@ -73,7 +73,7 @@ const TopStreamEmbed = props => {
 						className="col-sm-12 text-12 d-none d-sm-block"
 						dangerouslySetInnerHTML={renderText()}
 					/>
-				</div>
+				</div>}
 			</div>
 		</div>
 	);

@@ -19,19 +19,24 @@ export const fetchUser = () => async dispatch => {
     'jwtToken'
   );
   const res = await axios.get('/api/current_user');
+  if (res.data) {
+    const accessToken = res.data.twitch.accessToken;
+    localStorage.setItem('twitchAccessToken', accessToken);
+  }
   dispatch({ type: LOGIN_USER });
   dispatch({ type: FETCH_USER, payload: res.data });
   if (res.data) {
     let payload = { status: 'loading' };
     dispatch({ type: FETCH_DASHBOARD, payload });
     try {
-      const res = await axios.get('/api/twitch/dashboard');
+      const res = await axios.get('/api/twitch/dashboard', {withCredentials: true});
       const { broadcasters, games } = res.data;
       payload = { status: 'success', broadcasters, games };
     } catch (e) {
       payload = { status: 'error' };
     }
     dispatch({ type: FETCH_DASHBOARD, payload });
+    dispatch({ type: FETCH_TOPGAMES, payload: { status: "success" } });
   }
 };
 
@@ -67,13 +72,15 @@ export const embedStream = ebd => {
   };
 };
 
-export const featuredApi = (limit = 20) => async dispatch => {
+export const featuredApi = (limit = 20) => async (dispatch, getState) => {
   // const url = `https://api.twitch.tv/kraken/streams/featured?limit=${limit}&client_id=${twitchId}`;
   let url = ``;
+  const accessToken = localStorage.getItem('twitchAccessToken');
+  console.log('get local token', accessToken);
   let options = {
     method: 'get',
     url: 'https://api.twitch.tv/helix/streams?first=20',
-    headers: { 'Client-ID': twitchId },
+    headers: { 'Client-ID': twitchId, Authorization: `Bearer ${accessToken}` },
   }
   let payload = { status: 'loading', list: [] };
   dispatch({ type: FETCH_FEATURED, payload });
@@ -97,7 +104,7 @@ export const topGamesApi = (
   let options = {
     method: 'get',
     url: 'https://api.twitch.tv/helix/games/top',
-    headers: { 'Client-ID': twitchId },
+    headers: { 'Client-ID': twitchId, Authorization: `Bearer migko9311pho08ov02vbinbx26gj5f` },
   }
   let payload = { status: 'loading', list: [] };
   dispatch({ type: FETCH_TOPGAMES, payload });

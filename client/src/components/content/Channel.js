@@ -16,28 +16,29 @@ class Channel extends Component {
       fetchStreamByChannelName
     } = this.props;
     console.log('params?', params);
-    if (params.channelName !== 'undefined') {
-      await fetchStreamByChannelName(params.channelName);
-      if (this.props.embed.found) {
-        this.setState({ info: 'found' });
-      } else {
-        this.setState({ info: 'notFound' });
-      }
-    } else {
-      await fetchStreamByChannelName('monstercat');
-      this.setState({ info: 'found' });
-    }
+    this.setState({ info: 'found', name: params.channelName });
+    // if (params.channelName !== 'undefined') {
+      // await fetchStreamByChannelName(params.channelName);
+      // if (this.props.embed.found) {
+      //   this.setState({ info: 'found' });
+      // } else {
+      //   this.setState({ info: 'notFound' });
+      // }
+    // } else {
+    //   await fetchStreamByChannelName('monstercat');
+    //   this.setState({ info: 'found' });
+    // }
   }
 
   render() {
-    const { display_name, followers, name } = this.props.embed;
-    const { info } = this.state;
+    const { display_name, followers } = this.props.embed;
+    const { name, info } = this.state;
     const ChannelDiv = (
       <div id="gs-embed">
         <h3 className="text-center text-muted mb-4">
           You are watching{' '}
           <i className="text-info">
-            {display_name}
+            {name}
             's
           </i>{' '}
           channel
@@ -45,7 +46,7 @@ class Channel extends Component {
         <p className="h4">
           {display_name} | Followers: {followers}
         </p>
-        <TwitchEmbed channel={name} />
+        <TwitchEmbed channel={{ name }} />
       </div>
     );
     return (

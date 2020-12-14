@@ -15,7 +15,8 @@ const userSchema = new Schema({
     email: String,
     logo: String,
     bio: String,
-    link: String
+    link: String,
+    accessToken: String,
   },
   email: {
     type: String,

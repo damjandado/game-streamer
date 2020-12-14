@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 
 import * as actions from "../../actions";
 
-const TwitchEmbed = props => {
-    const { logo, game, name, status, text, title, views } = props.embed;
+const TwitchEmbed = ({ channel, ...props }) => {
+    const { logo, game, status, text, title, views } = props.embed;
     const { searchGamesApi } = props;
     return (
       <div className="twitchWrapper">
         <div className="twitchStream">
           <iframe
-            src={`https://player.twitch.tv/?channel=${name}`}
+            src={`https://player.twitch.tv/?channel=${channel.name}&parent=${encodeURIComponent('localhost')}`}
             width="100%"
             height="auto"
             frameBorder="0"

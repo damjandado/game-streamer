@@ -20,8 +20,13 @@ module.exports = app => {
   app.get("/auth/twitch", passport.authenticate("twitch"));
   app.get(
     "/auth/twitch/callback",
+    (req, res, next) => {
+      console.log('twitch callback', req.query);
+      next();
+    },
     passport.authenticate("twitch"),
     (req, res) => {
+      console.log('twitch route req.user:', req.user);
       res.redirect("/");
     }
   );

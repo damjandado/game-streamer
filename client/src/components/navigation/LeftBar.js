@@ -7,7 +7,7 @@ import LeftBarItem from "./LeftBarItem";
 
 class LeftBar extends Component {
   renderItems() {
-    let { featured } = this.props;
+    let { featured = [] } = this.props;
     const fts = featured.slice(0, 5);
     return fts.map(item => {
       return (
@@ -39,7 +39,7 @@ function mapStateToProps({ twitch: { featured } }) {
   return { featured: featured.list };
 }
 
-let loadingCondition = ({ featured }) => !featured;
+let loadingCondition = ({ featured }) => false;
 
 export default compose(
     connect(mapStateToProps),

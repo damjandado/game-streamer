@@ -8,7 +8,7 @@ import * as actions from "../../actions";
 class StreamCard extends Component {
   activeChannel() {
     this.props.embedStream(this.props.ebdStream);
-    this.props.fetchChannelStream(this.props.ebdStream.user_id);
+    // this.props.fetchChannelStream(this.props.ebdStream.user_id);
     this.props.saveActivity(this.props.ebdStream);
   }
 

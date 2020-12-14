@@ -19,7 +19,7 @@ function twitchReducer(state = initialState, action) {
   case "FETCH_FEATURED":
     return { ...state, featured: { ...action.payload } };
   case "FETCH_TOPGAMES":
-    return { ...state, top: { ...action.payload } };
+    return { ...state, top: { ...state.top, ...action.payload } };
   case "FETCH_DASHBOARD":
     return { ...state, dashboard: { ...state.dashboard, ...action.payload } };
   default:

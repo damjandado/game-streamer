@@ -29,7 +29,7 @@ class AnonDash extends Component {
 }
 
 function mapStateToProps({ twitch: { featured, top } }) {
-  return { channel: featured.list[0], games: top };
+  return { channel: featured.list && featured.list.length ? featured.list[0] : { name: 'monstercat' }, games: top };
 }
 
 let loadingCondition = (props) => false;
