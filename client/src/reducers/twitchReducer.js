@@ -17,7 +17,7 @@ const initialState = {
 function twitchReducer(state = initialState, action) {
   switch (action.type) {
   case "FETCH_FEATURED":
-    return { ...state, featured: { ...action.payload } };
+    return { ...state, featured: {  ...state.featured, ...action.payload } };
   case "FETCH_TOPGAMES":
     return { ...state, top: { ...state.top, ...action.payload } };
   case "FETCH_DASHBOARD":

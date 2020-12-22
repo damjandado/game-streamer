@@ -44,48 +44,6 @@ exports.fetchStreamInfo = async ({ user_id }) => {
   }
 }
 
-exports.fetchStreamsByUsers = async list => {
-  let streamsByUsers;
-  await Promise.all(
-    list.map(async item => {
-      try {
-        const fetched = await axios.get({
-          url: `https://api.twitch.tv/helix/streams?user_login=${item}`,
-          headers: { "Client-ID": twitchClientID },
-        });
-        if (fetched.data.data.length) {
-          let user = fetched.data.data[0];
-          return await fetchStreamInfo(user);
-        }
-      } catch (e) {
-        return null;
-      }  
-    })
-  ).then(result => {
-    streamsByUsers = [].concat(result);
-  });
-  streamsByUsers = streamsByUsers.filter(item => item !== null);
-  if (!streamsByUsers.length) return featuredApi();
-  return streamsByUsers;
-};
-
-exports.fetchStreamsByGames = async list => {
-  let streamsByGames;
-  await Promise.all(
-    list.map(async item => {
-      const fetched = await axios.get(
-        `https://api.twitch.tv/kraken/streams/?game=${item}&client_id=${twitchClientID}`
-      );
-      let { streams } = fetched.data;
-      return [streams[0], streams[1]];
-    })
-  ).then(result => {
-    const flattened = flatten(result);
-    streamsByGames = [].concat(flattened);
-  });
-  return streamsByGames;
-};
-
 exports.fetchGames = async list => {
   let outputGames;
   await Promise.all(

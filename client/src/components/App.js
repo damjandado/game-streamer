@@ -10,11 +10,6 @@ import Landing from "./Landing";
 class App extends Component {
   componentDidMount() {
     this.props.fetchUser();
-    this.props.featuredApi(5);
-  }
-
-  componentDidUpdate() {
-    
   }
 
   render() {

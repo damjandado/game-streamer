@@ -272,6 +272,7 @@ img.media-object {
 .twitchWrapper {
   position: relative;
   max-width: 100vh;
+  margin: 0 auto;
 }
 
 .twitchStream {
@@ -295,7 +296,7 @@ img.media-object {
 .twitchWrapper:after {
   content: '';
   display: block;
-  padding-top: 10rem; /* 16:9 */
+  padding-top: 9rem; /* 16:9 */
 }
 
 .twitchChat {

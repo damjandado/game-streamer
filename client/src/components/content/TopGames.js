@@ -14,19 +14,16 @@ class TopGames extends Component {
   render() {
     const { games } = this.props;
     const { status } = games;
+    if (!games.list) return null;
+    console.log('games:', games);
     const gameCardItems = games.list.map((tg, i) => (
       <GameCard
-        key={tg.game._id}
+        key={tg.id}
         game={tg}
-        name={tg.game.name}
-        box={tg.game.box.large}
-        logo={tg.game.logo.medium}
-        viewers={tg.viewers}
-        channels={tg.channels}
-        spanChannels={true}
+        name={tg.name}
+        box={tg.box_art_url}
         cardType={"game-card col col-xs-6 col-md-2 col-xl-1"}
         cardCover={"stream-cover"}
-        logoArt={true}
       />
     ));
     return (
@@ -34,7 +31,7 @@ class TopGames extends Component {
         <h3 className="text-center text-muted">Top Games on Twitch</h3>
         {{
           loading: <Loader />,
-          1: <div className="row">{gameCardItems}</div>,
+          success: <div className="row">{gameCardItems}</div>,
           error: <div><Alert error={status} /></div>,
         }[status]}
       </div>

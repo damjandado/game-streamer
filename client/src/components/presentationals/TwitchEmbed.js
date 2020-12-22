@@ -11,7 +11,7 @@ const TwitchEmbed = ({ channel, ...props }) => {
       <div className="twitchWrapper">
         <div className="twitchStream">
           <iframe
-            src={`https://player.twitch.tv/?channel=${channel.name}&parent=${encodeURIComponent('localhost')}`}
+            src={`https://player.twitch.tv/?channel=${channel.name}&parent=${encodeURIComponent(process.env.REACT_APP_DOMAIN)}`}
             width="100%"
             height="auto"
             frameBorder="0"

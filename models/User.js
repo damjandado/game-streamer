@@ -41,8 +41,8 @@ const userSchema = new Schema({
   },
   credits: { type: Number, default: 0 },
   visits: {
-    games: [String],
-    users: [String]
+    games: [Object],
+    users: [Object]
   },
   token: String,
   tokenIAT: Date,
