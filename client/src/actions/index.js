@@ -14,6 +14,9 @@ import {
     EMBED_STREAM,
 } from './types';
 
+// axios.defaults.baseURL = 'http://localhost:5020';
+// axios.defaults.withCredentials = true;
+
 export const fetchFromTwitch = (url) => {
     const accessToken = localStorage.getItem('twitchAccessToken');
     let options = {

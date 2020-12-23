@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { reduxForm, Field } from 'redux-form';
 import { withRouter, Link } from 'react-router-dom';
+
 import formFields from './formFields';
 import AuthField from './AuthField';
-
 import validateEmails from '../../utils/validateEmails';
 
-import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:5020';
 
 class LoginForm extends Component {
   state = { remember: false };

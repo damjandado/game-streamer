@@ -2,20 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-    "/auth/*": {
-      "target": "http://localhost:5020"
-    },
-    "/social/*": {
-      "target": "http://localhost:5020"
-    },
-    "/local/*": {
-      "target": "http://localhost:5020"
-    },
-    "/api/*": {
-      "target": "http://localhost:5020"
-    }
-  },
+  "proxy": "http://localhost:5020",
   "dependencies": {
     "async": "^2.6.0",
     "axios": "^0.19.0",
