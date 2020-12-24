@@ -1,4 +1,4 @@
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import './styles/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './styles/main.css';
 import './styles/login.css';

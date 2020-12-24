@@ -1,17 +1,15 @@
-const sendgrid = require("sendgrid");
-const helper = sendgrid.mail;
+const sgMail  = require("@sendgrid/mail");
 const keys = require("../config/keys");
 
-class Mailer extends helper.Mail {
+class Mailer {
   constructor({ subject, recipients }, content) {
-    super();
 
     console.log("recipients", recipients);
 
-    this.sgApi = sendgrid(keys.sendGridKey);
-    this.from_email = new helper.Email("no-reply@game-streamer.herokuapp.com");
+    this.sgApi = sgMail.setApiKey(keys.sendGridKey);
+    this.from_email = new sgMail.Email("no-reply@game-streamer.herokuapp.com");
     this.subject = subject;
-    this.body = new helper.Content("text/html", content);
+    this.body = new sgMail.Content("text/html", content);
     this.recipients = this.formatAddresses(recipients);
 
     console.log("this.recipients", this.recipients);
@@ -23,13 +21,13 @@ class Mailer extends helper.Mail {
 
   formatAddresses(recipients) {
     return recipients.map(({ email }) => {
-      return new helper.Email(email);
+      return new sgMail.Email(email);
     });
   }
 
   addClickTracking() {
-    const trackingSettings = new helper.TrackingSettings();
-    const clickTracking = new helper.ClickTracking(true, true);
+    const trackingSettings = new sgMail.TrackingSettings();
+    const clickTracking = new sgMail.ClickTracking(true, true);
 
     trackingSettings.setClickTracking(clickTracking);
     this.addTrackingSettings(trackingSettings);

@@ -4,26 +4,21 @@
   "private": true,
   "proxy": "http://localhost:5020",
   "dependencies": {
-    "async": "^2.6.0",
-    "axios": "^0.19.0",
-    "bootstrap": "^4.3.1",
-    "css-element-queries": "^1.0.1",
+    "axios": "^0.21.1",
+    "css-element-queries": "^1.2.3",
     "font-awesome": "^4.7.0",
-    "react": "^16.2.0",
-    "react-bootstrap": "^0.32.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-lazy": "^0.5.1",
-    "react-redux": "^5.0.6",
-    "react-router-dom": "^4.2.2",
-    "react-router-modal": "^1.3.0",
-    "react-scripts": "^1.1.5",
-    "react-sizes": "^1.0.0",
-    "react-tooltip": "^3.4.0",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.1",
+    "react-tooltip": "^3.11.6",
     "recompose": "^0.30.0",
-    "redux": "^3.7.2",
-    "redux-form": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-form": "^8.3.7",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,5 +30,20 @@
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start-all": "npm-run-all -p watch-css start",
     "build-all": "npm-run-all build-css build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "webpack": "^4.44.2"
   }
 }

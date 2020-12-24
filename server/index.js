@@ -5,7 +5,6 @@ const cookieSession = require('cookie-session');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
-const bodyParser = require('body-parser');
 const path = require('path');
 const keys = require('./config/keys');
 require('./models/User');
@@ -25,8 +24,8 @@ db.once('open', function () {
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 //use sessions for tracking logins
 app.use(
     cookieSession({
