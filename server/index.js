@@ -45,9 +45,9 @@ app.use(passport.session());
 
 app.use((req, res, next) => {
     const logObj = {
+        url: req.originalUrl,
         user: req.user?.name,
         cookie: req.headers.cookie,
-        url: req.originalUrl,
     }
     console.log(logObj);
     next();
@@ -64,7 +64,7 @@ app.use(function (req, res, next) {
 require('./routes/socialRoutes')(app);
 require('./routes/localRoutes')(app);
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));
 
     app.get('*', (req, res) => {

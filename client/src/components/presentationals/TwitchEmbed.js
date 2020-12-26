@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import * as actions from '../../actions';
+import { getUser, getStream, searchStreams } from '../../actions';
+import { formatImgUrl } from '../../utils';
 
 const TwitchEmbed = ({ channel, ...props }) => {
-    const { logo, game, status, text, title, views } = props.embed;
-    const { searchStreams } = props;
+    const dispatch = useDispatch();
+    const { name, user, stream } = channel;
+    const { game_id, game_name, title, thumbnail_url, type, viewer_count } = stream || {};
+    const { description } = user || {};
+    const parent = encodeURIComponent(process.env.REACT_APP_DOMAIN);
+    const logo = formatImgUrl(thumbnail_url, '300');
+
+    useEffect(() => {
+        if (!stream) {
+            dispatch(getStream({ user_login: name }));
+        }
+        if (!user) {
+            dispatch(getUser({ login: name }));
+        }
+    }, []);
+
     return (
         <div className="twitchWrapper">
             <div className="twitchStream">
                 <iframe
-                    src={`https://player.twitch.tv/?channel=${channel.name}&parent=${encodeURIComponent(
-                        process.env.REACT_APP_DOMAIN
-                    )}`}
+                    src={`https://player.twitch.tv/?channel=${channel.name}&parent=${parent}`}
                     width="100%"
                     height="auto"
                     frameBorder="0"
@@ -30,27 +43,23 @@ const TwitchEmbed = ({ channel, ...props }) => {
                                 </figure>
                             </div>
                             <div className="stream-details">
-                                <span className="text-16">{status}</span>
+                                <span className="text-16">{type}</span>
                                 <br />
-                                <Link to={`/search`} onClick={() => searchStreams(game)}>
-                                    <span className="gs-game">{game}</span>
+                                <Link to={`/search`} onClick={() => dispatch(searchStreams(game_id))}>
+                                    <span className="gs-game">{game_name}</span>
                                 </Link>
                             </div>
                         </div>
                     </div>
                     <div className="col-sm-5 text-right">
                         <br />
-                        <span className="gs-views">Total Views: {views}</span>
+                        <span className="gs-views">Total Views: {viewer_count}</span>
                     </div>
-                    <div className="col-sm-12" dangerouslySetInnerHTML={{ __html: text }} />
+                    <div className="col-12">{description}</div>
                 </div>
             </div>
         </div>
     );
 };
 
-function mapStateToProps({ embed }) {
-    return { embed };
-}
-
-export default connect(mapStateToProps, actions)(TwitchEmbed);
+export default TwitchEmbed;

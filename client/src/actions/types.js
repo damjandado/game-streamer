@@ -11,6 +11,8 @@ export const FETCH_SEARCH = "FETCH_SEARCH";
 export const FETCH_DASHBOARD = "FETCH_DASHBOARD";
 export const FETCH_CLIPS = "FETCH_CLIPS";
 
+export const GET_USER = "GET_USER";
+
 // AUTH types
 export const FETCH_USER = "FETCH_USER";
 export const LOGIN_USER = "LOGIN_USER";

@@ -9,7 +9,7 @@ import Landing from "./Landing";
 
 class App extends Component {
   componentDidMount() {
-    this.props.fetchUser();
+    this.props.fetchUserData();
   }
 
   render() {

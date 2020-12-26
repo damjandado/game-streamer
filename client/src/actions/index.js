@@ -1,11 +1,13 @@
 import axios from 'axios';
 import twitchId from '../config/keys';
+import { fetchFromTwitch } from '../utils';
 import {
     FETCH_FEATURED,
     FETCH_TOPGAMES,
     FETCH_SEARCH,
     FETCH_DASHBOARD,
     FETCH_CLIPS,
+    GET_USER,
     LOGIN_USER,
     FETCH_USER,
     SEND_MAIL,
@@ -14,20 +16,21 @@ import {
     EMBED_STREAM,
 } from './types';
 
-// axios.defaults.baseURL = 'http://localhost:5020';
+export const getUser = (params) => async (dispatch) => {
+    const url = 'https://api.twitch.tv/helix/users';
+    const { data } = await fetchFromTwitch(url, { params });
+    dispatch({ type: GET_USER, payload: data[0] });
+    dispatch(embedStream({ user: data[0] }));
+}
 
-export const fetchFromTwitch = (url, options = {}) => {
-    const accessToken = localStorage.getItem('twitchAccessToken');
-    const config = {
-        ...options,
-        url,
-        method: 'get',
-        headers: { 'Client-ID': twitchId, Authorization: `Bearer ${accessToken}` },
-    };
-    return axios(config).then(({ data }) => data);
-};
+export const getStream = (params) => async (dispatch) => {
+    const url = 'https://api.twitch.tv/helix/streams';
+    let { data, pagination: { cursor } } = await fetchFromTwitch(url, { params });
+    console.log(data);
+    dispatch(embedStream({ stream: data[0] }));
+}
 
-export const fetchUser = () => async (dispatch, getState) => {
+export const fetchUserData = () => async (dispatch, getState) => {
     const res = await axios.get('/api/current_user', { withCredentials: true });
     if (res.data) {
         const accessToken = res.data.twitch.accessToken;
@@ -80,7 +83,7 @@ export const checkEmail = (email) => async (dispatch) => {
 };
 
 export const saveActivity = (entity) => async (dispatch) => {
-    const res = await axios.post('/api/twitch/users', entity);
+    const res = await axios.post('/api/twitch/users', entity, { withCredentials: true });
 
     dispatch({ type: SAVE_ACTIVITY, payload: res.data });
 };
@@ -188,7 +191,7 @@ export const fetchChannelStream = (id) => async (dispatch) => {
     try {
         stream = res.data;
     } catch (e) {}
-    dispatch(embedStream(stream));
+    dispatch(embedStream({ stream }));
 };
 
 export const fetchStreamByChannelName = (name) => async (dispatch) => {
@@ -201,7 +204,7 @@ export const fetchStreamByChannelName = (name) => async (dispatch) => {
             },
         });
         const stream = res.data;
-        dispatch(embedStream(stream));
+        dispatch(embedStream({ stream }));
     } catch (e) {
         dispatch({ type: 'NOT_FOUND', found: false });
     }

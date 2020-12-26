@@ -1,14 +1,15 @@
 const initialState = {
-  name: "monstercat",
-  found: false
+  found: false,
+  stream: null,
+  user: null,
 };
 
 export default function(state = initialState, { type, payload }) {
   switch (type) {
     case "EMBED_STREAM":
-      return { name: payload.user_name, found: true, ...payload };
+      return { ...state, found: true, ...payload };
     case "NOT_FOUND":
-      return { found: false };
+      return { ...initialState, found: false };
     default:
       return state;
   }

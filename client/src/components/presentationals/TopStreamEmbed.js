@@ -8,12 +8,6 @@ const TopStreamEmbed = ({ channel, ...props }) => {
 	const { name, title, user_name, user_id } = channel;
 	let logo, display_name, game, text;
 	const { history, searchStreams } = props;
-    // name = user_name.toLowerCase().replace(' ', '');
-
-	const activeChannel = () => {
-		// props.embedStream(stream);
-		// props.saveActivity(stream);
-	};
 
 	const renderText = () => {
 		return { __html: text };

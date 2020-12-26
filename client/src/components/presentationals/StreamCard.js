@@ -4,20 +4,16 @@ import { connect } from 'react-redux';
 import { Lazy } from 'react-lazy';
 
 import * as actions from '../../actions';
-
-const formatImgUrl = (url, width) => (url ? url.replace(/\{width\}|\{height\}/g, width) : '');
-
+import { formatImgUrl } from '../../utils';
 class StreamCard extends Component {
     activeChannel() {
-        this.props.embedStream(this.props.stream);
-        this.props.saveActivity(this.props.stream);
-    }
-
-    searchGame() {
-        this.props.searchStreams(this.props.game);
+        const { stream } = this.props;
+        this.props.embedStream({ stream });
+        this.props.saveActivity(stream);
     }
 
     render() {
+        const { stream, ...props } = this.props;
         const {
             game_id,
             game_name,
@@ -25,12 +21,11 @@ class StreamCard extends Component {
             started_at,
             thumbnail_url,
             title,
-            type,
             user_id,
             user_name,
             viewer_count,
             ...streamProps
-        } = this.props.stream;
+        } = stream;
         let userLogo;
         const width = userLogo ? 200 : '100%';
         const streamCover = formatImgUrl(thumbnail_url, '300');
@@ -57,7 +52,7 @@ class StreamCard extends Component {
                             {user_name}
                         </Link>{' '}
                         plays{' '}
-                        <Link to={'/search'} onClick={() => this.searchGame(game_id)}>
+                        <Link to={'/search'} onClick={() => props.searchStreams(game_id)}>
                             {game_name}
                         </Link>
                     </div>
