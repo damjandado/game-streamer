@@ -7,8 +7,6 @@ import formFields from './formFields';
 import AuthField from './AuthField';
 import validateEmails from '../../utils/validateEmails';
 
-axios.defaults.baseURL = 'http://localhost:5020';
-
 class LoginForm extends Component {
   state = { remember: false };
 

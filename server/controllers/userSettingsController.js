@@ -2,16 +2,24 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const User = mongoose.model("users");
+const Token = require("../models/Token");
 
-exports.currentUser = (req, res) => {
+exports.currentUser = async (req, res) => {
   const currentTime = new Date().getTime();
+  let token;
   if (req.user) {
     if (req.user.tokenExp < currentTime) {
       req.logout();
       return res.send(req.user);
     }
+    token = await Token.findOne({ userId: req.user.id, source: 'twitch' });
   }
-  res.send(req.user || false);
+  if (!token) {
+    const tokens = await Token.find({ source: 'twitch' }).sort({ id: -1 }).limit(1).lean();
+    token = tokens.length ? tokens.pop() : null;
+  }
+  console.log(token);
+  res.send({ user: req.user, twitchAccessToken: token?.accessToken });
 };
 
 exports.currentUserDb = async (req, res) => {

@@ -10,7 +10,7 @@ class Featured extends Component {
     state = { fetched: false };
 
     componentDidUpdate() {
-        if (this.props.auth.authenticated && !this.state.fetched) {
+        if (!this.state.fetched) {
             this.props.featuredApi(100);
             this.setState({ fetched: true });
         }

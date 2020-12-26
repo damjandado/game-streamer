@@ -31,14 +31,11 @@ export const getStream = (params) => async (dispatch) => {
 }
 
 export const fetchUserData = () => async (dispatch, getState) => {
-    const res = await axios.get('/api/current_user', { withCredentials: true });
-    if (res.data) {
-        const accessToken = res.data.twitch.accessToken;
-        localStorage.setItem('twitchAccessToken', accessToken);
-    }
+    const { data } = await axios.get('/api/current_user', { withCredentials: true });
+    localStorage.setItem('twitchAccessToken', data.twitchAccessToken);
     dispatch({ type: LOGIN_USER });
-    dispatch({ type: FETCH_USER, payload: res.data });
-    if (res.data) {
+    dispatch({ type: FETCH_USER, payload: data });
+    if (data.user) {
         let payload = { status: 'loading' };
         dispatch({ type: FETCH_DASHBOARD, payload });
         try {
