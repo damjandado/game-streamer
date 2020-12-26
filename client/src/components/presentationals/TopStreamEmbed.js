@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
 const TopStreamEmbed = ({ channel, ...props }) => {
-	console.log('props.channel', props);
 	if (!channel.name) return <div>Loading...</div>;
 	const { name, title, user_name, user_id } = channel;
 	let logo, display_name, game, text;
