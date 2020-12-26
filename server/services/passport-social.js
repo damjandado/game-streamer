@@ -8,10 +8,12 @@ const keys = require("../config/keys");
 const User = mongoose.model("users");
 
 passport.serializeUser((user, done) => {
+  console.log('are you serious?');
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
+  console.log('are you unSerious?');
   User.findById(id).then(user => {
     done(null, user);
   });
@@ -27,10 +29,9 @@ passport.use(
       // proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log("Twitch user authing...");
-      console.log("[[-------------------]]\n");
+      console.log("-------------------");
       console.log(profile);
-      console.log("-----------------------\n");
+      console.log("-------------------");
       const { id, displayName, email, _json } = profile;
       const existingUser = await User.findOne({ "twitch.id": profile.id });
       if (existingUser) {

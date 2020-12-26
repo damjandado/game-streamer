@@ -5,6 +5,7 @@ import * as actions from '../../actions';
 import AnonDash from './AnonDash';
 import Loader from '../presentationals/Loader';
 import StreamCard from '../presentationals/StreamCard';
+import GameCard from '../presentationals/GameCard';
 import Alert from '../presentationals/Alert';
 
 class Dashboard extends Component {
@@ -21,24 +22,10 @@ class Dashboard extends Component {
         return <AnonDash />
     const { status, broadcasters, games, } = dashboard;
     const streamCardStreams = broadcasters.map(bc =>
-      <StreamCard
-        key={bc.id}
-        ebdStream={bc}
-        streamCover={bc.thumbnail_url.replace(/\{width\}|\{height\}/g, '300')}
-        name={bc.user_name}
-        game={bc.game_name}
-        // logo={bc.channel.logo}
-      />
+      <StreamCard key={bc.id} stream={bc} />
     );
     const streamCardGames = games.map(gm =>
-      <StreamCard
-        key={gm.id}
-        // ebdStream={gm}
-        streamCover={gm.box_art_url.replace(/\{width\}|\{height\}/g, '300')}
-        // logo={gm.channel.logo}
-        // name={gm.channel.name}
-        game={gm.name}
-      />
+      <GameCard key={gm.id} game={gm} />
     );
     const Dashboard = (
       <div>

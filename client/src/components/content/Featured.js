@@ -10,7 +10,6 @@ class Featured extends Component {
     state = { fetched: false };
 
     componentDidUpdate() {
-        console.log(this.props.auth.authenticated, this.state.fetched);
         if (this.props.auth.authenticated && !this.state.fetched) {
             this.props.featuredApi(100);
             this.setState({ fetched: true });
@@ -20,17 +19,8 @@ class Featured extends Component {
     render() {
         const { featured } = this.props;
         const { status } = featured;
-        const streamCardItems = featured.list.map((ft) => (
-            <StreamCard
-                key={ft.id}
-                ebdStream={ft}
-                streamCover={ft.thumbnail_url.replace(/\{width\}|\{height\}/g, '300')}
-                title={ft.title}
-                text={ft.text}
-                logo={ft.thumbnail_url.replace(/\{width\}|\{height\}/g, '300')}
-                name={ft.user_name}
-                game={ft.game_name}
-            />
+        const streamCardItems = featured.list.map((item) => (
+            <StreamCard key={item.id} stream={item} />
         ));
         return (
             <div className="main">

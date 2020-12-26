@@ -7,6 +7,7 @@ import * as actions from '../../actions';
 
 class SearchForm extends Component {
   onSearch = ({ search }) => {
+    console.log('search for', search);
     const { topGamesApi, history } = this.props;
     topGamesApi(100, 0, search);
     history.push('/search');

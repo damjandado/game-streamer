@@ -25,7 +25,7 @@ db.once('open', function () {
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 //use sessions for tracking logins
 app.use(
     cookieSession({
@@ -44,9 +44,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-    console.log('user =>', !!req.user);
-    console.log('cookies =>', req.cookies);
-    console.log('originalUrl =>', req.originalUrl);
+    const logObj = {
+        user: req.user?.name,
+        cookie: req.headers.cookie,
+        url: req.originalUrl,
+    }
+    console.log(logObj);
     next();
 });
 
@@ -54,6 +57,7 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', '*');
     res.setHeader('Access-Control-Allow-Origin', process.env.FRONT_URL);
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
 

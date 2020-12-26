@@ -3,27 +3,10 @@ const initialState = {
   found: false
 };
 
-export default function(state = initialState, action) {
-  switch (action.type) {
+export default function(state = initialState, { type, payload }) {
+  switch (type) {
     case "EMBED_STREAM":
-      let obj = action.ebd.stream || action.ebd;
-      obj = obj.channel || obj;
-      const temp_state = {
-        channel: obj || "null",
-        logo:
-          obj.logo ||
-          "https://static-cdn.jtvnw.net/ttv-static/404_preview-120x72.jpg",
-        game: obj.game || "null",
-        name: obj.name || obj.name,
-        display_name: obj.display_name || "null",
-        status: obj.status || "null",
-        text: action.ebd.text || "",
-        title: action.ebd.title || "",
-        views: obj.views || "null",
-        followers: obj.followers || "null",
-        found: true
-      };
-      return Object.assign({}, temp_state);
+      return { name: payload.user_name, found: true, ...payload };
     case "NOT_FOUND":
       return { found: false };
     default:

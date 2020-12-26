@@ -8,7 +8,7 @@ const TopStreamEmbed = ({ channel, ...props }) => {
 	if (!channel.name) return <div>Loading...</div>;
 	const { name, title, user_name, user_id } = channel;
 	let logo, display_name, game, text;
-	const { history, searchGamesApi } = props;
+	const { history, searchStreams } = props;
     // name = user_name.toLowerCase().replace(' ', '');
 
 	const activeChannel = () => {
@@ -55,7 +55,7 @@ const TopStreamEmbed = ({ channel, ...props }) => {
 								<Link
 									to={'/search'}
 									onClick={() =>
-										searchGamesApi(
+										searchStreams(
 											{ search: game },
 											history
 										)

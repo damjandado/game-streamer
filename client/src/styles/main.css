@@ -328,8 +328,6 @@ img.media-object {
 }
 
 .stream-card {
-  padding: 0 1rem 1.5rem;
-  width: 360px;
 }
 
 .stream-cover {
@@ -339,7 +337,6 @@ img.media-object {
 }
 
 .game-card {
-  padding: 0 0.5rem 1rem;
   min-width: 140px;
 }
 

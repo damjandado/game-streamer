@@ -43,7 +43,7 @@ exports.login = function(req, res, next) {
 
 exports.logout = function(req, res, next) {
   req.logout();
-  return res.send({ success: true });
+  return res.redirect('/');
 };
 
 // -------------------------------------------

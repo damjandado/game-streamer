@@ -26,7 +26,7 @@ module.exports = app => {
     },
     passport.authenticate("twitch"),
     (req, res) => {
-      console.log('twitch route req.user:', req.user);
+      console.log('redirecting');
       res.redirect("/");
     }
   );
