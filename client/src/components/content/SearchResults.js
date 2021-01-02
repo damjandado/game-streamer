@@ -7,16 +7,20 @@ import GameCard from '../presentationals/GameCard';
 import Alert from '../presentationals/Alert';
 
 class SearchResults extends Component {
-    renderHeading = () => {
+    renderHeading = (text) => {
         const { status, error, searchTerm } = this.props;
-        const term = <i className="text-info">{searchTerm}</i>;
+        const term = <span className="text-info">{searchTerm}</span>;
         return (
             <h3 className="text-center text-muted">
                 {
                     {
                         no_search: 'No search yet.',
                         0: 'Nothing found.',
-                        success: <span>Games found for term: {term}</span>,
+                        success: (
+                            <span>
+                                {text} found for term: {term}
+                            </span>
+                        ),
                         error: <Alert error={error} />,
                     }[status]
                 }
@@ -26,23 +30,34 @@ class SearchResults extends Component {
 
     renderStreams = () => {
         const { streams } = this.props;
+        if (!streams.length) return null;
         const listStreams = streams.map((item) => <StreamCard key={item.id} stream={item} />);
-        return <div className="row">{listStreams}</div>;
+        return (
+            <>
+                {this.renderHeading('Streams')}
+                <div className="row">{listStreams}</div>
+            </>
+        );
     };
 
     renderGames = () => {
-        const { games } = this.props;
-        console.log(games);
-        const listGames = games.map((item) => <GameCard key={item.id} game={item} />);
-        return <div className="row">{listGames}</div>;
+        const { foundGames } = this.props;
+        if (!foundGames.length) return null;
+        console.log(foundGames);
+        const listGames = foundGames.map((item) => <GameCard key={item.id} game={item} />);
+        return (
+            <>
+                {this.renderHeading('Games')}
+                <div className="row">{listGames}</div>
+            </>
+        );
     };
 
     render() {
-        const { status } = this.props;
+        const { status, streams } = this.props;
         if (status === 'loading') return <Loader />;
         return (
             <div className="main">
-                {this.renderHeading()}
                 <div>{this.renderGames()}</div>
                 <div>{this.renderStreams()}</div>
             </div>

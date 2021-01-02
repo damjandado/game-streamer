@@ -45,7 +45,7 @@ const TwitchEmbed = ({ channel, ...props }) => {
                             <div className="stream-details">
                                 <span className="text-16">{type}</span>
                                 <br />
-                                <Link to={`/search`} onClick={() => dispatch(searchStreams(game_id))}>
+                                <Link to={`/search`} onClick={() => dispatch(searchStreams(game_id, game_name))}>
                                     <span className="gs-game">{game_name}</span>
                                 </Link>
                             </div>

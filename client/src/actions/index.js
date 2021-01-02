@@ -31,16 +31,18 @@ export const getStream = (params) => async (dispatch) => {
 }
 
 export const fetchUserData = () => async (dispatch, getState) => {
-    const { data } = await axios.get('/api/current_user', { withCredentials: true });
-    localStorage.setItem('twitchAccessToken', data.twitchAccessToken);
+    const axiosRes = await axios.get('/api/current_user', { withCredentials: true });
+    const { user, twitchAccessToken, twitchData } = axiosRes.data;
+    localStorage.setItem('twitchAccessToken', twitchAccessToken);
     dispatch({ type: LOGIN_USER });
-    dispatch({ type: FETCH_USER, payload: data });
-    if (data.user) {
+    dispatch({ type: FETCH_USER, payload: { user, twitchAccessToken } });
+    dispatch({ type: FETCH_SEARCH, payload: { games: twitchData.games } });
+    if (user) {
         let payload = { status: 'loading' };
         dispatch({ type: FETCH_DASHBOARD, payload });
         try {
-            const { user } = getState().auth;
-            const res = await fetchUserTwitch(user);
+            const { user: authUser } = getState().auth;
+            const res = await fetchUserTwitch(authUser);
             const { broadcasters, games } = res;
             payload = { status: 'success', broadcasters, games };
             dispatch({ type: FETCH_FEATURED, payload: { status: 'success', list: broadcasters } });
@@ -56,9 +58,9 @@ export const fetchUserTwitch = async (user) => {
     const { games, users } = user.visits;
     console.log('fetchUserTwitch user visits', user.visits);
     const fetchedGames = await fetchFromTwitch('https://api.twitch.tv/helix/games/top');
-    const fetchedBroadcasters = await fetchFromTwitch('https://api.twitch.tv/helix/streams');
+    const fetchedStreams = await fetchFromTwitch('https://api.twitch.tv/helix/streams');
     console.log('fetchedGames', fetchedGames.data.data);
-    return { broadcasters: fetchedBroadcasters.data, games: fetchedGames.data };
+    return { broadcasters: fetchedStreams.data, games: fetchedGames.data };
 };
 
 export const sendMail = (values) => async (dispatch) => {
@@ -93,19 +95,12 @@ export const embedStream = (payload) => {
 };
 
 export const featuredApi = (limit = 20) => async (dispatch, getState) => {
-    // const url = `https://api.twitch.tv/kraken/streams/featured?limit=${limit}&client_id=${twitchId}`;
-    let url = ``;
-    const accessToken = localStorage.getItem('twitchAccessToken');
-    let options = {
-        method: 'get',
-        url: 'https://api.twitch.tv/helix/streams?first=20',
-        headers: { 'Client-ID': twitchId, Authorization: `Bearer ${accessToken}` },
-    };
+    const url = 'https://api.twitch.tv/helix/streams';
     let payload = { status: 'loading', list: [] };
     dispatch({ type: FETCH_FEATURED, payload });
     try {
-        const res = await axios(options);
-        const { data } = res.data;
+        const params = { first: limit };
+        const { data } = await fetchFromTwitch(url, { params });
         const status = data.length ? 'success' : 'error';
         payload = { status, list: data };
     } catch (e) {
@@ -114,27 +109,23 @@ export const featuredApi = (limit = 20) => async (dispatch, getState) => {
     dispatch({ type: FETCH_FEATURED, payload });
 };
 
-export const topGamesApi = (limit = 10, offset = 0, searchTerm) => async (dispatch) => {
+export const topGamesApi = (limit = 10, offset = 0, searchTerm) => async (dispatch, getState) => {
     const url = 'https://api.twitch.tv/helix/games/top';
     let payload = { status: 'loading', list: [] };
     dispatch({ type: FETCH_TOPGAMES, payload });
     dispatch({ type: FETCH_SEARCH, payload });
     try {
         const options = { params: { first: limit } };
-        let { data, pagination: { cursor } } = await fetchFromTwitch(url, options);
         if (!searchTerm) {
+            const { data } = await fetchFromTwitch(url, options);
             payload = { status: 'success', list: data };
         } else {
+            const { games } = getState().search;
             const term = searchTerm.toLowerCase();
-            let list = data.filter((item) => item.name.match(new RegExp(term, 'i')));
-            let retries = 6;
-            while (retries-- > 0 && !list.length) {
-                options.params.after = cursor;
-                ({ data, pagination: { cursor } } = await fetchFromTwitch(url, options));
-                list = data.filter((item) => item.name.match(new RegExp(term, 'i')));
-            }
-            const status = list.length ? 'success' : 'error';
-            payload = { searchTerm, games: list, status };
+            console.log(games);
+            let foundGames = games.filter((item) => item.name.match(new RegExp(term, 'i')));
+            const status = foundGames.length ? 'success' : 'error';
+            const payload = { searchTerm, foundGames, status };
             return dispatch({ type: FETCH_SEARCH, payload });
         }
     } catch (e) {
@@ -143,8 +134,8 @@ export const topGamesApi = (limit = 10, offset = 0, searchTerm) => async (dispat
     dispatch({ type: FETCH_TOPGAMES, payload });
 };
 
-export const searchStreams = (gameId) => async (dispatch) => {
-    let payload = { status: 'loading', streams: [] };
+export const searchStreams = (gameId, gameName) => async (dispatch) => {
+    let payload = { status: 'loading', streams: [], searchTerm: gameName };
     dispatch({ type: FETCH_SEARCH, payload });
     const url = 'https://api.twitch.tv/helix/streams';
     const options = { params: { game_id: gameId } };

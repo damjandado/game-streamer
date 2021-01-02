@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const gameSchema = new Schema({
-  games: []
+  id: String,
+  name: String,
+  box_art_url: String,
 });
 
-mongoose.model("games", gameSchema);
+module.exports = mongoose.model("games", gameSchema);

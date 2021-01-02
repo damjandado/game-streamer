@@ -52,7 +52,7 @@ class StreamCard extends Component {
                             {user_name}
                         </Link>{' '}
                         plays{' '}
-                        <Link to={'/search'} onClick={() => props.searchStreams(game_id)}>
+                        <Link to={'/search'} onClick={() => props.searchStreams(game_id, game_name)}>
                             {game_name}
                         </Link>
                     </div>

@@ -9,11 +9,8 @@ import Alert from '../presentationals/Alert';
 class Featured extends Component {
     state = { fetched: false };
 
-    componentDidUpdate() {
-        if (!this.state.fetched) {
-            this.props.featuredApi(100);
-            this.setState({ fetched: true });
-        }
+    componentDidMount() {
+        this.props.featuredApi(100);
     }
 
     render() {

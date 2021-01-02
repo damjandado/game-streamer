@@ -6,11 +6,17 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 const path = require('path');
+const axios = require('axios');
+const qs = require('qs');
+
 const keys = require('./config/keys');
-require('./models/User');
-require('./models/Game');
+const User = require('./models/User');
+const Game = require('./models/Game');
+const Token = require('./models/Token');
 require('./services/passport-social');
 require('./services/passport-local');
+const { twitchClientID } = require('./config/keys');
+const twitchSvc = require('./services/twitch');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -21,6 +27,53 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
     // we're connected!
 });
+
+exports.twitchData = {
+    games: [],
+};
+
+const populate = async () => {
+    try {
+        console.time('get token');
+        const accessToken = await twitchSvc.getToken();
+        console.timeEnd('get token');
+        const existingGamesPromise = Game.find().lean();
+        const url = 'https://api.twitch.tv/helix/games/top';
+        const config = {
+            url,
+            method: 'get',
+            params: { first: 100 },
+            headers: { 'Client-ID': twitchClientID, Authorization: `Bearer ${accessToken}` },
+        };
+        console.time();
+        let newGames = [];
+        const iterator = Array(0).keys();
+        for (let _ of iterator) {
+            const axiosRes = await axios(config).catch(_ => ({}));
+            const { data, pagination } = axiosRes.data;
+            console.log(_, pagination.cursor);
+            if (!data) continue;
+            config.params.after = pagination.cursor;
+            newGames = newGames.concat(data);
+        }
+        console.timeEnd();
+        const existingGames = await existingGamesPromise;
+        const existingGamesIds = existingGames.map(g => g.id);
+        console.log(newGames.length);
+        console.time('filter new games');
+        newGames = newGames.filter(g => !existingGamesIds.includes(g.id));
+        console.log(newGames.length);
+        console.timeEnd('filter new games');
+        console.time('insert new games');
+        await Game.insertMany(newGames);
+        this.twitchData.games = newGames.concat(existingGames);
+        console.timeEnd('insert new games');
+    } catch (err) {
+        console.log('Error populating database', err);
+    }
+}
+
+populate();
 
 const app = express();
 

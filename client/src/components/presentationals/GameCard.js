@@ -24,7 +24,7 @@ class GameCard extends Component {
         return (
             <div className='game-card col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2'>
                 <div className="gs-video-thumbnail">
-                    <Link to={'/search'} onClick={() => props.searchStreams(id)}>
+                    <Link to={'/search'} onClick={() => props.searchStreams(id, name)}>
                         <Lazy component="span" cushion={200}>
                             <img
                                 className='stream-cover'
@@ -36,7 +36,7 @@ class GameCard extends Component {
                 </div>
                 <div className="gs-game-info" ref={(div) => (this.info = div)}>
                     <div className="game-details iffyTip" onMouseOver={this.showTooltip.bind(this)}>
-                        <Link to={'/search'} onClick={() => props.searchStreams(id)}>
+                        <Link to={'/search'} onClick={() => props.searchStreams(id, name)}>
                             {trunc}
                             <span
                                 className="font-weight-bold"
