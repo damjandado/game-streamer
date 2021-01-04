@@ -3,11 +3,9 @@ const qs = require('qs');
 
 const { twitchClientID, twitchClientSecret } = require('../config/keys');
 const Token = require('../models/Token');
+const User = require('../models/User');
 
-const getToken = async (userId, msg) => {
-    if (msg) {
-        console.log('currentUser calling');
-    }
+const getToken = async (userId) => {
     let token;
     if (userId) {
         token = await Token.findOne({ userId, source: 'twitch' });
@@ -58,6 +56,9 @@ const getToken = async (userId, msg) => {
         token.refreshToken = refresh_token;
         token.expiresAt = new Date(date + expires_in * 1000);
         token.save();
+        if (userId) {
+            User.findByIdAndUpdate(userId, { 'twitch.accessToken': twitchAccessToken });
+        }
     }
     return twitchAccessToken;
 };

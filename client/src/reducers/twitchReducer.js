@@ -8,10 +8,11 @@ const initialState = {
     list: [],
   },
   dashboard: {
-    broadcasters: [],
+    streams: [],
     games: [],
     status: "loading",
   },
+  allGames: [],
 };
 
 function twitchReducer(state = initialState, action) {
@@ -22,6 +23,8 @@ function twitchReducer(state = initialState, action) {
     return { ...state, top: { ...state.top, ...action.payload } };
   case "FETCH_DASHBOARD":
     return { ...state, dashboard: { ...state.dashboard, ...action.payload } };
+  case "FETCH_SEARCH":
+      return { ...state, ...action.payload };
   default:
     return state;
   }

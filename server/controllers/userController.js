@@ -21,41 +21,33 @@ exports.games = async (req, res) => {
 
 exports.users = async (req, res) => {
     const obj = req.body.stream || req.body;
-    const game = { id: obj.game_id, name: obj.game_name };
-    const user = { id: obj.user_id, name: obj.user_name };
-    const appUser = await User.findById(req.user.id).exec();
+    const { game_id, game_name, user_id, user_name } = obj;
+    const appUser = await User.findById(req.user.id);
+    const game = { id: game_id, name: game_name };
+    const twitchUser = { id: user_id, name: user_name };
     const { games, users } = appUser.visits;
-    res.send(req.body);
-
-    User.updateOne(
-        {
-            _id: req.user.id,
-        },
-        {
-            visits: {
-                games: [...games, game],
-                users: [...users, user],
-            },
+    if (game_id) {
+        const existingGame = games.find(g => g.id === game_id);
+        if (existingGame) {
+            existingGame.count = (existingGame.count || 0) + 1;
+        } else {
+            game.count = 0;
+            games.push(game);
         }
-    ).exec();
+    }
+    if (user_id) {
+        const existingTwitchUser = users.find(u => u.id === user_id);
+        if (existingTwitchUser) {
+            existingTwitchUser.count = (existingTwitchUser.count || 0) + 1;
+        } else {
+            twitchUser.count = 0;
+            users.push(twitchUser);
+        }
+    }
+    appUser.save();
+    res.send(req.body);
 };
 
 exports.dashboard = async (req, res) => {
-    let listOfUsers = [],
-        listOfGames = [];
-    const appUser = await User.find({ _id: req.user.id });
-    const { visits } = appUser[0];
-    if (visits) {
-        if (visits.users.length && visits.users.length < 4) {
-            listOfUsers = processQuery(appUser, 'users', visits.users.length);
-        } else {
-            listOfUsers = processQuery(appUser, 'users', 4);
-        }
-        if (visits.games.length && visits.games.length == 1) {
-            listOfGames = processQuery(appUser, 'games', 1);
-        } else {
-            listOfGames = processQuery(appUser, 'games', 2);
-        }
-    }
     res.sendtatus(200);
 };

@@ -5,7 +5,6 @@ const keys = require("../config/keys");
 const Mailer = require("../services/Mailer");
 const userConfirmTemplate = require("../services/emailTemplates/userConfirmTemplate");
 const passRecoveryTemplate = require("../services/emailTemplates/passRecoveryTemplate");
-const { makeid } = require("./helpers");
 const User = require("../models/User");
 const pendingUser = require("../models/pendingUser");
 
@@ -74,7 +73,7 @@ exports.sendgrid = async (req, res, next) => {
   const user = {
     subject: "Email link",
     recipients: [{ email }],
-    id: makeid(32)
+    id: 'makeid32',
   };
 
   const mailer = new Mailer(user, mailTemplate(user));

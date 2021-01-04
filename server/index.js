@@ -17,6 +17,7 @@ require('./services/passport-social');
 require('./services/passport-local');
 const { twitchClientID } = require('./config/keys');
 const twitchSvc = require('./services/twitch');
+const { remove_duplicates } = require('./utils/utils.js');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -47,7 +48,7 @@ const populate = async () => {
         };
         console.time();
         let newGames = [];
-        const iterator = Array(2).keys();
+        const iterator = Array(60).keys();
         for (let _ of iterator) {
             const axiosRes = await axios(config).catch(_ => ({}));
             if (!axiosRes.data) continue;
@@ -57,8 +58,9 @@ const populate = async () => {
             newGames = newGames.concat(data);
         }
         console.timeEnd();
-        const existingGames = await existingGamesPromise;
+        const existingGames = remove_duplicates(await existingGamesPromise);
         const existingGamesIds = existingGames.map(g => g.id);
+        console.log(existingGamesIds.length, [...new Set(existingGamesIds)].length);
         console.log(newGames.length);
         console.time('filter new games');
         newGames = newGames.filter(g => !existingGamesIds.includes(g.id));

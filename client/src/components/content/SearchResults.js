@@ -29,9 +29,9 @@ class SearchResults extends Component {
     };
 
     renderStreams = () => {
-        const { streams } = this.props;
-        if (!streams.length) return null;
-        const listStreams = streams.map((item) => <StreamCard key={item.id} stream={item} />);
+        const { foundStreams } = this.props;
+        if (!foundStreams.length) return null;
+        const listStreams = foundStreams.map((item) => <StreamCard key={item.id} stream={item} />);
         return (
             <>
                 {this.renderHeading('Streams')}

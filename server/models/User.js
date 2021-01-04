@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const bcrypt = require("bcrypt");
 
+const visitSchema = new Schema({
+  id: String,
+  name: String,
+  count: Number,
+});
+
 const userSchema = new Schema({
   name: String,
   google: {
@@ -41,8 +47,8 @@ const userSchema = new Schema({
   },
   credits: { type: Number, default: 0 },
   visits: {
-    games: [Object],
-    users: [Object]
+    games: [visitSchema],
+    users: [visitSchema]
   },
   token: String,
   tokenIAT: Date,

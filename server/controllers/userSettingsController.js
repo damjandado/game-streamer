@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = mongoose.model('users');
 const twitchSvc = require('../services/twitch');
+const userSvc = require('../services/user');
 const { twitchData } = require('../index');
 
 exports.currentUser = async (req, res) => {
@@ -12,8 +13,12 @@ exports.currentUser = async (req, res) => {
             return res.send(req.user);
         }
     }
-    let twitchAccessToken = await twitchSvc.getToken(req.user?.id, 'currentUser');
-    res.send({ user: req.user, twitchAccessToken, twitchData });
+    let twitchAccessToken = await twitchSvc.getToken(req.user?.id);
+    let recommendation;
+    if (req.user) {
+        recommendation = userSvc.getUserRecommendations(req.user);
+    }
+    res.send({ user: req.user, recommendation, twitchAccessToken, twitchData });
 };
 
 exports.currentUserDb = async (req, res) => {

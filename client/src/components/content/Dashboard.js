@@ -20,8 +20,8 @@ class Dashboard extends Component {
     const { auth, dashboard, featured, top } = this.props;
     if (!auth.authenticated)
         return <AnonDash />
-    const { status, broadcasters, games, } = dashboard;
-    const streamCardStreams = broadcasters.map(bc =>
+    const { status, streams, games, } = dashboard;
+    const streamCardStreams = streams.map(bc =>
       <StreamCard key={bc.id} stream={bc} />
     );
     const streamCardGames = games.map(gm =>
@@ -36,7 +36,6 @@ class Dashboard extends Component {
         <div className="row">{streamCardGames}</div>
       </div>
     );
-    console.log('status', status);
     return (
       <div className="main">
         {
