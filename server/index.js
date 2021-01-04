@@ -47,12 +47,12 @@ const populate = async () => {
         };
         console.time();
         let newGames = [];
-        const iterator = Array(0).keys();
+        const iterator = Array(2).keys();
         for (let _ of iterator) {
             const axiosRes = await axios(config).catch(_ => ({}));
+            if (!axiosRes.data) continue;
             const { data, pagination } = axiosRes.data;
             console.log(_, pagination.cursor);
-            if (!data) continue;
             config.params.after = pagination.cursor;
             newGames = newGames.concat(data);
         }

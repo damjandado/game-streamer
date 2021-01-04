@@ -12,7 +12,7 @@ exports.currentUser = async (req, res) => {
             return res.send(req.user);
         }
     }
-    let twitchAccessToken = await twitchSvc.getToken(req.user?.id);
+    let twitchAccessToken = await twitchSvc.getToken(req.user?.id, 'currentUser');
     res.send({ user: req.user, twitchAccessToken, twitchData });
 };
 

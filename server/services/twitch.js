@@ -4,7 +4,10 @@ const qs = require('qs');
 const { twitchClientID, twitchClientSecret } = require('../config/keys');
 const Token = require('../models/Token');
 
-const getToken = async (userId) => {
+const getToken = async (userId, msg) => {
+    if (msg) {
+        console.log('currentUser calling');
+    }
     let token;
     if (userId) {
         token = await Token.findOne({ userId, source: 'twitch' });
@@ -21,7 +24,7 @@ const getToken = async (userId) => {
             },
         })
         .catch((err) => {
-            console.log(err.response.data);
+            console.log('Error validating token:', err.response.data);
             return null;
         });
     if (result) {
@@ -43,13 +46,13 @@ const getToken = async (userId) => {
             client_secret: twitchClientSecret,
         }),
     }).catch((err) => {
-        console.log(err.response.data);
         return err.response.data;
     });
     const { access_token, refresh_token, scope, expires_in, error } = result.data;
-    if (!error) {
-        console.log(error);
+    if (error) {
+        console.log('Error refreshing token:', error);
     } else {
+        console.log('new token:', result.data);
         twitchAccessToken = access_token;
         token.accessToken = access_token;
         token.refreshToken = refresh_token;
