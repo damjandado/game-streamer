@@ -5,15 +5,15 @@ const getUserRecommendations = (user) => {
         games = [];
     const { visits } = user;
     if (visits) {
-        if (visits.users.length && visits.users.length < 4) {
+        if (visits.users.length < 4) {
             users = processQuery(user, 'users', visits.users.length);
         } else {
             users = processQuery(user, 'users', 4);
         }
-        if (visits.games.length && visits.games.length == 1) {
-            games = processQuery(user, 'games', 1);
+        if (visits.games.length < 4) {
+            games = processQuery(user, 'games', visits.games.length);
         } else {
-            games = processQuery(user, 'games', 2);
+            games = processQuery(user, 'games', 4);
         }
     }
     return { games, users };

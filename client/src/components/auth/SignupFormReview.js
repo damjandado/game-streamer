@@ -11,10 +11,6 @@ class SignupFormReview extends Component {
   onSignup = async (values) => {
     const res = await axios.post("/local/signup", values);
     if (res.data.success) {
-      await axios.post("/api/send_email", {
-        email: values.email,
-        template: values.template
-      });
       this.setState({ success: true });
     }
   }

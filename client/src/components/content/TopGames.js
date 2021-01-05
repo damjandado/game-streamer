@@ -1,42 +1,38 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import * as actions from '../../actions';
 import Loader from '../presentationals/Loader';
 import GameCard from '../presentationals/GameCard';
 import Alert from '../presentationals/Alert';
 
-class TopGames extends Component {
-    componentDidMount() {
-        this.props.topGamesApi(60, 0);
-    }
+const TopGames = () => {
+    const games = useSelector((state) => state.twitch.top);
+    const { twitchAccessToken } = useSelector((state) => state.auth);
 
-    render() {
-        const { games } = this.props;
-        const { status } = games;
-        if (!games.list) return null;
-        const gameCardItems = games.list.map((item) => <GameCard key={item.id} game={item} />);
-        return (
-            <div className="main">
-                <h3 className="text-center text-muted">Top Games on Twitch</h3>
+    const dispatch = useDispatch();
+    useEffect(() => {
+        twitchAccessToken && dispatch(actions.topGamesApi(60, 0));
+    }, [twitchAccessToken]);
+    
+    const { status } = games;
+    const gameCardItems = games.list.map((item) => <GameCard key={item.id} game={item} />);
+    return (
+        <div className="main">
+            <h3 className="text-center text-muted">Top Games on Twitch</h3>
+            {
                 {
-                    {
-                        loading: <Loader />,
-                        success: <div className="row">{gameCardItems}</div>,
-                        error: (
-                            <div>
-                                <Alert error={status} />
-                            </div>
-                        ),
-                    }[status]
-                }
-            </div>
-        );
-    }
-}
+                    loading: <Loader />,
+                    success: <div className="row game-cards">{gameCardItems}</div>,
+                    error: (
+                        <div>
+                            <Alert error={status} />
+                        </div>
+                    ),
+                }[status]
+            }
+        </div>
+    );
+};
 
-function mapStateToProps({ twitch }) {
-    return { games: twitch.top };
-}
-
-export default connect(mapStateToProps, actions)(TopGames);
+export default TopGames;

@@ -4,9 +4,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const mongoose = require('mongoose');
 const axios = require('axios');
 const keys = require('../config/keys');
-const Token = require("../models/Token");
-
-const User = mongoose.model('users');
+const Token = require('../models/Token');
+const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
     console.log('are you serious?');
@@ -39,12 +38,12 @@ passport.use(
                 existingUser.twitch.accessToken = accessToken;
                 let token = await Token.findOne({ userId: existingUser.id });
                 if (!token) {
-                  token = await new Token({
-                    accessToken,
-                    refreshToken,
-                    source: 'twitch',
-                    userId: existingUser.id,
-                  }).save();
+                    token = await new Token({
+                        accessToken,
+                        refreshToken,
+                        source: 'twitch',
+                        userId: existingUser.id,
+                    }).save();
                 }
                 console.log(token);
                 await existingUser.save();
@@ -61,10 +60,10 @@ passport.use(
                 },
             }).save();
             await new Token({
-              accessToken,
-              refreshToken,
-              source: 'twitch',
-              userId: user.id,
+                accessToken,
+                refreshToken,
+                source: 'twitch',
+                userId: user.id,
             }).save();
 
             done(null, user);

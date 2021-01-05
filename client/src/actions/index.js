@@ -87,8 +87,9 @@ export const fetchUserTwitch = async (recommendation) => {
         if (!found[stream.id]) {
             found[stream.id] = true;
         } else {
-            stream = data.find(s => !found[s.id]);
             found[stream.id] = true;
+            stream = data.find(s => s.id !== stream.id);
+            if (!stream) continue;
         }
         streams.push(stream);
     }

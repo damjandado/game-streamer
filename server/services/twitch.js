@@ -4,22 +4,21 @@ const { promises: fs } = require('fs');
 
 const { twitchClientID, twitchClientSecret } = require('../config/keys');
 const Token = require('../models/Token');
-const User = require('../models/User');
 
 const requireF = (modulePath) => {
     try {
-        return require(modulePath)
+        return require(modulePath);
     } catch (err) {
         return null;
     }
-}
+};
 
 let token = requireF('../../token.json');
 
-const getToken = async (userId) => {
+exports.getToken = async (userId) => {
     if (!shouldRenew(token)) {
         return token.accessToken;
-    };
+    }
     if (userId) {
         token = await Token.findOne({ userId, source: 'twitch' });
     } else {
@@ -45,7 +44,7 @@ const getToken = async (userId) => {
             client_secret: twitchClientSecret,
         }),
     })
-        .then((res => res.data))
+        .then((res) => res.data)
         .catch((err) => {
             return err.response.data;
         });
@@ -71,7 +70,7 @@ const shouldRenew = (token) => {
         return false;
     }
     return true;
-}
+};
 
 const checkToken = () =>
     axios
@@ -86,6 +85,59 @@ const checkToken = () =>
             return null;
         });
 
-module.exports = {
-    getToken,
+const featuredApi = async (limit = 8) => {
+    try {
+        const { data } = await axios.get(
+            `https://api.twitch.tv/kraken/streams/featured?&limit=${limit}&client_id=${twitchClientID}`
+        );
+        return data.featured.map(({ stream }) => stream);
+    } catch (e) {
+        return null;
+    }
+};
+
+exports.topGamesApi = async (limit = 8) => {
+    try {
+        const { data } = await axios.get(
+            `https://api.twitch.tv/kraken/games/top?client_id=${twitchClientID}&limit=${limit}`
+        );
+        return data.top.map(({ game }) => game.name);
+    } catch (e) {
+        return null;
+    }
+};
+
+exports.fetchStreamInfo = async ({ user_id }) => {
+    try {
+        const { data } = await axios.get({
+            url: `https://api.twitch.tv/kraken/streams/${user_id}`,
+            headers: {
+                'Client-ID': twitchClientID,
+                Accept: 'application/vnd.twitchtv.v5+json',
+            },
+        });
+        return data.stream;
+    } catch (e) {
+        return null;
+    }
+};
+
+exports.fetchGames = async (list) => {
+    let outputGames;
+    await Promise.all(
+        list.map(async (item) => {
+            try {
+                const fetched = await axios.get({
+                    url: `https://api.twitch.tv/helix/games?name=${item}`,
+                    headers: { 'Client-ID': twitchClientID },
+                });
+                return fetched.data.data[0];
+            } catch (e) {
+                console.log(e);
+            }
+        })
+    ).then((result) => {
+        outputGames = [].concat(result);
+    });
+    return outputGames;
 };

@@ -1,26 +1,22 @@
 require('dotenv').config();
+const { promises: fs } = require('fs');
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
-const path = require('path');
 const axios = require('axios');
-const qs = require('qs');
-const { promises: fs } = require('fs');
 
 const keys = require('./config/keys');
-const User = require('./models/User');
 const Game = require('./models/Game');
-const Token = require('./models/Token');
 require('./services/passport-social');
 require('./services/passport-local');
 const { twitchClientID } = require('./config/keys');
 const twitchSvc = require('./services/twitch');
 const { remove_duplicates } = require('./utils/utils.js');
 
-mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
