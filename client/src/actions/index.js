@@ -51,12 +51,8 @@ export const fetchUserData = () => async (dispatch, getState) => {
         let payload = { status: 'loading' };
         dispatch({ type: FETCH_DASHBOARD, payload });
         try {
-            const res = await fetchUserTwitch(recommendation);
-            const { streams } = res;
-            const games = recommendation.games.map((rg) => ({
-                ...rg,
-                ...twitchData.games.find((g) => g.id === rg.id),
-            }));
+            const res = await fetchUserTwitch(recommendation, twitchData);
+            const { games, streams } = res;
             payload = { status: 'success', streams, games, };
             dispatch({ type: FETCH_FEATURED, payload: { status: 'success', list: streams } });
             dispatch({ type: FETCH_DASHBOARD, payload });
@@ -66,18 +62,25 @@ export const fetchUserData = () => async (dispatch, getState) => {
     }
 };
 
-export const fetchUserTwitch = async (recommendation) => {
+export const fetchUserTwitch = async (recommendation, twitchData) => {
+    const games = recommendation.games.map((rg) => ({
+        ...rg,
+        ...twitchData.games.find((g) => g.id === rg.id),
+    }));
     const streamPromises = [];
     let url = 'https://api.twitch.tv/helix/streams';
     recommendation.users.forEach(user => {
         const params = { user_id: user.id };
         streamPromises.push(fetchFromTwitch(url, { params }));
     });
-    url = 'https://api.twitch.tv/helix/streams';
     recommendation.games.forEach(game => {
         const params = { game_id: game.id };
         streamPromises.push(fetchFromTwitch(url, { params }));
     });
+    if (!streamPromises.length) {
+        const { data } = await fetchFromTwitch(url);
+        return { streams: data.slice(0, 10), games: twitchData.games.slice(0, 10) };
+    }
     const found = {};
     const streams = [];
     const streamResults = await Promise.all(streamPromises);
@@ -94,7 +97,7 @@ export const fetchUserTwitch = async (recommendation) => {
         streams.push(stream);
     }
     console.log('fetchedStreams', streams);
-    return { streams };
+    return { streams, games };
 };
 
 export const sendMail = (values) => async (dispatch) => {

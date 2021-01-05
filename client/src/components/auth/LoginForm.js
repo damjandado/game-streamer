@@ -41,7 +41,7 @@ class LoginForm extends Component {
     const res = await axios.post("/local/login", values);
     if (res.data.success) {
       localStorage.setItem("jwtToken", res.data.token);
-      window.location.reload();
+      this.props.history.push('/');
     }
   }
 
