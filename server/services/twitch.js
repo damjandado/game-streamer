@@ -45,7 +45,7 @@ const getToken = async (userId) => {
             client_secret: twitchClientSecret,
         }),
     })
-        .then((res = res.data))
+        .then((res => res.data))
         .catch((err) => {
             return err.response.data;
         });
