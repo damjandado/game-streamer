@@ -8,6 +8,7 @@ const passport = require('passport');
 const path = require('path');
 const axios = require('axios');
 const qs = require('qs');
+const { promises: fs } = require('fs');
 
 const keys = require('./config/keys');
 const User = require('./models/User');
@@ -20,7 +21,11 @@ const twitchSvc = require('./services/twitch');
 const { remove_duplicates } = require('./utils/utils.js');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(keys.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+});
 const db = mongoose.connection;
 
 //handle mongo error
@@ -30,15 +35,14 @@ db.once('open', function () {
 });
 
 exports.twitchData = {
-    games: [],
+    games: require('../games.json'),
 };
 
-const populate = async () => {
+const bootstrap = async () => {
+    console.log('⏳ bootstrapping app');
     try {
-        console.time('get token');
-        const accessToken = await twitchSvc.getToken();
-        console.timeEnd('get token');
         const existingGamesPromise = Game.find().lean();
+        const accessToken = await twitchSvc.getToken();
         const url = 'https://api.twitch.tv/helix/games/top';
         const config = {
             url,
@@ -46,36 +50,34 @@ const populate = async () => {
             params: { first: 100 },
             headers: { 'Client-ID': twitchClientID, Authorization: `Bearer ${accessToken}` },
         };
-        console.time();
+        console.time('get new games');
         let newGames = [];
-        const iterator = Array(60).keys();
+        const iterator = Array(0).keys();
         for (let _ of iterator) {
-            const axiosRes = await axios(config).catch(_ => ({}));
+            const axiosRes = await axios(config).catch((_) => ({}));
             if (!axiosRes.data) continue;
             const { data, pagination } = axiosRes.data;
             console.log(_, pagination.cursor);
             config.params.after = pagination.cursor;
             newGames = newGames.concat(data);
         }
-        console.timeEnd();
+        console.timeEnd('get new games');
+        console.log('new games fetched', newGames.length);
         const existingGames = remove_duplicates(await existingGamesPromise);
-        const existingGamesIds = existingGames.map(g => g.id);
-        console.log(existingGamesIds.length, [...new Set(existingGamesIds)].length);
-        console.log(newGames.length);
-        console.time('filter new games');
-        newGames = newGames.filter(g => !existingGamesIds.includes(g.id));
-        console.log(newGames.length);
-        console.timeEnd('filter new games');
-        console.time('insert new games');
+        const existingGamesIds = existingGames.map((g) => g.id);
+        newGames = newGames.filter((g) => !existingGamesIds.includes(g.id));
+        console.log('new games filtered', newGames.length);
         await Game.insertMany(newGames);
-        this.twitchData.games = newGames.concat(existingGames);
-        console.timeEnd('insert new games');
+        const games = newGames.concat(existingGames);
+        this.twitchData.games = games;
+        fs.writeFile('games.json', JSON.stringify(games));
+        console.log('🔋 bootstrapping done');
     } catch (err) {
-        console.log('Error populating database', err);
+        console.log('💥 bootstrapping error', err);
     }
-}
+};
 
-populate();
+bootstrap();
 
 const app = express();
 
@@ -103,7 +105,7 @@ app.use((req, res, next) => {
         url: req.originalUrl,
         user: req.user?.name,
         cookie: req.headers.cookie,
-    }
+    };
     console.log(logObj);
     next();
 });
@@ -111,7 +113,10 @@ app.use((req, res, next) => {
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Methods', '*');
     res.setHeader('Access-Control-Allow-Origin', process.env.FRONT_URL);
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
