@@ -4,9 +4,13 @@
   "private": true,
   "proxy": "http://localhost:5020",
   "dependencies": {
+    "@craco/craco": "^6.0.0",
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "css-element-queries": "^1.2.3",
     "font-awesome": "^4.7.0",
+    "postcss": "^7.0.35",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-lazy": "^0.5.1",
@@ -14,16 +18,18 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "react-tooltip": "^3.11.6",
+    "react-truncate": "^2.4.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.5",
     "redux-form": "^8.3.7",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "browserslist": {

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import twitchId from '../config/keys';
 
-export const formatImgUrl = (url, width) => (url ? url.replace(/\{width\}|\{height\}/g, width) : '');
+export const formatImgUrl = (url, width = 350, height = 200) =>
+    url ? url.replace(/(\{width\})x\{height\}/g, `${width}x${height}`) : '';
 
 export const fetchFromTwitch = async (url, options = {}) => {
     const accessToken = localStorage.getItem('twitchAccessToken');

@@ -1,65 +1,79 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Lazy } from 'react-lazy';
+import { useDispatch } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
+import Truncate from 'react-truncate';
 
 import * as actions from '../../actions';
 import { formatImgUrl } from '../../utils';
-class StreamCard extends Component {
-    activeChannel() {
-        const { stream } = this.props;
-        this.props.embedStream({ stream });
-        this.props.saveActivity(stream);
-    }
 
-    render() {
-        const { stream, ...props } = this.props;
-        const {
-            game_id,
-            game_name,
-            id,
-            started_at,
-            thumbnail_url,
-            title,
-            user_id,
-            user_name,
-            viewer_count,
-            ...streamProps
-        } = stream;
-        let userLogo;
-        const width = userLogo ? 200 : '100%';
-        const streamCover = formatImgUrl(thumbnail_url, '300');
-        const gameImg = formatImgUrl(streamProps.box_art_url, '300');
-        return (
-            <div className="stream-card col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                <div className="gs-video-thumbnail">
-                    <Link to={`/${user_name}`} onClick={this.activeChannel.bind(this)}>
-                        <Lazy component="span" cushion={200}>
-                            <img className="stream-cover" src={streamCover} alt={title} style={{ width }} />
-                        </Lazy>
+const StreamCard = (props) => {
+    const dispatch = useDispatch();
+    const [isTruncated, setIsTruncated] = useState(false);
+
+    const handleTruncate = (truncated) => {
+        if (isTruncated !== truncated) {
+            setIsTruncated(truncated);
+        }
+    };
+
+    const activeChannel = () => {
+        const { stream } = props;
+        dispatch(actions.embedStream({ stream }));
+        dispatch(actions.saveActivity(stream));
+    };
+
+    const { stream } = props;
+    const {
+        game_id,
+        game_name,
+        id,
+        started_at,
+        thumbnail_url,
+        title,
+        user_id,
+        user_name,
+        viewer_count,
+        ...streamProps
+    } = stream;
+    let userLogo;
+    const width = userLogo ? 200 : '100%';
+    const streamCover = formatImgUrl(thumbnail_url);
+    const gameImg = formatImgUrl(streamProps.box_art_url, 188, 250);
+    return (
+        <div className="stream-card pb-2 col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div className="gs-video-thumbnail">
+                <Link to={`/${user_name}`} onClick={activeChannel}>
+                    <img className="stream-cover" src={streamCover} alt={title} style={{ width }} />
+                </Link>
+            </div>
+            <div className="gs-stream-info">
+                <div className="profile-image">
+                    <figure className="gs-avatar">
+                        <img src={gameImg} alt="logo" />
+                    </figure>
+                </div>
+                <div className="stream-details">
+                    <div className="font-weight-bold" data-tip={title}>
+                        <Truncate lines={1} ellipsis={<span>...</span>} onTruncate={handleTruncate}>
+                            {title}
+                        </Truncate>
+                    </div>
+                    <Link to={`/${user_name}`} onClick={activeChannel}>
+                        {user_name}
+                    </Link>{' '}
+                    plays{' '}
+                    <Link
+                        to={'/search'}
+                        onClick={() => dispatch(actions.searchStreams(game_id, game_name))}
+                    >
+                        {game_name}
                     </Link>
                 </div>
-                <div className="gs-stream-info">
-                    <div className="profile-image">
-                        <figure className="gs-avatar">
-                            <img src={gameImg} alt="logo" />
-                        </figure>
-                    </div>
-                    <div className="stream-details">
-                        <span className="font-weight-bold">{title}</span>
-                        <br />
-                        <Link to={`/${user_name}`} onClick={this.activeChannel.bind(this)}>
-                            {user_name}
-                        </Link>{' '}
-                        plays{' '}
-                        <Link to={'/search'} onClick={() => props.searchStreams(game_id, game_name)}>
-                            {game_name}
-                        </Link>
-                    </div>
-                </div>
             </div>
-        );
-    }
-}
+            {isTruncated && <ReactTooltip />}
+        </div>
+    );
+};
 
-export default connect(null, actions)(withRouter(StreamCard));
+export default withRouter(StreamCard);

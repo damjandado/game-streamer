@@ -1,3 +1,6 @@
+/* @tailwind base; */
+/* @tailwind components; */
+@tailwind utilities;
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700');
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 
@@ -271,7 +274,7 @@ img.media-object {
 /* embedTwitchCSS -- Copyright (c) 2016 Gregle */
 .twitchWrapper {
   position: relative;
-  max-width: 100vh;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
