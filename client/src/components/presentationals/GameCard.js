@@ -17,10 +17,10 @@ const GameCard = (props) => {
         }
     };
 
-    const { game, spanChannels, channels, viewers } = props;
+    const { game } = props;
     const { id, name, box_art_url } = game;
     return (
-        <div className="game-card pb-2 col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+        <div className="game-card pb-3 col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
             <div className="gs-video-thumbnail">
                 <Link to={'/search'} onClick={() => dispatch(actions.searchStreams(id, name))}>
                     <img
@@ -30,9 +30,13 @@ const GameCard = (props) => {
                     />
                 </Link>
             </div>
-            <div className="gs-game-info">
+            <div className="gs-game-info pt-1">
                 <div className="game-details iffyTip w-full">
-                    <Link className='block w-full' to={'/search'} onClick={() => dispatch(actions.searchStreams(id, name))}>
+                    <Link
+                        className="block w-full"
+                        to={'/search'}
+                        onClick={() => dispatch(actions.searchStreams(id, name))}
+                    >
                         <div className="font-weight-bold" data-tip={name}>
                             <Truncate
                                 lines={1}
@@ -43,11 +47,6 @@ const GameCard = (props) => {
                             </Truncate>
                         </div>
                     </Link>
-                    <div>
-                        <span className=".gs-views">viewers: {viewers}</span>
-                        <br />
-                        {spanChannels && <span className=".gs-views">channels: {channels}</span>}
-                    </div>
                 </div>
             </div>
             {isTruncated && <ReactTooltip />}

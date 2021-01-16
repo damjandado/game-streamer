@@ -19,7 +19,7 @@ const StreamCard = (props) => {
 
     const activeChannel = () => {
         const { stream } = props;
-        dispatch(actions.embedStream({ stream }));
+        dispatch(actions.embedStream({ stream, user: stream._user }));
         dispatch(actions.saveActivity(stream));
     };
 
@@ -34,23 +34,23 @@ const StreamCard = (props) => {
         user_id,
         user_name,
         viewer_count,
-        ...streamProps
+        _user,
     } = stream;
     let userLogo;
     const width = userLogo ? 200 : '100%';
     const streamCover = formatImgUrl(thumbnail_url);
-    const gameImg = formatImgUrl(streamProps.box_art_url, 188, 250);
+    // const gameImg = formatImgUrl(box_art_url, 188, 250);
     return (
-        <div className="stream-card pb-2 col-12 col-sm-6 col-lg-4 col-xl-3">
+        <div className="stream-card pb-3 col-12 col-sm-6 col-lg-4 col-xl-3">
             <div className="gs-video-thumbnail">
                 <Link to={`/${user_name}`} onClick={activeChannel}>
                     <img className="stream-cover" src={streamCover} alt={title} style={{ width }} />
                 </Link>
             </div>
-            <div className="gs-stream-info">
+            <div className="gs-stream-info pt-1">
                 <div className="profile-image">
                     <figure className="gs-avatar">
-                        <img src={gameImg} alt="logo" />
+                        <img src={_user?.profile_image_url} alt="logo" />
                     </figure>
                 </div>
                 <div className="stream-details">

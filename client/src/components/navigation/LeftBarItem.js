@@ -1,46 +1,33 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-class LeftBarItem extends Component {
-  activeChannel() {
-    this.props.embedStream(this.props.ebdStream);
-    this.props.saveActivity(this.props.ebdStream);
-  }
+import { embedStream, saveActivity } from '../../actions';
+import { formatImgUrl } from '../../utils';
 
-  render() {
-    const { profileImage, name, game } = this.props;
+const LeftBarItem = ({ stream }) => {
+    const dispatch = useDispatch();
+    const activeChannel = () => {
+        dispatch(embedStream({ stream, user: stream._user }));
+        dispatch(saveActivity(stream));
+    };
+
+    const { _user, user_name, game_name } = stream;
     return (
-      <li className="list-group-item">
-        <Link to={`/${name}`} onClick={this.activeChannel.bind(this)}>
-          <div className="video-list media">
-            <div className="media-left">
-              <img
-                className="media-object"
-                src={profileImage}
-                alt="profileImage"
-              />
-            </div>
-            <div className="media-body">
-              <div className="media-heading">{name}</div>
-              <div>{game}</div>
-            </div>
-          </div>
-        </Link>
-      </li>
+        <li className="list-group-item">
+            <Link to={`/${user_name}`} onClick={activeChannel}>
+                <div className="video-list media">
+                    <div className="media-left">
+                        <img className="media-object" src={_user?.profile_image_url} alt="profileImage" />
+                    </div>
+                    <div className="media-body">
+                        <div className="media-heading">{user_name}</div>
+                        <div>{game_name}</div>
+                    </div>
+                </div>
+            </Link>
+        </li>
     );
-  }
-}
+};
 
-function mapStateToProps({ embed }) {
-  return { embed };
-}
-
-export default connect(
-  mapStateToProps,
-  {
-    embedStream: actions.embedStream,
-    saveActivity: actions.saveActivity
-  }
-)(LeftBarItem);
+export default LeftBarItem;

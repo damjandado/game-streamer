@@ -29,6 +29,7 @@ html {
   position: relative;
   height: 400px;
   width: 600px;
+  margin: 0 auto;
   border: none;
   background: none;
 }
@@ -135,16 +136,14 @@ nav#gs-header a:hover {
 }
 
 #gs-header {
+  height: 50px;
   white-space: nowrap;
   padding: 0;
 }
 
-.row > .gs-sidenav {
-  padding: 3rem 0 1rem;
-  margin: 0;
-}
-
 .gs-sidenav {
+  width: 240px;
+  height: calc(100vh - 50px);
   background-color: #17141f;
   overflow-y: hidden;
 }
@@ -174,15 +173,41 @@ nav#gs-header a:hover {
   text-decoration: none;
 }
 
+body {
+  overflow-y: hidden;
+}
+
 li {
   list-style-type: none;
+}
+
+html, body {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+}
+
+figure {
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.gs-content {
+  height: 100%;
+}
+
+.gs-main {
+  height: calc(100% - 50px);
+  overflow-y: auto;
 }
 
 .gs-stream-info {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  padding-top: 0.5rem;
   color: #4a484f;
 }
 
@@ -194,7 +219,6 @@ li {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  padding-top: 0.5rem;
   color: #4a484f;
   font-size: 0.9rem;
 }
@@ -204,13 +228,19 @@ li {
 }
 
 .gs-avatar {
-  width: 3rem;
-  height: 3rem;
+  width: 33px;
+  height: 33px;
+}
+
+.gs-avatar-large {
+  width: 50px;
+  height: 50px;
 }
 
 .gs-avatar img,
 .gs-avatar-40 img {
   width: 100%;
+  border-radius: 100%;
 }
 
 .gs-avatar-40 {
@@ -376,14 +406,15 @@ a#gs-logout:hover {
 }
 
 .dropdown .dropbtn {
-  font-size: 16px;
+  height: 50px;
+  padding: 14px 16px;
+  margin: 0;
   border: none;
   outline: none;
-  color: white;
-  padding: 14px 16px;
   background-color: inherit;
   font: inherit;
-  margin: 0;
+  font-size: 16px;
+  color: white;
 }
 
 .dropdown-content {

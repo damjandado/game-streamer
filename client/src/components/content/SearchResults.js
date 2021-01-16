@@ -11,7 +11,7 @@ class SearchResults extends Component {
         const { status, error, searchTerm } = this.props;
         const term = <span className="text-info">{searchTerm}</span>;
         return (
-            <h3 className="text-center text-muted">
+            <h3 className="text-center text-muted mb-3">
                 {
                     {
                         no_search: 'No search yet.',

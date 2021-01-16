@@ -1,6 +1,6 @@
 import axios from 'axios';
 import twitchId from '../config/keys';
-import { fetchFromTwitch } from '../utils';
+import { fetchFromTwitch, populateUser } from '../utils';
 import {
     FETCH_FEATURED,
     FETCH_TOPGAMES,
@@ -10,8 +10,6 @@ import {
     GET_USER,
     LOGIN_USER,
     FETCH_USER,
-    SEND_MAIL,
-    CHECK_MAIL,
     SAVE_ACTIVITY,
     EMBED_STREAM,
 } from './types';
@@ -19,24 +17,21 @@ import {
 export const getUser = (params) => async (dispatch) => {
     const url = 'https://api.twitch.tv/helix/users';
     try {
-        const { data } = await fetchFromTwitch(url, { params });
-        dispatch({ type: GET_USER, payload: data[0] });
-        dispatch(embedStream({ user: data[0] }));
+        const users = await fetchFromTwitch(url, { params });
+        dispatch({ type: GET_USER, payload: users[0] });
+        dispatch(embedStream({ user: users[0] }));
     } catch (err) {
-        console.log('getUser error', err);
+        console.log('getUser', err);
     }
 };
 
 export const getStream = (params) => async (dispatch) => {
     const url = 'https://api.twitch.tv/helix/streams';
     try {
-        let {
-            data,
-            pagination: { cursor },
-        } = await fetchFromTwitch(url, { params });
-        dispatch(embedStream({ stream: data[0] }));
+        const streams = await fetchFromTwitch(url, { params });
+        dispatch(embedStream({ stream: streams[0] }));
     } catch (err) {
-        console.log('getStream error', err);
+        console.log('getStream', err);
     }
 };
 
@@ -48,16 +43,15 @@ export const fetchUserData = () => async (dispatch, getState) => {
     dispatch({ type: FETCH_USER, payload: { user, twitchAccessToken } });
     dispatch({ type: FETCH_SEARCH, payload: { allGames: twitchData.games } });
     if (user) {
-        let payload = { status: 'loading' };
-        dispatch({ type: FETCH_DASHBOARD, payload });
+        dispatch({ type: FETCH_DASHBOARD, payload: { status: 'loading' } });
         try {
-            const res = await fetchUserTwitch(recommendation, twitchData);
-            const { games, streams } = res;
-            payload = { status: 'success', streams, games, };
-            dispatch({ type: FETCH_FEATURED, payload: { status: 'success', list: streams } });
-            dispatch({ type: FETCH_DASHBOARD, payload });
-        } catch (e) {
-            payload = { status: 'error' };
+            const status = 'success';
+            const { games, streams } = await fetchUserTwitch(recommendation, twitchData);
+            dispatch({ type: FETCH_DASHBOARD, payload: { status, streams, games } });
+            const populatedStreams = await populateUser(streams);
+            dispatch({ type: FETCH_DASHBOARD, payload: { status, streams: populatedStreams } });
+        } catch (err) {
+            console.log('fetchUserData', err);
         }
     }
 };
@@ -69,53 +63,34 @@ export const fetchUserTwitch = async (recommendation, twitchData) => {
     }));
     const streamPromises = [];
     let url = 'https://api.twitch.tv/helix/streams';
-    recommendation.users.forEach(user => {
+    recommendation.users.forEach((user) => {
         const params = { user_id: user.id };
         streamPromises.push(fetchFromTwitch(url, { params }));
     });
-    recommendation.games.forEach(game => {
+    recommendation.games.forEach((game) => {
         const params = { game_id: game.id };
         streamPromises.push(fetchFromTwitch(url, { params }));
     });
     if (!streamPromises.length) {
-        const { data } = await fetchFromTwitch(url);
-        return { streams: data.slice(0, 10), games: twitchData.games.slice(0, 10) };
+        const streams = await fetchFromTwitch(url);
+        return { streams: streams.slice(0, 10), games: twitchData.games.slice(0, 10) };
     }
     const found = {};
     const streams = [];
     const streamResults = await Promise.all(streamPromises);
-    for (let { data } of streamResults) {
+    for (let data of streamResults) {
         if (!data.length) continue;
         let stream = data[0];
         if (!found[stream.id]) {
             found[stream.id] = true;
         } else {
             found[stream.id] = true;
-            stream = data.find(s => s.id !== stream.id);
+            stream = data.find((s) => s.id !== stream.id);
             if (!stream) continue;
         }
         streams.push(stream);
     }
-    console.log('fetchedStreams', streams);
     return { streams, games };
-};
-
-export const sendMail = (values) => async (dispatch) => {
-    const res = await axios.post('/api/send_email', values);
-    try {
-        if (res.data.success) {
-            dispatch({ type: SEND_MAIL, userId: res.data.userId });
-        }
-    } catch (e) {}
-};
-
-export const checkEmail = (email) => async (dispatch) => {
-    const res = await axios.post('/api/check_email', email);
-    if (res.data.valid) {
-        dispatch({ type: CHECK_MAIL, payload: true });
-    } else {
-        dispatch({ type: CHECK_MAIL, payload: false });
-    }
 };
 
 export const saveActivity = (entity) => async (dispatch) => {
@@ -136,14 +111,15 @@ export const featuredApi = (limit = 20) => async (dispatch, getState) => {
     let payload = { status: 'loading', list: [] };
     dispatch({ type: FETCH_FEATURED, payload });
     try {
+        const status = 'success';
         const params = { first: limit };
-        const { data } = await fetchFromTwitch(url, { params });
-        const status = data.length ? 'success' : 'error';
-        payload = { status, list: data };
-    } catch (e) {
-        payload = { status: 'error' };
+        const streams = await fetchFromTwitch(url, { params });
+        dispatch({ type: FETCH_FEATURED, payload: { status, list: streams } });
+        const populatedStreams = await populateUser(streams);
+        dispatch({ type: FETCH_FEATURED, payload: { status, list: populatedStreams } });
+    } catch (err) {
+        console.log('featuredApi', err);
     }
-    dispatch({ type: FETCH_FEATURED, payload });
 };
 
 export const topGamesApi = (limit = 10, offset = 0, searchTerm) => async (dispatch, getState) => {
@@ -153,19 +129,19 @@ export const topGamesApi = (limit = 10, offset = 0, searchTerm) => async (dispat
     dispatch({ type: FETCH_SEARCH, payload });
     try {
         const options = { params: { first: limit } };
+        const status = 'success';
         if (!searchTerm) {
-            const { data } = await fetchFromTwitch(url, options);
-            payload = { status: 'success', list: data };
+            const list = await fetchFromTwitch(url, options);
+            payload = { status, list };
         } else {
             const { allGames } = getState().twitch;
             const term = searchTerm.toLowerCase();
             let foundGames = allGames.filter((item) => item.name.match(new RegExp(term, 'i')));
-            const status = foundGames.length ? 'success' : 'error';
             const payload = { searchTerm, foundGames, status };
             return dispatch({ type: FETCH_SEARCH, payload });
         }
     } catch (err) {
-        console.log('topGamesApi err', err);
+        console.log('topGamesApi', err);
         payload = { ...payload, status: 'error' };
     }
     dispatch({ type: FETCH_TOPGAMES, payload });
@@ -177,14 +153,14 @@ export const searchStreams = (gameId, gameName) => async (dispatch) => {
     const url = 'https://api.twitch.tv/helix/streams';
     const options = { params: { game_id: gameId } };
     try {
-        let {
-            data,
-            pagination: { cursor },
-        } = await fetchFromTwitch(url, options);
-        const status = data.length ? 'success' : 'error';
-        payload = { ...payload, status, foundStreams: data };
+        const status = 'success';
+        const foundStreams = await fetchFromTwitch(url, options);
+        payload = { ...payload, status, foundStreams };
         dispatch({ type: FETCH_SEARCH, payload });
-    } catch (e) {
+        const populatedStreams = await populateUser(foundStreams);
+        dispatch({ type: FETCH_SEARCH, payload: { status, foundStreams: populatedStreams } });
+    } catch (err) {
+        console.log('searchStreams', err);
         payload = { status: 'error' };
         dispatch({ type: FETCH_SEARCH, payload });
     }
@@ -204,22 +180,6 @@ export const fetchClips = (channel = 'Twitch', limit = 10) => async (dispatch) =
         status: 'success',
         clips: res.data.clips,
     });
-};
-
-export const fetchChannelStream = (id) => async (dispatch) => {
-    const res = await axios({
-        method: 'get',
-        url: `https://api.twitch.tv/kraken/channels/${id}`,
-        headers: {
-            'Client-ID': `${twitchId}`,
-            Accept: 'application/vnd.twitchtv.v5+json',
-        },
-    });
-    let stream;
-    try {
-        stream = res.data;
-    } catch (e) {}
-    dispatch(embedStream({ stream }));
 };
 
 export const fetchStreamByChannelName = (name) => async (dispatch) => {

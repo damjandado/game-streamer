@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
 import { withLoading } from '../Hoc';
-import TopStreamEmbed from '../presentationals/TopStreamEmbed';
+import TwitchEmbed from '../presentationals/TwitchEmbed';
 
 class AnonDash extends Component {
     render() {
         return (
             <div className="mainPage row">
                 <div className="col">
-                    <TopStreamEmbed channel={{ name: 'monstercat' }} />
+                    <TwitchEmbed channel={{ name: 'monstercat' }} />
                 </div>
             </div>
         );
