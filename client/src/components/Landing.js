@@ -14,7 +14,7 @@ import ConfirmRegistration from './auth/ConfirmRegistration';
 
 export default () => {
     return (
-        <div className="gs-main container-fluid p-4">
+        <div className="gs-main container-fluid px-4 py-3">
             <Switch>
                 <Route exact path="/" component={Dashboard} />
                 <Route path="/login" component={LoginNew} />

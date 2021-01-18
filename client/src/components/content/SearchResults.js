@@ -43,12 +43,11 @@ class SearchResults extends Component {
     renderGames = () => {
         const { foundGames } = this.props;
         if (!foundGames.length) return null;
-        console.log(foundGames);
         const listGames = foundGames.map((item) => <GameCard key={item.id} game={item} />);
         return (
             <>
                 {this.renderHeading('Games')}
-                <div className="row">{listGames}</div>
+                <div className="gs-games">{listGames}</div>
             </>
         );
     };
@@ -58,8 +57,8 @@ class SearchResults extends Component {
         if (status === 'loading') return <Loader />;
         return (
             <div className="main">
-                <div>{this.renderGames()}</div>
-                <div>{this.renderStreams()}</div>
+                <>{this.renderGames()}</>
+                <>{this.renderStreams()}</>
             </div>
         );
     }

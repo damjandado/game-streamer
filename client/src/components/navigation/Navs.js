@@ -31,7 +31,7 @@ class Navs extends Component {
       );
     });
     return (
-      <ul className="navbar-nav mr-sm-4" role="tablist">
+      <ul className="navbar-nav mr-sm-2 mr-md-2" role="tablist">
         {list}
       </ul>
     );

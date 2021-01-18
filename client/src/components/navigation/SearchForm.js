@@ -6,44 +6,34 @@ import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 
 class SearchForm extends Component {
-  onSearch = ({ search }) => {
-    console.log('search for', search);
-    const { topGamesApi, history } = this.props;
-    topGamesApi(100, 0, search);
-    history.push('/search');
-  }
+    onSearch = ({ search }) => {
+        console.log('search for', search);
+        const { topGamesApi, history } = this.props;
+        topGamesApi(100, 0, search);
+        history.push('/search');
+    };
 
-  render() {
-    const { handleSubmit } = this.props;
-    return (
-      <form
-        className="form-inline my-2 my-lg-0"
-        onSubmit={handleSubmit(this.onSearch)}
-      >
-        <Field
-          className="form-control-sm mr-sm-2"
-          type="text"
-          name="search"
-          placeholder="Search"
-          component="input"
-          size={40}
-        />
-        <button
-          className="btn btn-sm text-white gs-button my-2 my-sm-0"
-          type="submit"
-        >
-          {`Search`}
-        </button>
-      </form>
-    );
-  }
+    render() {
+        const { handleSubmit } = this.props;
+        return (
+            <form className="my-2 my-lg-0 flex-auto d-flex" onSubmit={handleSubmit(this.onSearch)}>
+                <Field
+                    className="form-control-md flex-auto max-w-md p-1 px-2 mr-sm-2 rounded bg-gray-100"
+                    type="text"
+                    name="search"
+                    placeholder="Search"
+                    component="input"
+                />
+                <button className="text-white gs-button d-none d-md-block" type="submit">
+                    {`Search`}
+                </button>
+            </form>
+        );
+    }
 }
 
-SearchForm = connect(
-  null,
-  actions
-)(SearchForm);
+SearchForm = connect(null, actions)(SearchForm);
 
 export default reduxForm({
-  form: 'searchForm'
+    form: 'searchForm',
 })(withRouter(SearchForm));

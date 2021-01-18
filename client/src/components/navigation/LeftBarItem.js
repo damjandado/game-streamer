@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { embedStream, saveActivity } from '../../actions';
-import { formatImgUrl } from '../../utils';
 
 const LeftBarItem = ({ stream }) => {
     const dispatch = useDispatch();
@@ -16,9 +15,13 @@ const LeftBarItem = ({ stream }) => {
     return (
         <li className="list-group-item">
             <Link to={`/${user_name}`} onClick={activeChannel}>
-                <div className="video-list media">
-                    <div className="media-left">
-                        <img className="media-object" src={_user?.profile_image_url} alt="profileImage" />
+                <div className="video-list media d-flex">
+                    <div className="media-left d-flex">
+                        <img
+                            className="media-object self-center rounded-full"
+                            src={_user?.profile_image_url}
+                            alt="profileImage"
+                        />
                     </div>
                     <div className="media-body">
                         <div className="media-heading">{user_name}</div>

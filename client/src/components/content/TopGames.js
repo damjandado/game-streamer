@@ -19,11 +19,11 @@ const TopGames = () => {
     const gameCardItems = games.list.map((item) => <GameCard key={item.id} game={item} />);
     return (
         <div className="main">
-            <h3 className="text-center text-muted">Top Games on Twitch</h3>
+            <h3 className="text-center text-muted mb-3">Top Games on Twitch</h3>
             {
                 {
                     loading: <Loader />,
-                    success: <div className="row game-cards">{gameCardItems}</div>,
+                    success: <div className="gs-games">{gameCardItems}</div>,
                     error: (
                         <div>
                             <Alert error={status} />

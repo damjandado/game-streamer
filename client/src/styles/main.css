@@ -130,15 +130,24 @@ nav#gs-header a:hover {
 
 .gs-button {
   background-color: transparent;
+  border: none;
   border-radius: 5px;
+  font-size: 1.1rem;
+}
+
+.gs-button:hover {
   border: 1px solid #ccc;
-  padding: .5rem 1rem;
 }
 
 #gs-header {
-  height: 50px;
   white-space: nowrap;
   padding: 0;
+}
+
+@media (min-width: 576px) {
+  #gs-header {
+    height: 50px;
+  }
 }
 
 .gs-sidenav {
@@ -287,7 +296,7 @@ figure {
 }
 
 img.media-object {
-  max-width: 30px;
+  max-width: 33px;
 }
 
 .media-body {
@@ -304,7 +313,7 @@ img.media-object {
 /* embedTwitchCSS -- Copyright (c) 2016 Gregle */
 .twitchWrapper {
   position: relative;
-  max-width: 1000px;
+  max-width: 980px;
   margin: 0 auto;
 }
 
@@ -369,8 +378,14 @@ img.media-object {
   width: 100%;
 }
 
+.gs-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
 .game-card {
   min-width: 140px;
+  max-width: 250px;
 }
 
 .game-card img {

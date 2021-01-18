@@ -13,7 +13,7 @@ const LeftBar = () => {
         populateUser(featured.slice(0, 5)).then((res) => setRecommended(res));
     }, [featured]);
     return (
-        <div className="gs-sidenav">
+        <div className="gs-sidenav d-none d-sm-block">
             <div>
                 <h6>Featured Broadcasters</h6>
                 <hr className="gs-hr" />

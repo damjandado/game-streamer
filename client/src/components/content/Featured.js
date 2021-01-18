@@ -19,7 +19,7 @@ const Featured = () => {
     const streamCardItems = featured.list.map((item) => <StreamCard key={item.id} stream={item} />);
     return (
         <div className="main">
-            <h3 className="text-center text-muted">Featured Streams</h3>
+            <h3 className="text-center text-muted mb-3">Featured Streams</h3>
             {
                 {
                     loading: <Loader />,

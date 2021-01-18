@@ -5,20 +5,34 @@ import { useDispatch } from 'react-redux';
 import { getUser, getStream, searchStreams } from '../../actions';
 import { formatImgUrl } from '../../utils';
 
-const TwitchEmbed = ({ channel, ...props }) => {
+const defaultStream = {
+    user_name: 'Monstercat',
+    game_name: 'Music',
+    title: 'Non Stop Music - Monstercat Radio 🎶',
+    thumbnail_url:
+        'https://static-cdn.jtvnw.net/previews-ttv/live_user_monstercat-{width}x{height}.jpg',
+};
+
+const defaultUser = {
+    login: 'monstercat',
+    profile_image_url:
+        'https://static-cdn.jtvnw.net/jtv_user_pictures/monstercat-profile_image-3e109d75f8413319-300x300.jpeg',
+};
+
+const TwitchEmbed = ({ channel = { stream: defaultStream, user: defaultUser }, ...props }) => {
+    console.log(channel);
     const dispatch = useDispatch();
-    const { name, user, stream } = channel;
-    const { game_id, game_name, title, thumbnail_url, viewer_count } = stream || {};
+    const { user, stream } = channel;
+    const { user_name, game_id, game_name, title, viewer_count } = stream || defaultStream;
     const { profile_image_url } = user || {};
     const parent = encodeURIComponent(process.env.REACT_APP_DOMAIN);
-    const logo = formatImgUrl(thumbnail_url, '300');
 
     useEffect(() => {
         if (!stream) {
-            dispatch(getStream({ user_login: name }));
+            dispatch(getStream({ user_login: user_name }));
         }
         if (!user) {
-            dispatch(getUser({ login: name }));
+            dispatch(getUser({ login: user_name }));
         }
     }, []);
 
@@ -26,7 +40,7 @@ const TwitchEmbed = ({ channel, ...props }) => {
         <div className="twitchWrapper">
             <div className="twitchStream">
                 <iframe
-                    src={`https://player.twitch.tv/?channel=${channel.name}&parent=${parent}`}
+                    src={`https://player.twitch.tv/?channel=${user_name}&parent=${parent}`}
                     width="100%"
                     height="auto"
                     frameBorder="0"
@@ -52,7 +66,9 @@ const TwitchEmbed = ({ channel, ...props }) => {
                             </div>
                         </div>
                         <div className="text-right">
-                            <span className="gs-views">Total Views: {viewer_count}</span>
+                            {viewer_count && (
+                                <span className="gs-views">Total Views: {viewer_count}</span>
+                            )}
                         </div>
                     </div>
 
