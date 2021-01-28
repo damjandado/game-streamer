@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import SearchForm from './SearchForm';
@@ -75,14 +75,14 @@ const Header = () => {
                     >
                         <span className="navbar-toggler-icon" />
                     </button>
-                    <a id="game-streamer" className="navbar-brand" href="/">
+                    <Link id="game-streamer" className="navbar-brand" to="/">
                         <img
                             src={logo}
                             id="gs-logo"
                             className="d-inline-block align-top"
                             alt="logo"
                         />
-                    </a>
+                    </Link>
                 </div>
                 <div
                     className={`${

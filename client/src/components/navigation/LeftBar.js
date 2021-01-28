@@ -10,7 +10,8 @@ const LeftBar = () => {
     const featured = useSelector((state) => state.twitch.featured.list);
     const [recommended, setRecommended] = useState(featured.slice(0, 5));
     useEffect(() => {
-        populateUser(featured.slice(0, 5)).then((res) => setRecommended(res));
+        !recommended.length &&
+            populateUser(featured.slice(0, 5)).then((res) => setRecommended(res));
     }, [featured]);
     return (
         <div className="gs-sidenav d-none d-sm-block">

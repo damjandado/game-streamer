@@ -20,7 +20,6 @@ const StreamCard = (props) => {
     const activeChannel = () => {
         const { stream } = props;
         dispatch(actions.embedStream({ stream, user: stream._user }));
-        dispatch(actions.saveActivity(stream));
     };
 
     const { stream } = props;

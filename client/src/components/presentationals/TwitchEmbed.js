@@ -20,7 +20,6 @@ const defaultUser = {
 };
 
 const TwitchEmbed = ({ channel = { stream: defaultStream, user: defaultUser }, ...props }) => {
-    console.log(channel);
     const dispatch = useDispatch();
     const { user, stream } = channel;
     const { user_name, game_id, game_name, title, viewer_count } = stream || defaultStream;
@@ -47,8 +46,8 @@ const TwitchEmbed = ({ channel = { stream: defaultStream, user: defaultUser }, .
                     scrolling="no"
                     title={title}
                 />
-                <div id="gs-channel-info" className="pt-3 px-3">
-                    <div className="d-flex justify-between">
+                <div id="gs-channel-info" className="pt-3 px-2">
+                    <div className="gs-desc grid">
                         <div className="gs-stream-info">
                             <div className="profile-image">
                                 <figure className="gs-avatar gs-avatar-large">
@@ -71,8 +70,6 @@ const TwitchEmbed = ({ channel = { stream: defaultStream, user: defaultUser }, .
                             )}
                         </div>
                     </div>
-
-                    <div className="gs-desc">{''}</div>
                 </div>
             </div>
         </div>

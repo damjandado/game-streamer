@@ -48,7 +48,7 @@ const bootstrap = async () => {
         };
         console.time('get new games');
         let newGames = [];
-        const iterator = Array(0).keys();
+        const iterator = Array(1).keys();
         for (let _ of iterator) {
             const axiosRes = await axios(config).catch((_) => ({}));
             if (!axiosRes.data) continue;

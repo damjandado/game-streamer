@@ -28,7 +28,7 @@ const Dashboard = () => {
             <div className="row">{streamCardStreams}</div>
             <hr className="mt-0 mb-4" />
             <h3 className="text-center text-muted mb-3">Recommended Games</h3>
-            <div className="row">{streamCardGames}</div>
+            <div className="gs-games">{streamCardGames}</div>
         </>
     );
     return (

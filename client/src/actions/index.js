@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { startSubmit } from 'redux-form';
 import twitchId from '../config/keys';
 import { fetchFromTwitch, populateUser } from '../utils';
 import {
@@ -88,6 +89,7 @@ export const fetchUserTwitch = async (recommendation, twitchData) => {
             stream = data.find((s) => s.id !== stream.id);
             if (!stream) continue;
         }
+        if (streams.find(s => s.id === stream.id)) continue;
         streams.push(stream);
     }
     return { streams, games };

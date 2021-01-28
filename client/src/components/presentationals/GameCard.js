@@ -20,7 +20,7 @@ const GameCard = (props) => {
     const { game } = props;
     const { id, name, box_art_url } = game;
     return (
-        <div className="game-card pb-3 col">
+        <div className="game-card pb-3 px-3">
             <div className="gs-video-thumbnail">
                 <Link to={'/search'} onClick={() => dispatch(actions.searchStreams(id, name))}>
                     <img

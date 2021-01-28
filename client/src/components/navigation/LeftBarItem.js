@@ -8,7 +8,6 @@ const LeftBarItem = ({ stream }) => {
     const dispatch = useDispatch();
     const activeChannel = () => {
         dispatch(embedStream({ stream, user: stream._user }));
-        dispatch(saveActivity(stream));
     };
 
     const { _user, user_name, game_name } = stream;

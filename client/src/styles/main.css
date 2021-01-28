@@ -279,6 +279,10 @@ figure {
   font-size: 1rem;
 }
 
+.gs-desc {
+    grid-template-columns: 60% 40%;;
+}
+
 .text-16 {
   font-size: 1rem;
 }

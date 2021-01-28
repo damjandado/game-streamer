@@ -23,7 +23,7 @@ const processQuery = (user, prop, count) => {
     const select = user.visits[prop];
 
     let mostVisited = sortProperties(select);
-    mostVisited = mostVisited.slice(0, count);
+    mostVisited = mostVisited.slice(-count);
 
     let recent = remove_duplicates(select);
     recent = recent.slice(recent.length - count);
