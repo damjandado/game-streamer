@@ -3,7 +3,7 @@ import axios from 'axios';
 const request = async (opts) => {
     try {
         opts.baseURL = process.env.REACT_APP_SERVER_URL;
-        opts.withCredentials = opts.withCredentials || true;
+        opts.withCredentials = opts.withCredentials ?? true;
         const { data } = await axios(opts);
         return data;
     } catch (err) {

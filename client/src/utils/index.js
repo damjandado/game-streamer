@@ -8,6 +8,7 @@ export const fetchFromTwitch = async (url, options = {}, withPagination = false)
     const accessToken = localStorage.getItem('twAccessToken');
     const config = {
         ...options,
+        withCredentials: false,
         headers: { 'Client-ID': twitchId, Authorization: `Bearer ${accessToken}` },
     };
     try {
