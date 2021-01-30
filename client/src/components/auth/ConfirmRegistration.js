@@ -1,45 +1,41 @@
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 
-import NotFound from "../presentationals/NotFound";
+import { post } from '../../utils/http';
+import NotFound from '../presentationals/NotFound';
 
-class ConfirmRegistration extends Component {
-  state = { success: false, errorPage: false, email: "" };
+const ConfirmRegistration = ({ match, history }) => {
+    const [state, setState] = useState({ success: false, errorPage: false, email: '' });
 
-  async componentDidMount() {
-    const {
-      match: { params },
-      history
-    } = this.props;
-    const res = await axios({
-      method: "POST",
-      url: "/api/users/userid",
-      data: { userId: params.userId, user: false }
-    });
-    if (res.data.success) {
-      this.setState({ success: true });
-      setTimeout(() => {
-        history.push("/");
-      }, 3000);
-    } else {
-      this.setState({ errorPage: true });
-    }
-  }
+    useEffect(() => {
+        const { params } = match;
+        post('/api/users/userid', { userId: params.userId, user: false })
+            .then((data) => {
+                if (data.success) {
+                    setState({ ...state, success: true });
+                    setTimeout(() => {
+                        history.push('/');
+                    }, 3000);
+                } else {
+                    setState({ ...state, errorPage: true });
+                }
+            })
+            .catch((err) => {
+                console.log('confirm registration', err);
+            });
+    }, []);
 
-  render() {
-    if (this.state.success) {
-      return (
-        <div>
-          <h4>You have successfully signed up!</h4>
-          <p>You'll be redireted shortly...</p>
-        </div>
-      );
-    } else if (this.state.errorPage) {
-      return <NotFound />;
+    if (state.success) {
+        return (
+            <div>
+                <h4>You have successfully signed up!</h4>
+                <p>You'll be redireted shortly...</p>
+            </div>
+        );
+    } else if (state.errorPage) {
+        return <NotFound />;
     }
     return <div />;
-  }
-}
+};
 
 export default withRouter(ConfirmRegistration);

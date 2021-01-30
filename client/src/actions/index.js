@@ -1,6 +1,4 @@
-import axios from 'axios';
-import { startSubmit } from 'redux-form';
-import twitchId from '../config/keys';
+import { get, post } from '../utils/http';
 import { fetchFromTwitch, populateUser } from '../utils';
 import {
     FETCH_FEATURED,
@@ -9,7 +7,6 @@ import {
     FETCH_DASHBOARD,
     FETCH_CLIPS,
     GET_USER,
-    LOGIN_USER,
     FETCH_USER,
     SAVE_ACTIVITY,
     EMBED_STREAM,
@@ -37,23 +34,26 @@ export const getStream = (params) => async (dispatch) => {
 };
 
 export const fetchUserData = () => async (dispatch, getState) => {
-    const axiosRes = await axios.get('/api/current_user', { withCredentials: true });
-    const { user, recommendation, twitchAccessToken, twitchData } = axiosRes.data;
-    localStorage.setItem('twitchAccessToken', twitchAccessToken);
-    dispatch({ type: LOGIN_USER });
-    dispatch({ type: FETCH_USER, payload: { user, twitchAccessToken } });
-    dispatch({ type: FETCH_SEARCH, payload: { allGames: twitchData.games } });
-    if (user) {
-        dispatch({ type: FETCH_DASHBOARD, payload: { status: 'loading' } });
-        try {
+    dispatch({ type: FETCH_USER, payload: { isWaiting: true } });
+    dispatch({ type: FETCH_DASHBOARD, payload: { status: 'loading' } });
+    try {
+        const { user, twAccessToken, twitchData, recommendation } = await get('/api/current_user');
+        localStorage.setItem('twAccessToken', twAccessToken);
+        dispatch({ type: FETCH_USER, payload: { twAccessToken, isWaiting: false } });
+        dispatch({ type: FETCH_SEARCH, payload: { allGames: twitchData.games } });
+        if (user) {
+            dispatch({ type: FETCH_USER, payload: { user } });
             const status = 'success';
             const { games, streams } = await fetchUserTwitch(recommendation, twitchData);
             dispatch({ type: FETCH_DASHBOARD, payload: { status, streams, games } });
             const populatedStreams = await populateUser(streams);
-            dispatch({ type: FETCH_DASHBOARD, payload: { status, streams: populatedStreams } });
-        } catch (err) {
-            console.log('fetchUserData', err);
+            dispatch({
+                type: FETCH_DASHBOARD,
+                payload: { status, streams: populatedStreams },
+            });
         }
+    } catch (err) {
+        console.log(err);
     }
 };
 
@@ -74,7 +74,10 @@ export const fetchUserTwitch = async (recommendation, twitchData) => {
     });
     if (!streamPromises.length) {
         const streams = await fetchFromTwitch(url);
-        return { streams: streams.slice(0, 10), games: twitchData.games.slice(0, 10) };
+        return {
+            streams: streams.slice(0, 10),
+            games: twitchData.games.slice(0, 10),
+        };
     }
     const found = {};
     const streams = [];
@@ -89,16 +92,19 @@ export const fetchUserTwitch = async (recommendation, twitchData) => {
             stream = data.find((s) => s.id !== stream.id);
             if (!stream) continue;
         }
-        if (streams.find(s => s.id === stream.id)) continue;
+        if (streams.find((s) => s.id === stream.id)) continue;
         streams.push(stream);
     }
     return { streams, games };
 };
 
 export const saveActivity = (entity) => async (dispatch) => {
-    const res = await axios.post('/api/twitch/users', entity, { withCredentials: true });
-
-    dispatch({ type: SAVE_ACTIVITY, payload: res.data });
+    try {
+        const res = await post('/api/twitch/users', entity);
+        dispatch({ type: SAVE_ACTIVITY, payload: res.data });
+    } catch (err) {
+        console.log('save activity', err);
+    }
 };
 
 export const embedStream = (payload) => {
@@ -118,7 +124,10 @@ export const featuredApi = (limit = 20) => async (dispatch, getState) => {
         const streams = await fetchFromTwitch(url, { params });
         dispatch({ type: FETCH_FEATURED, payload: { status, list: streams } });
         const populatedStreams = await populateUser(streams);
-        dispatch({ type: FETCH_FEATURED, payload: { status, list: populatedStreams } });
+        dispatch({
+            type: FETCH_FEATURED,
+            payload: { status, list: populatedStreams },
+        });
     } catch (err) {
         console.log('featuredApi', err);
     }
@@ -160,7 +169,10 @@ export const searchStreams = (gameId, gameName) => async (dispatch) => {
         payload = { ...payload, status, foundStreams };
         dispatch({ type: FETCH_SEARCH, payload });
         const populatedStreams = await populateUser(foundStreams);
-        dispatch({ type: FETCH_SEARCH, payload: { status, foundStreams: populatedStreams } });
+        dispatch({
+            type: FETCH_SEARCH,
+            payload: { status, foundStreams: populatedStreams },
+        });
     } catch (err) {
         console.log('searchStreams', err);
         payload = { status: 'error' };
@@ -168,34 +180,17 @@ export const searchStreams = (gameId, gameName) => async (dispatch) => {
     }
 };
 
-export const fetchClips = (channel = 'Twitch', limit = 10) => async (dispatch) => {
-    const res = await axios({
-        method: 'get',
-        url: `https://api.twitch.tv/kraken/clips/top?channel=${channel}&period=week&limit=${limit}`,
-        headers: {
-            'Client-ID': twitchId,
-            Accept: 'application/vnd.twitchtv.v5+json',
-        },
-    });
-    dispatch({
-        type: FETCH_CLIPS,
-        status: 'success',
-        clips: res.data.clips,
-    });
-};
-
-export const fetchStreamByChannelName = (name) => async (dispatch) => {
+export const fetchClips = (videoId, userId, gameId) => async (dispatch) => {
+    const url = 'https://api.twitch.tv/helix/videos';
+    const options = { params: { id: videoId, game_id: gameId, user_id: userId } };
     try {
-        const res = await axios({
-            method: 'get',
-            url: `https://api.twitch.tv/kraken/channels/${name}`,
-            headers: {
-                'Client-ID': `${twitchId}`,
-            },
+        const data = await fetchFromTwitch(url, options);
+        dispatch({
+            type: FETCH_CLIPS,
+            status: 'success',
+            clips: data,
         });
-        const stream = res.data;
-        dispatch(embedStream({ stream }));
-    } catch (e) {
-        dispatch({ type: 'NOT_FOUND', found: false });
+    } catch (err) {
+        console.log('fetch videos', err);
     }
 };

@@ -76,7 +76,7 @@ const checkToken = () =>
     axios
         .get('https://id.twitch.tv/oauth2/validate', {
             headers: {
-                Authorization: `OAuth ${twitchAccessToken}`,
+                Authorization: `OAuth ${twAccessToken}`,
             },
         })
         .then((res) => res.data)

@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV === "production") {
-  module.exports = require("./prod").twitchAPI;
+if (process.env.NODE_ENV === 'production') {
+    module.exports = require('./prod').twitchAPI;
 } else {
-  module.exports = require("./dev").twitchAPI;
+    module.exports = require('./dev').twitchAPI;
 }

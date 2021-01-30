@@ -34,4 +34,4 @@ const processQuery = (user, prop, count) => {
 
 module.exports = {
     getUserRecommendations,
-}
+};

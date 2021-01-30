@@ -4,27 +4,24 @@ import './styles/main.css';
 import './styles/login.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import reducer from './reducers';
 
+import reducer from './reducers';
 import App from './components/App';
-import axios from 'axios';
-window.axios = axios;
 
 const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 let store;
 if (reduxDevTools) {
-	store = createStore(reducer, compose(applyMiddleware(thunk), reduxDevTools));
+    store = createStore(reducer, compose(applyMiddleware(thunk), reduxDevTools));
 } else {
-	store = createStore(reducer, applyMiddleware(thunk));
+    store = createStore(reducer, applyMiddleware(thunk));
 }
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.querySelector('#root')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.querySelector('#root')
 );

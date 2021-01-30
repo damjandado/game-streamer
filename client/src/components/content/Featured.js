@@ -8,12 +8,12 @@ import Alert from '../presentationals/Alert';
 
 const Featured = () => {
     const { featured } = useSelector((state) => state.twitch);
-    const { twitchAccessToken } = useSelector((state) => state.auth);
+    const { twAccessToken } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
     useEffect(() => {
-        twitchAccessToken && dispatch(actions.featuredApi(100));
-    }, [twitchAccessToken]);
+        twAccessToken && dispatch(actions.featuredApi(100));
+    }, [twAccessToken]);
 
     const { status } = featured;
     const streamCardItems = featured.list.map((item) => <StreamCard key={item.id} stream={item} />);

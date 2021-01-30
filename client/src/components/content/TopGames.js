@@ -8,13 +8,13 @@ import Alert from '../presentationals/Alert';
 
 const TopGames = () => {
     const games = useSelector((state) => state.twitch.top);
-    const { twitchAccessToken } = useSelector((state) => state.auth);
+    const { twAccessToken } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
     useEffect(() => {
-        twitchAccessToken && dispatch(actions.topGamesApi(60, 0));
-    }, [twitchAccessToken]);
-    
+        twAccessToken && dispatch(actions.topGamesApi(60, 0));
+    }, [twAccessToken]);
+
     const { status } = games;
     const gameCardItems = games.list.map((item) => <GameCard key={item.id} game={item} />);
     return (

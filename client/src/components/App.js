@@ -9,14 +9,14 @@ import * as actions from '../actions';
 
 const App = () => {
     const dispatch = useDispatch();
-    const twitchAccessToken = useSelector(state => state.auth.twitchAccessToken);
+    const twAccessToken = useSelector((state) => state.auth.twAccessToken);
     useEffect(() => {
         dispatch(actions.fetchUserData());
     }, []);
-    
+
     useEffect(() => {
-        twitchAccessToken && dispatch(actions.featuredApi());
-    }, [twitchAccessToken]);
+        twAccessToken && dispatch(actions.featuredApi());
+    }, [twAccessToken]);
 
     return (
         <Router>

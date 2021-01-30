@@ -1,20 +1,19 @@
-import { FETCH_USER, LOGIN_USER, SEND_MAIL, CHECK_MAIL } from '../actions/types';
+import { FETCH_USER, SEND_MAIL, CHECK_MAIL } from '../actions/types';
 
 const initialState = {
     isWaiting: false,
     authenticated: null,
-    twitchAccessToken: '',
+    twAccessToken: '',
 };
 
 export default (state = initialState, { type, payload }) => {
     switch (type) {
         case FETCH_USER:
-            const { user, twitchAccessToken } = payload;
-            return user
-                ? { ...state, user, twitchAccessToken, authenticated: true, isWaiting: false }
-                : { ...state, user: null, twitchAccessToken, authenticated: false, isWaiting: false };
-        case LOGIN_USER:
-            return Object.assign({}, state, { isWaiting: true });
+            return {
+                ...state,
+                ...payload,
+                authenticated: payload.user ? true : false,
+            };
         case CHECK_MAIL:
             return Object.assign({}, state, { emailExists: action.payload });
         case SEND_MAIL:

@@ -13,10 +13,7 @@ exports.flatten = (arr) => {
 };
 
 exports.remove_duplicates = (arr) =>
-    arr.filter(
-        (thing, index, self) =>
-            self.findIndex((t) => t.id === thing.id) === index
-    );
+    arr.filter((thing, index, self) => self.findIndex((t) => t.id === thing.id) === index);
 
 exports.count_items = (arr) => {
     return arr.reduce(function (prev, cur) {

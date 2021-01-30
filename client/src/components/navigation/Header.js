@@ -11,8 +11,6 @@ import logo from '../../images/logo_ticc_b.png';
 const Header = () => {
     const [dropdownActive, setDropdownActive] = useState(false);
 
-    const onLogout = () => {};
-
     const renderContent = () => {
         const auth = useSelector((state) => state.auth);
         const { authenticated, user } = auth;

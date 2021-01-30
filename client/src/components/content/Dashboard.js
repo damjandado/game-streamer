@@ -8,17 +8,11 @@ import Alert from '../presentationals/Alert';
 import TwitchEmbed from '../presentationals/TwitchEmbed';
 
 const Dashboard = () => {
-    const { auth, twitch } = useSelector(({ auth, twitch }) => ({ auth, twitch }));
+    const { auth, twitch } = useSelector(({ auth, twitch }) => ({
+        auth,
+        twitch,
+    }));
     const { dashboard } = twitch;
-    if (!auth.authenticated)
-        return (
-            <div className="mainPage row">
-                <div className="col">
-                    <TwitchEmbed />
-                </div>
-            </div>
-        );
-
     const { status, streams, games } = dashboard;
     const streamCardStreams = streams.map((bc) => <StreamCard key={bc.id} stream={bc} />);
     const streamCardGames = games.map((gm) => <GameCard key={gm.id} game={gm} />);
@@ -31,6 +25,14 @@ const Dashboard = () => {
             <div className="gs-games">{streamCardGames}</div>
         </>
     );
+    if (!auth.authenticated && !auth.isWaiting)
+        return (
+            <div className="mainPage row">
+                <div className="col">
+                    <TwitchEmbed />
+                </div>
+            </div>
+        );
     return (
         <div className="main">
             {

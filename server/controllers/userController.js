@@ -12,7 +12,9 @@ exports.games = async (req, res) => {
     let { games } = appUser.visits;
     let listOfGames = remove_duplicates(games);
     listOfGames = listOfGames.map((item) => encodeURI(item));
-    const gamesInstance = new Game({ games: await twitchSvc.fetchGames(listOfGames) });
+    const gamesInstance = new Game({
+        games: await twitchSvc.fetchGames(listOfGames),
+    });
     console.log(gamesInstance);
     try {
         const lg = await gamesInstance.save();
@@ -30,7 +32,7 @@ exports.users = async (req, res) => {
     const twitchUser = { id: user_id, name: user_name };
     const { games, users } = appUser.visits;
     if (game_id) {
-        const existingGame = games.find(g => g.id === game_id);
+        const existingGame = games.find((g) => g.id === game_id);
         if (existingGame) {
             existingGame.count = (existingGame.count || 0) + 1;
         } else {
@@ -39,7 +41,7 @@ exports.users = async (req, res) => {
         }
     }
     if (user_id) {
-        const existingTwitchUser = users.find(u => u.id === user_id);
+        const existingTwitchUser = users.find((u) => u.id === user_id);
         if (existingTwitchUser) {
             existingTwitchUser.count = (existingTwitchUser.count || 0) + 1;
         } else {
@@ -63,12 +65,12 @@ exports.currentUser = async (req, res) => {
             return res.send(req.user);
         }
     }
-    let twitchAccessToken = await twitchSvc.getToken(req.user?.id);
+    let twAccessToken = await twitchSvc.getToken(req.user?.id);
     let recommendation;
     if (req.user) {
         recommendation = userSvc.getUserRecommendations(req.user);
     }
-    res.send({ user: req.user, recommendation, twitchAccessToken, twitchData });
+    res.send({ user: req.user, recommendation, twAccessToken, twitchData });
 };
 
 exports.currentUserDb = async (req, res) => {

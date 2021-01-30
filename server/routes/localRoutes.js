@@ -22,7 +22,6 @@ module.exports = (app) => {
     app.get('/api/twitch/dashboard', requireLogin, userCtrl.dashboard);
     app.get('/api/current_user_db', requireLogin, userCtrl.currentUserDb);
 
-
     // app.post('/api/registration', async (req, res) => {
     //   if (req.body.logemail && req.body.logpassword) {
     //     console.log('req.session', req.session);

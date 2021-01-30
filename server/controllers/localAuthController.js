@@ -143,7 +143,7 @@ exports.findByUserId = async (req, res) => {
 
 exports.confirmUser = async (req, res) => {
     const user = await User.findOne({ userId: req.params.id });
-    req.logIn(user, loginErr => {
+    req.logIn(user, (loginErr) => {
         if (loginErr) {
             console.log(loginErr);
         }

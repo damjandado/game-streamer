@@ -44,7 +44,10 @@ const bootstrap = async () => {
             url,
             method: 'get',
             params: { first: 100 },
-            headers: { 'Client-ID': twitchClientID, Authorization: `Bearer ${accessToken}` },
+            headers: {
+                'Client-ID': twitchClientID,
+                Authorization: `Bearer ${accessToken}`,
+            },
         };
         console.time('get new games');
         let newGames = [];

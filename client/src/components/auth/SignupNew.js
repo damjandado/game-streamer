@@ -1,30 +1,24 @@
-import React, { Component } from "react";
-import { reduxForm } from "redux-form";
-import SignupForm from "./SignupForm";
-import SignupFormReview from "./SignupFormReview";
+import React, { Component } from 'react';
+import { reduxForm } from 'redux-form';
+import SignupForm from './SignupForm';
+import SignupFormReview from './SignupFormReview';
 
 class SignupNew extends Component {
-  state = { showFormReview: false };
+    state = { showFormReview: false };
 
-  renderContent() {
-    if (this.state.showFormReview) {
-      return (
-        <SignupFormReview
-          onBack={() => this.setState({ showFormReview: false })}
-        />
-      );
+    renderContent() {
+        if (this.state.showFormReview) {
+            return <SignupFormReview onBack={() => this.setState({ showFormReview: false })} />;
+        }
+
+        return <SignupForm onNext={() => this.setState({ showFormReview: true })} />;
     }
 
-    return (
-      <SignupForm onNext={() => this.setState({ showFormReview: true })} />
-    );
-  }
-
-  render() {
-    return <div>{this.renderContent()}</div>;
-  }
+    render() {
+        return <div>{this.renderContent()}</div>;
+    }
 }
 
 export default reduxForm({
-  form: "registrationForm"
+    form: 'registrationForm',
 })(SignupNew);
