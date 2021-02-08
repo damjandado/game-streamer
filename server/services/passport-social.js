@@ -8,12 +8,10 @@ const Token = require('../models/Token');
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
-    console.log('are you serious?');
     done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-    console.log('are you unSerious?');
     User.findById(id).then((user) => {
         done(null, user);
     });
@@ -45,7 +43,6 @@ passport.use(
                         userId: existingUser.id,
                     }).save();
                 }
-                console.log(token);
                 await existingUser.save();
                 return done(null, existingUser);
             }

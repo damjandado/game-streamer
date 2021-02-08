@@ -51,12 +51,11 @@ const bootstrap = async () => {
         };
         console.time('get new games');
         let newGames = [];
-        const iterator = Array(process.env.TWITCH_ITER).keys();
+        const iterator = Array(+process.env.TWITCH_ITER).keys();
         for (let _ of iterator) {
-            const axiosRes = await axios(config).catch((_) => ({}));
-            if (!axiosRes.data) continue;
+            const axiosRes = await axios(config).catch((_) => null);
+            if (!axiosRes?.data) continue;
             const { data, pagination } = axiosRes.data;
-            console.log(_, pagination.cursor);
             config.params.after = pagination.cursor;
             newGames = newGames.concat(data);
         }
@@ -103,7 +102,6 @@ app.use((req, res, next) => {
     const logObj = {
         url: req.originalUrl,
         user: req.user?.name,
-        cookie: req.headers.cookie,
     };
     console.log(logObj);
     next();

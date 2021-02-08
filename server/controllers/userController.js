@@ -15,7 +15,6 @@ exports.games = async (req, res) => {
     const gamesInstance = new Game({
         games: await twitchSvc.fetchGames(listOfGames),
     });
-    console.log(gamesInstance);
     try {
         const lg = await gamesInstance.save();
         res.send(lg);
@@ -75,7 +74,6 @@ exports.currentUser = async (req, res) => {
 
 exports.currentUserDb = async (req, res) => {
     // const user = await User.findOne({ _id: req.user.id });
-    console.log('req.user: ', req.user);
     res.send(req.user);
 };
 
@@ -105,8 +103,7 @@ exports.changePass = async (req, res) => {
     user.psw = req.body.psw;
     const { email, username, visits, password, psw } = user;
     const userAgain = { email, username, visits, password, psw };
-    console.log('User found in DB:', user);
-    console.log('-------------------');
+    console.log('changePass ----');
     await User.create(userAgain, (err, user) => {
         if (err) {
             return res.send({ valid: false });
