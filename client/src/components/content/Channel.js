@@ -17,7 +17,7 @@ const Channel = ({ match }) => {
             <h3 className="text-center text-muted mb-4">
                 You are watching <span className="text-info">{name}</span> channel
             </h3>
-            <TwitchEmbed channel={{ ...embed, name }} />
+            <TwitchEmbed name={name} />
         </div>
     );
 };

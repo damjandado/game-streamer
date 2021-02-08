@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getUser, getStream, searchStreams } from '../../actions';
-import { formatImgUrl } from '../../utils';
 
 const defaultStream = {
     user_name: 'Monstercat',
@@ -19,19 +18,20 @@ const defaultUser = {
         'https://static-cdn.jtvnw.net/jtv_user_pictures/monstercat-profile_image-3e109d75f8413319-300x300.jpeg',
 };
 
-const TwitchEmbed = ({ channel = { stream: defaultStream, user: defaultUser }, ...props }) => {
+const TwitchEmbed = ({ name }) => {
     const dispatch = useDispatch();
-    const { user, stream } = channel;
+    const embed = useSelector((state) => state.embed);
+    const { user, stream } = embed || {};
     const { user_name, game_id, game_name, title, viewer_count } = stream || defaultStream;
-    const { profile_image_url } = user || {};
+    const { profile_image_url } = user || defaultUser;
     const parent = encodeURIComponent(process.env.REACT_APP_DOMAIN);
 
     useEffect(() => {
-        if (!stream) {
-            dispatch(getStream({ user_login: user_name }));
+        if (name && !stream) {
+            dispatch(getStream({ user_login: name }));
         }
-        if (!user) {
-            dispatch(getUser({ login: user_name }));
+        if (name && !user) {
+            dispatch(getUser({ login: name }));
         }
     }, []);
 
